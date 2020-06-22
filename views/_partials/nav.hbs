@@ -1,0 +1,89 @@
+<div class="d-block p-2 bg-dark" id="top-nav">
+    <p class="d-inline text-white bold" style="margin-left: 10%;">Ngày 18 tháng 9 năm 2020</p>
+    <a class="text-white float-right bold" href="#" style="margin-right: 10%;">Register</a>
+    <a class="text-white float-right bold" href="#" style="padding-right: 15px">Login</a>
+</div>
+<!-- <div class="d-block p-2 bg-white border-bottom border-dark" id="mid-nav">
+        <h1 class="bold"><a href="">WhiteNews</a> </h1>
+    </div> -->
+<nav class="bg-dark">
+    <div class="container">
+        <ul id="menu-main">
+            <li><a href="">Kinh tế</a>
+                <div class="menu-sub">
+                    <div class="row justify-content-md-center">
+                        <div class="col-lg-4">
+                            <ul>
+                                <li><a href="">Link 01</a></li>
+                                <li><a href="">Link 02</a></li>
+                                <li><a href="">Link 03</a></li>
+                                <li><a href="">Link 04</a></li>
+                                <li><a href="">Link 05</a></li>
+                            </ul>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <ul>
+                                <li><a href="">Link 01</a></li>
+                                <li><a href="">Link 02</a></li>
+                                <li><a href="">Link 03</a></li>
+                                <li><a href="">Link 04</a></li>
+                                <li><a href="">Link 05</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li><a href="">Chính trị</a>
+                <div class="menu-sub">
+                    <div class="menu-col-4">
+                        <!-- <h3 class="menu-category">Category</h3> -->
+                        <ul>
+                            <li><a href="">Thương mại</a></li>
+                            <li><a href="">Đời sống</a></li>
+                            <li><a href="">Thế giới</a></li>
+                            <li><a href="">Sức khỏe</a></li>
+                            <li><a href="">Thêm</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li><a href="">Thương mại</a></li>
+            <li><a href="">Đời sống</a></li>
+            <li><a href="">Thế giới</a></li>
+            <li><a href="">Sức khỏe</a></li>
+            <li><a href="">Tin nóng</a></li>
+
+            <li><a href="">Thêm</a></li>
+        </ul>
+        <div id="search-bar">
+            <form id="content" autocomplete="off">
+                <input type="text" name="input" class="input" id="search-input">
+                <button type="reset" class="search" id="search-btn"></button>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+        const input = document.getElementById("search-input");
+        const searchBtn = document.getElementById("search-btn");
+        const categoryNav = document.getElementById("menu-main");
+        let check = false;
+        const expand = () => {
+            if (check == true) {
+                categoryNav.classList.add("delay");
+                check = false;
+            } else {
+                categoryNav.classList.remove("delay");
+                check = true;
+            }
+            console.log(check);
+            searchBtn.classList.toggle("close");
+            input.classList.toggle("square");
+            categoryNav.classList.toggle("hidden");
+
+        };
+
+        searchBtn.addEventListener("click", expand);
+    </script>
