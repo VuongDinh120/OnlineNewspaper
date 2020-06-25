@@ -1,8 +1,11 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
+const passport = require('passport');
 let flash = require('express-flash');
+
 const app = express();
+
 
 app.use(session({
     secret: "cats",
@@ -22,8 +25,12 @@ app.engine('hbs', exphbs({
     extname: '.hbs'
 }));
 app.set('view engine', 'hbs');
+
+
 app.use('/public', express.static('public'));
-app.use(express.static(path.join(__dirname, '/public')));
+// app.use(express.static(path.join(__dirname, '/public')));
+
+app.use('/', require('./routers/home.route'));
 
 
 app.use(function (req, res) {
@@ -33,4 +40,5 @@ app.use(function (req, res) {
 const PORT = 3000;
 app.listen(PORT, function () {
     console.log(`Server is running at http://localhost:${PORT}`);
+   
 })
