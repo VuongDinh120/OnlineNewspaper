@@ -2,6 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const passport = require('passport');
+const path = require('path');
 let flash = require('express-flash');
 
 const app = express();
@@ -27,8 +28,8 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs');
 
 
-app.use('/public', express.static('public'));
-// app.use(express.static(path.join(__dirname, '/public')));
+app.use( express.static( "public" ) );
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/', require('./routers/home.route'));
 

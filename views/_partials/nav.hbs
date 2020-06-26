@@ -1,5 +1,5 @@
 <div class="d-block p-2 bg-dark" id="top-nav">
-    <p class="d-inline text-white bold" style="margin-left: 10%;">Ngày 18 tháng 9 năm 2020</p>
+    <div class="d-inline text-white bold" id="currdate" style="margin-left: 10%;"></div>
     <a class="text-white float-right bold" href="#" style="margin-right: 10%;">Register</a>
     <a class="text-white float-right bold" href="#" style="padding-right: 15px">Login</a>
 </div>
@@ -18,10 +18,10 @@
                 </div>
             </li>
             {{/each}}
-            {{#if isfull}}
-                 <li><a href="">Thêm</a></li>
+            {{#if isFull}}
+                <li><a href="">Thêm</a></li>
             {{/if}}
-           
+
         </ul>
         <div id="search-bar">
             <form id="content" autocomplete="off">
@@ -31,7 +31,12 @@
         </div>
     </div>
 </nav>
+<script src="/javascript/date.js"></script>
 <script>
+    //Date on nav
+    document.getElementById("currdate").innerHTML=presentDate();
+
+    //nav search motion effect
     const input = document.getElementById("search-input");
     const searchBtn = document.getElementById("search-btn");
     const categoryNav = document.getElementById("menu-main");
@@ -50,6 +55,5 @@
         categoryNav.classList.toggle("hidden");
 
     };
-
     searchBtn.addEventListener("click", expand);
 </script>

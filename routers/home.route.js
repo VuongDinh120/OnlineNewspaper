@@ -18,22 +18,23 @@ router.get('/', async function (req, res) {
   }
   const listExtra = new Array();
   let countExtra = listMenu.length - 8;
-  let isfull = true;
+  let isfull;
   if (countExtra == 0) {
-    isfull = false;
+    isfull = true;
   } else if (countExtra > 0) {
     for (let i = 1; i <= countExtra; i++) {
       let item = listMenu.pop();
       listExtra.push(item);
     }
   }
-  console.log(listExtra);
   res.render('home', {
     categories: listMenu,
-    isfull: isfull,
+    isFull: isfull,
     extras: listExtra
   });
 })
+
+
 
 
 
