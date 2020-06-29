@@ -2,19 +2,12 @@ const db = require('../utils/db');
 
 const TBL_NEWS = 'baiviet';
 const TBL_CATEGORIES = 'danhmuc';
+const TBL_TAGS = 'tag';
+const TBL_ADDTAGS = 'ganthebaiviet';
 
 module.exports = {
   all: function () {
-    return db.load(`select * from ${TBL_NEWS}`);
-  },
-  allWithCatID: function (id) {
-    return db.load(`
-    select 
-    from ${TBL_NEWS} bv left join 
-      (select 
-        from danhmuc
-        where CatID = ${id} or DanhMucCha) dm on bv.DanhMuc_ID = dm.CatID
-    where dm.CatID = ${id} `);
+    return db.load(`select * from ${TBL_TAGS}`);
   },
   single: function (id) {
     return db.load(`select * from ${TBL_NEWS} where ID = ${id}`);

@@ -6,6 +6,11 @@ module.exports = {
   all: function () {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
+  allNameCat: function () {
+    return db.load(`SELECT d1.CatID,IF(d1.DanhMucCha IS null,d1.TenDanhMuc,CONCAT_WS(" - ",d2.TenDanhMuc,d1.TenDanhMuc))as TenDanhMuc 
+    FROM ${TBL_CATEGORIES} d1 LEFT JOIN ${TBL_CATEGORIES} d2 ON d1.DanhMucCha=d2.CatID 
+    ORDER BY TenDanhMuc`);
+  },
   allWithSecondNode: function () {
     return db.load(`
     select d1.CatID, d1.TenDanhMuc, d2.TenDanhMuc as TenDanhMucCon

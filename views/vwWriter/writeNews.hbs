@@ -1,0 +1,210 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/css/fileinput.min.css">
+{{/section}}
+<div class="container-xl" style="margin-top: 20px;">
+    {{#section 'js'}}
+    <script src="https://cdn.tiny.cloud/1/csk6cm5kzeqyfld4uz7wliexpudlzj01asa9t7prwni3sl2s/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#txtFullDes',
+            height: 450,
+            plugins: 'paste image link autolink lists table media',
+            menubar: false,
+            toolbar: [
+                'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+            ],
+        });
+    </script>
+    {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/themes/fa/theme.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/locales/vi.min.js"></script>
+    <script>
+        $('#fuMain').fileinput({
+            theme: 'fa',
+            showCaption: true,
+            dropZoneEnabled: true,
+            allowedFileExtensions: ['png', 'jpg', 'gif'],
+            language: 'vi'
+        });
+    </script> --}}
+    {{/section}}
+
+    <form method="post" novalidate enctype="multipart/form-data">
+        <div class="card">
+            <div class="card-header">
+                Biên tập bài báo
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="txtHead"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tiêu đề</label>
+                    <input class="form-control form-control-lg" type="text" id="txtHead" name="HeadName" placeholder="Tiêu đề bài báo">
+                </div>
+                <div class="form-group form-row">
+                    <div class="col-7">
+                        <label for="lbcat"><i class="fa fa-bars" aria-hidden="true"></i> Danh mục</label>
+                        <select class="form-control" id="lbcat" name="CatName" size="auto">
+                            {{#each cb_categories}}
+                                 <option value = "{{CatID}}">{{TenDanhMuc}}</option>
+                            {{/each}}
+                        </select>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-9">
+                                <label for="cbbtag" style="margin-top: 20px;"><i class="fa fa-tags"
+                                        aria-hidden="true"></i> Thẻ tag</label>
+                                <select class="form-control" id="cbbtag" size="auto">
+                                    {{#each tags}}
+                                         <option>{{TenTag}}</option>
+                                    {{/each}} 
+                                </select>
+                            </div>
+                            <div class="col-3" style="padding: 1px !important;">
+                                <button class="btn btn-success" type="button" id="addTagBtn" style="margin-top: 52px;"
+                                    onclick="addTag()"><i class="fa fa-plus" aria-hidden="true"></i> Gắn tag
+                                </button>
+                            </div>
+                        </div>
+                        <label for="tag-typer" style="width: 100%;">
+                            <div id="tags">
+                                {{!-- <span class="tag">
+                                    <span class="close-tag">&times;</span>such tage
+                                    <input type="hidden" name="tags[]" value="such tage">
+                                </span>
+                                <span class="tag"><span class="close-tag">&times;</span>so color</span>
+                                <span class="tag"><span class="close-tag">&times;</span>many type</span>
+                                <span class="tag"><span class="close-tag">&times;</span>wow</span> --}}
+                                <input id="tag-typer" type="text" placeholder="Thêm tag mới.." autocomplete="off" />
+
+                            </div>
+                        </label>
+
+                    </div>
+                    <div class="col-5">
+                        <div class="file-upload">
+                            <button class="file-upload-btn" type="button"
+                                onclick="$('.file-upload-input').trigger( 'click' )">Thêm ảnh bìa</button>
+
+                            <div class="image-upload-wrap">
+                                <input class="file-upload-input" type='file' id="fuMain" name="fuMain" onchange="readURL(this);"
+                                    accept="image/*" />
+                                <div class="drag-text">
+                                    <h3>Drag and drop a file or select add Image</h3>
+                                </div>
+                            </div>
+                            <div class="file-upload-content">
+                                <img class="file-upload-image"
+                                    src="#"
+                                    alt="your image" />
+                                <div class="image-title-wrap">
+                                    <button type="button" onclick="removeUpload()" class="remove-image">Xóa <span
+                                            class="image-title">Uploaded Image</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="txtTinyDes"><i class="fa fa-comments-o" aria-hidden="true"></i> Nội dung tóm
+                        tắt</label>
+                    <textarea class="form-control" rows="2" id="txtTinyDes" name="TinyDes"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for=""><i class="fa fa-pencil" aria-hidden="true"></i> Nội dung</label>
+                    <textarea name="FullDes" id="txtFullDes" class="form-control" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-lg btn-success btn-block">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Submit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#tag-typer").keypress(function (event) {
+            var key = event.which;
+            if (key == 13 || key == 44) {
+                event.preventDefault();
+                var tag = $(this).val();
+                const isBlank = $.trim(tag);
+                if (tag.length > 0 && isBlank != '') {
+                    $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                        tag + " <input type='hidden' name='new-tags[]'' value=" + tag + ">" +
+                        " </span>").insertBefore(this);
+                    $(this).val("");
+                } else
+                    $(this).val("");
+            }
+        });
+
+        $("#tags").on("click", ".close-tag", function () {
+            $(this).parent("span").remove();
+        });
+    });
+    function addTag() {
+        var selectedTag = $("#cbbtag").find(":selected").text();
+
+        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+            selectedTag + " <input type='hidden' name='tags[]'' value=" + selectedTag + ">" +
+            " </span>").insertBefore($("#tag-typer"));
+    }
+</script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.image-upload-wrap').hide();
+
+                $('.file-upload-image').attr('src', e.target.result);
+                $('.file-upload-content').show();
+
+                $('.image-title').html(input.files[0].name);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+
+        } else {
+            removeUpload();
+        }
+    }
+
+    function removeUpload() {
+        $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+        $('.file-upload-content').hide();
+        $('.image-upload-wrap').show();
+    }
+    $('.image-upload-wrap').bind('dragover', function () {
+        $('.image-upload-wrap').addClass('image-dropping');
+    });
+    $('.image-upload-wrap').bind('dragleave', function () {
+        $('.image-upload-wrap').removeClass('image-dropping');
+    });
+</script>
+<script>
+    const input = document.getElementById("search-input");
+    const searchBtn = document.getElementById("search-btn");
+    const categoryNav = document.getElementById("menu-main");
+    let check = false;
+    const expand = () => {
+        if (check == true) {
+            categoryNav.classList.add("delay");
+            check = false;
+        } else {
+            categoryNav.classList.remove("delay");
+            check = true;
+        }
+        console.log(check);
+        searchBtn.classList.toggle("close-searchbar");
+        input.classList.toggle("square");
+        categoryNav.classList.toggle("hidden");
+
+    };
+    searchBtn.addEventListener("click", expand);
+</script>

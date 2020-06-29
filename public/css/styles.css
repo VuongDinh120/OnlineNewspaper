@@ -91,7 +91,7 @@ nav li:hover a {
   left: 0;
   background: #fafafa;
   width: 100%;
-  
+
   display: none;
   color: #333;
   padding: 2em;
@@ -105,7 +105,7 @@ nav li:hover .menu-sub {
 
 .menu-sub div {
   margin: 1em 2em;
-  display:inline-block;
+  display: inline-block;
 }
 
 .menu-sub a {
@@ -227,14 +227,14 @@ nav input {
   transition: 0.2s ease-in-out;
 }
 
-.close {
+.close-searchbar {
   -webkit-transition: 0.4s ease-in-out;
   transition: 0.4s ease-in-out;
   -webkit-transition-delay: 0.4s;
   transition-delay: 0.4s;
 }
 
-.close:before {
+.close-searchbar:before {
   content: "";
   position: absolute;
   width: 15px;
@@ -249,7 +249,7 @@ nav input {
   transition: 0.2s ease-in-out;
 }
 
-.close:after {
+.close-searchbar:after {
   content: "";
   position: absolute;
   width: 15px;
@@ -288,15 +288,22 @@ nav input {
 }
 /* end Search bar */
 
+/*---Trang Home*/
 #famousNew-carousel {
   width: 100%;
   height: 400px;
 }
-#famousNew-carousel img,#TopCateg-carousel img {
+#famousNew-carousel img,
+#TopCateg-carousel img {
   width: 100%;
   height: 400px;
   margin: 0;
   object-fit: cover;
+}
+.carousel-indicators li {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
 }
 
 .categoryText {
@@ -352,17 +359,27 @@ nav input {
   /* top: 70px; */
   left: 85px;
   font-size: 15px;
-  color: gold;;
-  text-shadow: 0 0 10px #000; 
+  color: gold;
+  text-shadow: 0 0 10px #000;
   animation: blink 1.75s linear infinite;
 }
 
-@keyframes blink{
-  0%{opacity: 0;}
-  25%{opacity: .5;}
-  50%{opacity: 1;}
-  75%{opacity: .5;}
-  100%{opacity: 0;}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 /* @keyframes blink{
   0%{color: Violet;}
@@ -406,14 +423,243 @@ nav input {
   overflow: hidden;
   font-size: 13px;
 }
+/*End Ds Bài viết nhiều view*/
+/*---END Trang Home*/
+
+/*--- Tag design */
+#tags {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 4px #ccc inset;
+  padding: 10px;
+  width: 100%;
+  background: #fafafa;
+  margin: 0;
+}
+
+#tag-typer {
+  outline: none;
+  border: none;
+  padding: 6px;
+  margin: 3px;
+  margin-right: -25px;
+  width: 120px;
+  background-color: transparent;
+  font-size: 14px;
+  color: #333;
+}
+
+.tag {
+  display: inline-block;
+  background: #6ad;
+  color: #fff;
+  padding: 5px 10px;
+  margin: 2px 2px 2px 25px;
+  font: normal 16px sans-serif;
+  position: relative;
+  cursor: default;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transform-origin: 0% 50%;
+  -webkit-animation: swing 1s;
+  -o-animation: swing 1s;
+  animation: swing 1s;
+}
+
+.tag:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  background: inherit;
+  height: 30px;
+  border: 12px solid #fafafa;
+  border-right-color: transparent;
+  -webkit-border-radius: 10px 0 0 10px;
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  left: -23px;
+  top: 0;
+}
+
+.tag:after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #fff;
+  position: absolute;
+  left: -3px;
+  top: 12px;
+  box-shadow: inset 1px 1px 0 #ccc;
+}
+
+.tag .close-tag {
+  position: absolute;
+  background: inherit;
+  left: -4px;
+  z-index: 3;
+  visibility: hidden;
+}
+
+.tag:hover .close-tag {
+  visibility: visible;
+}
+
+.close-tag:hover {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes swing {
+  0% {
+    -webkit-transform: rotate(100deg);
+  }
+  25% {
+    -webkit-transform: rotate(-25deg);
+  }
+  50% {
+    -webkit-transform: rotate(15deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+@keyframes swing {
+  0% {
+    -webkit-transform: rotate(-200);
+  }
+  25% {
+    -webkit-transform: rotate(-70);
+  }
+  50% {
+    -webkit-transform: rotate(-185);
+  }
+  100% {
+    -webkit-transform: rotate(-180);
+  }
+}
+/*--- Tag end */
+
+/*--- Upload hinh bai viet*/
+.file-upload {
+  background-color: #ffffff;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.file-upload-btn {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  background: #1FB264;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #15824B;
+  transition: all .2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.file-upload-btn:hover {
+  background: #1AA059;
+  color: #ffffff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.file-upload-btn:active {
+  border: 0;
+  transition: all .2s ease;
+}
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  margin-top: 20px;
+  border: 4px dashed #1FB264;
+  position: relative;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  background-color: #1FB264;
+  border: 4px dashed #ffffff;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  text-align: center;
+}
+
+.drag-text h3 {
+  font-weight: 100;
+  text-transform: uppercase;
+  color: #15824B;
+  padding: 60px 0;
+}
+
+.file-upload-image {
+  max-height: 420px;
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+.remove-image {
+  width: 200px;
+  margin: 0;
+  color: #fff;
+  background: #cd4535;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #b02818;
+  transition: all .2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.remove-image:hover {
+  background: #c13b2a;
+  color: #ffffff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.remove-image:active {
+  border: 0;
+  transition: all .2s ease;
+}
+/*--- End up load hinh bai viet*/
 
 @media (min-width: 1200px) {
   .container {
     max-width: 1100px !important;
   }
 }
-.carousel-indicators li {
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-}
+
