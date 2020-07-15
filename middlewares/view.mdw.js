@@ -12,7 +12,10 @@ module.exports = function (app) {
       section: hbs_sections(),
       format_number: function (value) {
         return numeral(value).format('0,0');
-      }
+      },
+      ifEquals: function (arg1, arg2, options) {
+        return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+      },
     }
   }));
   app.set('view engine', 'hbs');

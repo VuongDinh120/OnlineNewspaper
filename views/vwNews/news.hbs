@@ -1,0 +1,29 @@
+<div class="container-xl" style="margin-top: 60px;">
+    <div style="width: 100%; float: left;">
+        <ul class="breadcrumb" style="float: left;">
+            {{#if news.CatParent}}
+            <li><a href="#">{{news.CatParent}}</a></li>
+            {{/if}}
+            <li><a href="#" style="color: gray;">{{news.CatName}}</a></li>
+        </ul>
+        <span style="float: right;"></span>
+    </div>
+    <h1>{{news.Title}}</h1>
+    <div style="margin-top: 20px;">
+        {{!-- <span>Tag:</span> --}}
+        {{#each taging}}
+        <span class="tag">{{TagName}}</span>
+        {{/each}}
+    </div>
+    <div class="mt-4 mb-4" style="font-weight: 500; font-size:20px;">
+        {{news.TinyDes}}
+    </div>
+    <div>
+        {{{news.FullDes}}}
+    </div>
+    <div style="font-weight: bold; font-size:1rem; text-align:right">
+        Nguyễn Tiến (Theo GlobalTimes)
+    </div>
+    <button type="button" class="btn btn-info mt-5" onclick="goBack()"><i class="fa fa-angle-double-left"
+            aria-hidden="true"></i> Trở về</button>
+</div>

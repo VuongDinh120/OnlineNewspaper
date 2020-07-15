@@ -10,11 +10,11 @@ router.get('/', async function (req, res) {
   for (let i = 0; i < listMenu.length; i++) {
     const a = [];
     for (let j = 0; j < listCat.length; j++) {
-      if (listMenu[i].CatID === listCat[j].DanhMucCha) {
-        a.push(listCat[j].TenDanhMuc);
+      if (listMenu[i].CatID === listCat[j].ParentID) {
+        a.push(listCat[j].CatName);
       }
     }
-    listMenu[i].TenDanhMucCon = a;
+    listMenu[i].Descendants = a;
   }
   const listExtra = new Array();
   let countExtra = listMenu.length - 8;

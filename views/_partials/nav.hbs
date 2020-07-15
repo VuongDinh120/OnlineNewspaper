@@ -1,7 +1,10 @@
-<div class="d-block p-2 bg-dark" id="top-nav">
-    <div class="d-inline text-white bold" id="currdate" style="margin-left: 10%;"></div>
-    <a class="text-white float-right bold" href="#" style="margin-right: 10%;">Register</a>
-    <a class="text-white float-right bold" href="#" style="padding-right: 15px">Login</a>
+<div class="d-block p-2 bg-dark" id="top-nav" style="text-align: center;">
+    <div class="d-inline text-white bold float-left" id="currdate" style="margin-left: 10%; line-height:80px"></div>
+    <a class="float-center" href="/" style="margin-right: 10%;">
+        <img src="/img/logo.png" style="width: 80px; height:80px">
+    </a>
+    <a class="text-white float-right bold" href="#" style="margin-right: 10%; line-height:80px">Register</a>
+    <a class="text-white float-right bold" href="#" style="padding-right: 15px;line-height:80px">Login</a>
 </div>
 <!-- <div class="d-block p-2 bg-white border-bottom border-dark" id="mid-nav">
         <h1 class="bold"><a href="">WhiteNews</a> </h1>
@@ -10,16 +13,16 @@
     <div class="container">
         <ul id="menu-main">
             {{#each categories}}
-            <li><a href="">{{TenDanhMuc}}</a>
+            <li><a href="">{{CatName}}</a>
                 <div class="menu-sub">
-                    {{#each TenDanhMucCon}}
+                    {{#each Descendants}}
                     <div><a href="">{{this}}</a></div>
                     {{/each}}
                 </div>
             </li>
             {{/each}}
             {{#if isFull}}
-                <li><a href="">Thêm</a></li>
+            <li><a href="">Thêm</a></li>
             {{/if}}
 
         </ul>
@@ -34,7 +37,7 @@
 <script src="/javascript/date.js"></script>
 <script>
     //Date on nav
-    document.getElementById("currdate").innerHTML=presentDate();
+    document.getElementById("currdate").innerHTML = presentDate();
 
     //nav search motion effect
     const input = document.getElementById("search-input");
