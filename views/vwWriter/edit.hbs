@@ -16,18 +16,44 @@
             ],
         });
     </script>
-    {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/themes/fa/theme.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/locales/vi.min.js"></script>
     <script>
-        $('#fuMain').fileinput({
+        $('#fuNews').fileinput({
+            uploadUrl: "/file-upload-single/1",
+            maxFileCount: 1,
+            autoReplace: true,
             theme: 'fa',
-            showCaption: true,
+            showCaption: false,
+            showRemove: false,
+            showUpload: false
             dropZoneEnabled: true,
+            layoutTemplates: {
+                main1: "{preview}\n" +
+                    "<div class=\'input-group {class}\'>\n" +
+                    "   <div class=\'input-group-btn\ input-group-prepend'>\n" +
+                    "       {browse}\n" +
+                    "       {upload}\n" +
+                    "       {remove}\n" +
+                    "   </div>\n" +
+                    "   {caption}\n" +
+                    "</div>"
+            },
             allowedFileExtensions: ['png', 'jpg', 'gif'],
-            language: 'vi'
+            /*previewFileType: "image",
+            browseClass: "btn btn-success float-right",
+            browseLabel: "Pick Image",
+            browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+            removeClass: "btn btn-danger", */
+
+            // removeLabel: "Delete",
+            // removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
+            // uploadClass: "btn btn-info",
+            // uploadLabel: "Upload",
+            // uploadIcon: "<i class=\"glyphicon glyphicon-upload\"></i> "
         });
-    </script> --}}
+    </script>
     {{/section}}
 
     <form method="post" novalidate enctype="multipart/form-data">
@@ -103,24 +129,10 @@
 
                     </div>
                     <div class="col-5">
-                        <div class="file-upload">
-                            <button class="file-upload-btn" type="button"
-                                onclick="$('.file-upload-input').trigger( 'click' )">Thêm ảnh bìa</button>
-
-                            <div class="image-upload-wrap" style="display: none;">
-                                <input class="file-upload-input" type="file" id="fuMain" name="fuMain"
-                                    onchange="readURL(this);" accept="image/*">
-                                <div class="drag-text">
-                                    <h3>Drag and drop a file or select add Image</h3>
-                                </div>
-                            </div>
-                            <div class="file-upload-content" style="display: block;">
-                                <img class="file-upload-image" src="/img/articles/{{news.IMG}}">
-                                <div class="image-title-wrap">
-                                    <button type="button" onclick="removeUpload()" class="remove-image">Xóa <span
-                                            class="image-title">{{news.IMG}}</span></button>
-                                </div>
-                            </div>
+                        <label for="fuNews" style="width: 100%;"><i class="fa fa-file-image-o" aria-hidden="true"></i>
+                            Hình bìa</label>
+                        <div class="file-loading">
+                            <input id="fuNews" name="fuNews" type="file">
                         </div>
                     </div>
                 </div>
@@ -180,59 +192,4 @@
             selectedTagText + " <input type='hidden' name='tags[]'' value=" + selectedTagVal + ">" +
             " </span>").insertBefore($("#tag-typer"));
     }
-</script>
-<script>
-    function readURL(inputf) {
-        if (inputf.files && inputf.files[0]) {
-
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('.image-upload-wrap').hide();
-
-                $('.file-upload-image').attr('src', e.target.result);
-                $('.file-upload-content').show();
-
-                $('.image-title').html(inputf.files[0].name);
-            };
-
-            reader.readAsDataURL(inputf.files[0]);
-
-        } else {
-            removeUpload();
-        }
-    }
-
-    function removeUpload() {
-        $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-        $('.file-upload-content').hide();
-        $('.image-upload-wrap').show();
-    }
-    $('.image-upload-wrap').bind('dragover', function () {
-        $('.image-upload-wrap').addClass('image-dropping');
-    });
-    $('.image-upload-wrap').bind('dragleave', function () {
-        $('.image-upload-wrap').removeClass('image-dropping');
-    });
-</script>
-<script>
-    const input = document.getElementById("search-input");
-    const searchBtn = document.getElementById("search-btn");
-    const categoryNav = document.getElementById("menu-main");
-    let check = false;
-    const expand = () => {
-        if (check == true) {
-            categoryNav.classList.add("delay");
-            check = false;
-        } else {
-            categoryNav.classList.remove("delay");
-            check = true;
-        }
-        console.log(check);
-        searchBtn.classList.toggle("close-searchbar");
-        input.classList.toggle("square");
-        categoryNav.classList.toggle("hidden");
-
-    };
-    searchBtn.addEventListener("click", expand);
 </script>

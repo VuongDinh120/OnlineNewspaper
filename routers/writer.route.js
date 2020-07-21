@@ -31,7 +31,7 @@ router.get('/list-article', async function (req, res) {
 
 router.get('/new-article', async function (req, res) {
     const listCat = await categoryModel.allNameCat();
-    const listTag = await tagModel.all();
+    const listTag = await tagModel.allPermitTag();
 
     res.render('vwWriter/add', {
         cb_categories: listCat,
@@ -56,7 +56,7 @@ router.get('/view-article', async function (req, res) {
 router.get('/edit-article', async function (req, res) {
     const id = req.query.id;
     const listCat = await categoryModel.allNameCat();
-    const listTag = await tagModel.all();
+    const listTag = await tagModel.allPermitTag();
     const Taging = await tagingModel.allByIDNews(id);
     const News = await newsModel.single(id);
     if (Taging.length === 0 || News.length === 0) {
@@ -72,7 +72,7 @@ router.get('/edit-article', async function (req, res) {
         taging: Taging
     });
 })
-router.post('/edit-article', upload.single('fuMain'), async function (req, res) {
+router.post('/edit-article', upload.single('fuNews'), async function (req, res) {
     const article = {
         NewsID: req.body.id,
         Title: req.body.Title,
@@ -120,7 +120,7 @@ router.post('/edit-article', upload.single('fuMain'), async function (req, res) 
 
 
 
-router.post('/new-article', upload.single('fuMain'), async function (req, res) {
+router.post('/new-article', upload.single('fuNews'), async function (req, res) {
     const article = {
         Title: req.body.Title,
         TinyDes: req.body.TinyDes,

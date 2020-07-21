@@ -134,27 +134,8 @@
 
                         </div>
                         <div class="col-5">
-                            <!-- <input id="fuMain" name="fuMain" type="file" multiple> -->
-                            <div class="file-upload">
-                                <button class="file-upload-btn" type="button"
-                                    onclick="$('.file-upload-input').trigger( 'click' )">Thêm ảnh bìa</button>
-
-                                <div class="image-upload-wrap">
-                                    <input class="file-upload-input" type='file' id="fuMain" name="fuMain"
-                                        onchange="readURL(this);" accept="image/*" />
-                                    <div class="drag-text">
-                                        <h3>Drag and drop a file or select add Image</h3>
-                                    </div>
-                                </div>
-                                <div class="file-upload-content">
-                                    <img class="file-upload-image"
-                                        src="/public/img/200621donaldtrumpcs143p98ee372-6500-8835-1592800823.jpg"
-                                        alt="your image"/>
-                                    <div class="image-title-wrap">
-                                        <button type="button" onclick="removeUpload()" class="remove-image">Xóa <span
-                                                class="image-title">Uploaded Image</span></button>
-                                    </div>
-                                </div>
+                            <div class="file-loading">
+                                <input id="fuNews" name="fuNews" type="file" multiple>
                             </div>
                         </div>
                     </div>
@@ -177,6 +158,7 @@
             </div>
         </form>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script>
         $(document).ready(function () {
@@ -292,6 +274,33 @@
             language: 'vi'
         });
     </script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/themes/fa/theme.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/locales/vi.min.js"></script>
+    <script>
+        $('#fuNews').fileinput({
+            uploadUrl: "/file-upload-single/1",
+            maxFileCount: 1,
+            autoReplace: true,
+            theme: 'fa',
+            showCaption: true,
+            showRemove:false,
+            showUpload:false,
+            dropZoneEnabled: true,
+            allowedFileExtensions: ['png', 'jpg', 'gif'],
+            previewFileType: "image",
+            browseClass: "btn btn-success float-right",
+            browseLabel: "Pick Image",
+            browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+            removeClass: "btn btn-danger",
+           
+            // removeLabel: "Delete",
+            // removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
+            // uploadClass: "btn btn-info",
+            // uploadLabel: "Upload",
+            // uploadIcon: "<i class=\"glyphicon glyphicon-upload\"></i> "
+        });
+    </script>
 </body>
 
 </html>

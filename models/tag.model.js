@@ -6,6 +6,9 @@ module.exports = {
   all: function () {
     return db.load(`select * from ${TBL_TAGS}`);
   },
+  allPermitTag: function () {
+    return db.load(`select * from ${TBL_TAGS} where isPermited = 1`);
+  },
   single: function (id) {
     return db.load(`select * from ${TBL_TAGS} where TagID = ${id}`);
   },
