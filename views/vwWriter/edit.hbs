@@ -3,6 +3,7 @@
 {{/section}}
 <div class="container-xl" style="margin-top: 20px;">
     {{#section 'js'}}
+
     <script src="https://cdn.tiny.cloud/1/csk6cm5kzeqyfld4uz7wliexpudlzj01asa9t7prwni3sl2s/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
     <script>
@@ -16,42 +17,39 @@
             ],
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/themes/fa/theme.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/locales/vi.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/themes/fa/theme.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/locales/vi.min.js"></script>
     <script>
-        $('#fuNews').fileinput({
-            uploadUrl: "/file-upload-single/1",
-            maxFileCount: 1,
-            autoReplace: true,
-            theme: 'fa',
-            showCaption: false,
-            showRemove: false,
-            showUpload: false
-            dropZoneEnabled: true,
-            layoutTemplates: {
-                main1: "{preview}\n" +
-                    "<div class=\'input-group {class}\'>\n" +
-                    "   <div class=\'input-group-btn\ input-group-prepend'>\n" +
-                    "       {browse}\n" +
-                    "       {upload}\n" +
-                    "       {remove}\n" +
-                    "   </div>\n" +
-                    "   {caption}\n" +
-                    "</div>"
-            },
-            allowedFileExtensions: ['png', 'jpg', 'gif'],
-            /*previewFileType: "image",
-            browseClass: "btn btn-success float-right",
-            browseLabel: "Pick Image",
-            browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
-            removeClass: "btn btn-danger", */
-
-            // removeLabel: "Delete",
-            // removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
-            // uploadClass: "btn btn-info",
-            // uploadLabel: "Upload",
-            // uploadIcon: "<i class=\"glyphicon glyphicon-upload\"></i> "
+        $(document).ready(function () {
+            var url1 = '/img/articles/{{news.IMG}}'
+            $("#fuNews").fileinput({
+               fileActionSettings: {
+                    showRemove: false,
+                    showUpload: false
+                },
+                initialPreview: url1,
+                initialPreviewAsData: true,
+                initialPreviewConfig: [
+                    { caption: "{{news.IMG}}", downloadUrl: url1, size: 930321, width: "500px" }
+                ],
+                overwriteInitial: true,
+                maxFileSize: 1000,
+                browseClass: "btn btn-primary btn-block",
+                browseLabel: "Chọn hình",
+                showCaption: false,
+                showCancel: false,
+                showRemove: false,
+                showUpload: false,
+                showPreview: true,
+                maxFileCount: 1,
+                theme: 'fa',
+                maxFileCount: 1,
+                allowedFileExtensions: ['png', 'jpg', 'gif'],
+                language: 'vi',
+            });
         });
     </script>
     {{/section}}
@@ -91,22 +89,8 @@
                             {{/ifEquals}}
                             {{/each}}
                         </select>
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div class="col-4">
-                                <label for="cbbtag" style="margin-top: 20px;"><i class="fa fa-tags"
-                                        aria-hidden="true"></i> Thẻ tag</label>
-                                <select class="form-control" id="cbbtag" name="tag" size="auto" style="width:auto;">
-                                    {{#each tags}}
-                                    <option value="{{TagID}}">{{TagName}}</option>
-                                    {{/each}}
-                                </select>
-                            </div>
-                            <div class="col-3" style="padding: 1px !important;">
-                                <button class="btn btn-success" type="button" id="addTagBtn" style="margin-top: 52px;"
-                                    onclick="addTag()"><i class="fa fa-plus" aria-hidden="true"></i> Gắn tag
-                                </button>
-                            </div>
-                        </div>
+                        <label for="tags" style="margin-top: 20px;"><i class="fa fa-tags" aria-hidden="true"></i> Thẻ
+                            tag</label>
                         <label for="tag-typer" style="width: 100%;">
                             <div id="tags">
                                 {{#each taging}}
@@ -115,15 +99,14 @@
                                     <input type="hidden" name="tags[]" value="{{TagID}}">
                                 </span>
                                 {{/each}}
-                                {{!-- <span class="tag">
-                                    <span class="close-tag">&times;</span>such tage
-                                    <input type="hidden" name="tags[]" value="such tage">
-                                </span>
-                                <span class="tag"><span class="close-tag">&times;</span>so color</span>
-                                <span class="tag"><span class="close-tag">&times;</span>many type</span>
-                                <span class="tag"><span class="close-tag">&times;</span>wow</span> --}}
-                                <input id="tag-typer" type="text" placeholder="Thêm tag mới.." autocomplete="off" />
-
+                                <input list="suggestionList" id="tag-typer" placeholder="Thêm tag ..." type="text"
+                                    autocomplete="off" />
+                                <datalist id="suggestionList">
+                                    {{#each tags}}
+                                    <option data-value="{{TagID}}">{{TagName}}</option>
+                                    {{/each}}
+                                </datalist>
+                                <input type="hidden" name="answer" id="tag-typer-hidden">
                             </div>
                         </label>
 
@@ -134,6 +117,7 @@
                         <div class="file-loading">
                             <input id="fuNews" name="fuNews" type="file">
                         </div>
+                        <input type="hidden" name="oldIMG" value="{{news.IMG}}">
                     </div>
                 </div>
                 <div class="form-group mt-3">
@@ -165,17 +149,25 @@
     $(document).ready(function () {
         $("#tag-typer").keypress(function (event) {
             var key = event.which;
+            var data = $("#tag-typer-hidden").val();
             if (key == 13 || key == 44) {
                 event.preventDefault();
                 var tag = $(this).val();
 
                 const isBlank = $.trim(tag);
-
                 if (tag.length > 0 && isBlank != '') {
-                    $("<span class='tag''><span class='close-tag'>&times;</span>" +
-                        tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
-                        " </span>").insertBefore(this);
-                    $(this).val("");
+                    if (isNaN(data)) {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    } else {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag + " <input type='hidden' name='tags[]' value='" + data + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    }
+
                 } else
                     $(this).val("");
             }
@@ -185,11 +177,4 @@
             $(this).parent("span").remove();
         });
     });
-    function addTag() {
-        var selectedTagText = $("#cbbtag").find(":selected").text();
-        var selectedTagVal = $("#cbbtag").find(":selected").val();
-        $("<span class='tag''><span class='close-tag'>&times;</span>" +
-            selectedTagText + " <input type='hidden' name='tags[]'' value=" + selectedTagVal + ">" +
-            " </span>").insertBefore($("#tag-typer"));
-    }
 </script>

@@ -17,14 +17,18 @@
             ],
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/themes/fa/theme.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/locales/vi.min.js"></script>
+    {{!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/themes/fa/theme.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/locales/vi.min.js"></script>
     <script>
         $('#fuNews').fileinput({
             browseClass: "btn btn-primary btn-block",
             browseLabel: "Chọn hình",
             showCaption: false,
+            showCancel:false,
             showRemove: false,
             showUpload: false,
             showPreview: true,
@@ -36,7 +40,7 @@
             maxFileCount: 1,
             allowedFileExtensions: ['png', 'jpg', 'gif'],
             language: 'vi',
-            
+
         });
     </script>
     {{/section}}
@@ -60,25 +64,18 @@
                             <option value="{{CatID}}">{{CatName}}</option>
                             {{/each}}
                         </select>
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div class="col-9">
-                                <label for="cbbtag" style="margin-top: 20px;"><i class="fa fa-tags"
-                                        aria-hidden="true"></i> Thẻ tag</label>
-                                <select class="form-control" id="cbbtag" name="tag" size="auto">
-                                    {{#each tags}}
-                                    <option value="{{TagID}}">{{TagName}}</option>
-                                    {{/each}}
-                                </select>
-                            </div>
-                            <div class="col-3" style="padding: 1px !important;">
-                                <button class="btn btn-success" type="button" id="addTagBtn" style="margin-top: 52px;"
-                                    onclick="addTag()"><i class="fa fa-plus" aria-hidden="true"></i> Gắn tag
-                                </button>
-                            </div>
-                        </div>
+                        <label for="tags" style="margin-top: 20px;"><i class="fa fa-tags" aria-hidden="true"></i> Thẻ
+                            tag</label>
                         <label for="tag-typer" style="width: 100%;">
                             <div id="tags">
-                                <input id="tag-typer" type="text" placeholder="Thêm tag mới.." autocomplete="off" />
+                                <input list="suggestionList" id="tag-typer" placeholder="Thêm tag ..." type="text"
+                                    autocomplete="off" />
+                                <datalist id="suggestionList">
+                                    {{#each tags}}
+                                    <option data-value="{{TagID}}">{{TagName}}</option>
+                                    {{/each}}
+                                </datalist>
+                                <input type="hidden" name="answer" id="tag-typer-hidden">
                             </div>
                         </label>
 
@@ -114,22 +111,51 @@
         </div>
     </form>
 </div>
+<script>
+    document.querySelector('input[list]').addEventListener('input', function (e) {
+        var input = e.target,
+            list = input.getAttribute('list'),
+            options = document.querySelectorAll('#' + list + ' option'),
+            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden'),
+            inputValue = input.value;
+
+        hiddenInput.value = inputValue;
+
+        for (var i = 0; i < options.length; i++) {
+            var option = options[i];
+
+            if (option.innerText === inputValue) {
+                hiddenInput.value = option.getAttribute('data-value');
+                break;
+            }
+        }
+    });
+</script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
     $(document).ready(function () {
         $("#tag-typer").keypress(function (event) {
             var key = event.which;
+            var data = $("#tag-typer-hidden").val();
             if (key == 13 || key == 44) {
                 event.preventDefault();
                 var tag = $(this).val();
-
+                
                 const isBlank = $.trim(tag);
-
                 if (tag.length > 0 && isBlank != '') {
-                    $("<span class='tag''><span class='close-tag'>&times;</span>" +
-                        tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
-                        " </span>").insertBefore(this);
-                    $(this).val("");
+                    if (isNaN(data)) {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    } else {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag + " <input type='hidden' name='tags[]' value='" + data + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    }
+
                 } else
                     $(this).val("");
             }
@@ -139,11 +165,16 @@
             $(this).parent("span").remove();
         });
     });
+</script>
+{{!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
     function addTag() {
-        var selectedTagText = $("#cbbtag").find(":selected").text();
-        var selectedTagVal = $("#cbbtag").find(":selected").val();
+        var selectedTagText = $("#answerInput").val();
+        var selectedTagVal = $("#answerInput-hidden").val();
+        console.log(selectedTagText);
+        console.log(selectedTagVal);
         $("<span class='tag''><span class='close-tag'>&times;</span>" +
             selectedTagText + " <input type='hidden' name='tags[]'' value=" + selectedTagVal + ">" +
             " </span>").insertBefore($("#tag-typer"));
     }
-</script>
+</script> --}}

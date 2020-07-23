@@ -869,3 +869,11 @@ ul.breadcrumb li a:hover {
   }
 }
 
+datalist {
+	display: none;
+}
+/* specifically hide the arrow on focus */
+input::-webkit-calendar-picker-indicator {
+	display: none;
+}
+

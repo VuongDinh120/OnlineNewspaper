@@ -14,10 +14,11 @@
                     <th scope="col" class="col-2">Tiêu đề</th>
                     <th scope="col" class="col-1">Ảnh đại diện</th>
                     <th scope="col" class="text-center col-2">Danh Mục</th>
-                    <th scope="col" class="col-1 text-center">Thời điểm XB</th>
+                    <th scope="col" class="col-1 text-center">Lần chỉnh sửa cuối</th>
+                    <th scope="col" class="col-1 text-center">Thời gian XB</th>
                     <th scope="col" class="col-1">Trạng thái</th>
-                    <th scope="col" class="col-3 text-center">Lý do</th>
-                    <th scope="col" class="col-1">Hiệu chỉnh</th>
+                    <th scope="col" class="col-2 text-center">Lý do</th>
+                    <th scope="col" class="text-center col-1">Xem</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,29 +37,22 @@
 
                     </td>
                     <td class="col-1 text-center">
+                        Chưa ấn định
+                    </td>
+                    <td class="col-1 text-center">
                         {{#ifEquals ReleaseDate null}}
                         Chưa ấn định
                         {{/ifEquals}}</td>
                     <td class="col-1">{{StaName}}</td>
-                    <td class="col-3 text-center">
+                    <td class="col-2 text-center">
                         {{#ifEquals Issue null}}
                         Bài viết chưa được phê duyệt
                         {{/ifEquals}}</td>
                     <td class="text-center col-1">
-                        <a class="btn btn-primary btn-sm" href="/writer/edit-article?id={{NewsID}}" role="button"
-                            title="Edit News">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                        </a>
                         <a class="btn btn-success btn-sm" href="/writer/view-article?id={{NewsID}}" role="button"
                             title="See News">
                             <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
-                        <form action="/writer/delete-article" method="post">
-                            <input type="hidden" name="id" value="{{NewsID}}">
-                            <button class="btn btn-danger btn-sm" type="submit">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </button>
-                        </form>
                     </td>
                 </tr>
                 {{/each}}

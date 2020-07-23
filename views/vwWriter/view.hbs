@@ -1,15 +1,26 @@
 <div class="container-xl" style="margin-top: 60px;">
     <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <h4>Xem bài viết</h4>
+        <div class="card-header d-flex">
+            <h4 class="mr-auto">Xem bài viết</h4>
+            <a class="btn btn-outline-success" href="/writer/edit-article?id={{news.NewsID}}" role="button">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                Sửa
+            </a>
+            <form action="/writer/delete-article" method="post">
+                <input type="hidden" name="id" value="{{news.NewsID}}">
+                <button class="btn btn-outline-danger ml-2" type="submit">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                     Xóa
+                </button>
+            </form>
         </div>
         <div class="pt-3 pb-5 pl-5 pr-5">
             <div style="width: 100%; float: left;">
                 <ul class="breadcrumb" style="float: left;">
                     {{#if news.CatParent}}
-                    <li><a href="#">{{news.CatParent}}</a></li>
+                    <li><a>{{news.CatParent}}</a></li>
                     {{/if}}
-                    <li><a href="#" style="color: gray;">{{news.CatName}}</a></li>
+                    <li><a style="color: gray;">{{news.CatName}}</a></li>
                 </ul>
                 <span style="float: right;"></span>
             </div>

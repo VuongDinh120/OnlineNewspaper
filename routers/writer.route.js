@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const fs = require('fs');
 const categoryModel = require('../models/category.model');
 const tagModel = require('../models/tag.model');
 const tagingModel = require('../models/taging.model');
@@ -46,7 +47,7 @@ router.get('/view-article', async function (req, res) {
     if (Taging.length === 0 || News.length === 0)
         return res.send('Invalid parameter.');
 
-    console.log(News);
+    // console.log(News);
     res.render('vwWriter/view', {
         cb_categories: listCat,
         news: News[0],
@@ -62,9 +63,6 @@ router.get('/edit-article', async function (req, res) {
     if (Taging.length === 0 || News.length === 0) {
         return res.send('Invalid parameter.');
     }
-
-
-
     res.render('vwWriter/edit', {
         cb_categories: listCat,
         tags: listTag,
@@ -83,9 +81,20 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
         // IMG: req.file.filename,
         StatusID: 4
     };
+    const oldIMG = req.body.oldIMG;
+    if (req.file !== undefined) {
+        article.IMG = req.file.filename;
+        const filepa = req.file.destination + "/" + oldIMG;
+        const a = fs.unlink(filepa, function (err) {
+            if (err)
+                console.log("Error while delete file " + err);
+            else
+                console.log("Delete succeed");
+        });
+    }
+
 
     await tagingModel.delByNewsID(article.NewsID);
-
 
     const newTags = req.body.newtags;
     const availableTags = req.body.tags;
@@ -97,9 +106,6 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
             renewTags.push(rstag.insertId);
         }
     }
-    console.log(newTags);
-    console.log(renewTags);
-    console.log(availableTags);
     let Tags;
     if (renewTags === undefined) {
         Tags = availableTags;
@@ -130,6 +136,7 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
         IMG: req.file.filename,
         StatusID: 4
     };
+
     const newTags = req.body.newtags;
     const availableTags = req.body.tags;
 
@@ -157,11 +164,6 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
         await tagingModel.add(Tags[i], rs.insertId);
     }
 
-    res.redirect('./list-article');
-})
-
-router.post('/delete-article', async function (req, res) {
-    await newsModel.del(req.body.id);
     res.redirect('./list-article');
 })
 
