@@ -4,7 +4,7 @@
             <h4 class="mr-auto">Xem bài viết</h4>
             <a class="btn btn-outline-success" href="/writer/edit-article?id={{news.NewsID}}" role="button">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                Sửa
+                Chỉnh sửa
             </a>
             <form action="/writer/delete-article" method="post">
                 <input type="hidden" name="id" value="{{news.NewsID}}">
@@ -42,8 +42,8 @@
             </div>
         </div>
         <div class="card-footer text-muted" style="text-align: center;">
-            <button type="button" class="btn btn-info btn-block" onclick="goBack()"><i class="fa fa-angle-double-left"
-                    aria-hidden="true"></i> Trở về</button>
+            <a href="./list-article" class="btn btn-info btn-block" role="button"><i class="fa fa-angle-double-left"
+                    aria-hidden="true"></i> Trở về</a>
         </div>
 
     </div>

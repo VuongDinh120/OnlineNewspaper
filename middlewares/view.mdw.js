@@ -1,6 +1,11 @@
 const exphbs = require('express-handlebars');
 const hbs_sections = require('express-handlebars-sections');
 const numeral = require('numeral');
+const moment = require('moment');
+var DateFormats = {
+  short: "DD-MM-YYYY",
+  long: "DD-MM-YYYY HH:mm"
+};
 
 module.exports = function (app) {
   app.engine('hbs', exphbs({
@@ -15,6 +20,16 @@ module.exports = function (app) {
       },
       ifEquals: function (arg1, arg2, options) {
         return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+      },
+      formatDate: function (datetime, format) {
+        if (moment) {
+          // can use other formats like 'lll' too
+          format = DateFormats[format] || format;
+          return moment(datetime).format(format);
+        }
+        else {
+          return datetime;
+        }
       },
     }
   }));

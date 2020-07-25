@@ -71,6 +71,8 @@ router.get('/edit-article', async function (req, res) {
     });
 })
 router.post('/edit-article', upload.single('fuNews'), async function (req, res) {
+    // var today = new Date(); 
+    const id = req.body.id;
     const article = {
         NewsID: req.body.id,
         Title: req.body.Title,
@@ -79,8 +81,10 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
         Writer: 1,
         CatID: req.body.CatID,
         // IMG: req.file.filename,
-        StatusID: 4
+        StatusID: 4,
+        LastEdit: new Date(),
     };
+    console.log(article);
     const oldIMG = req.body.oldIMG;
     if (req.file !== undefined) {
         article.IMG = req.file.filename;
@@ -121,12 +125,13 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
         await tagingModel.add(Tags[i], req.body.id);
     }
 
-    res.redirect('./list-article')
+    res.redirect(`./view-article?id=${id}`);
 })
 
 
 
 router.post('/new-article', upload.single('fuNews'), async function (req, res) {
+    // var today = new Date(); 
     const article = {
         Title: req.body.Title,
         TinyDes: req.body.TinyDes,
@@ -134,7 +139,8 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
         Writer: 1,
         CatID: req.body.CatID,
         IMG: req.file.filename,
-        StatusID: 4
+        StatusID: 4,
+        LastEdit: new Date(),
     };
 
     const newTags = req.body.newtags;

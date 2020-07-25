@@ -12,7 +12,7 @@ module.exports = {
   allWithWriter: function (id) {
     return db.load(`
     select bv.*
-    from (select nw.NewsID, nw.Title, nw.TinyDes, nw.ReleaseDate, nw.Writer,nw.IMG, nw.Issue, st.StaName, cat.CatName , cat.CatParent
+    from (select nw.NewsID, nw.Title, nw.TinyDes, nw.LastEdit,nw.ReleaseDate, nw.Writer,nw.IMG, nw.Issue, st.StaName, cat.CatName , cat.CatParent
           from ${TBL_NEWS} nw, ${TBL_Status} st, (SELECT d1.CatID,d2.CatName as CatParent,d1.CatName 
           FROM ${TBL_CATEGORIES} d1 LEFT JOIN ${TBL_CATEGORIES} d2 ON d1.ParentID=d2.CatID 
           ORDER BY CatName) cat 
