@@ -877,3 +877,15 @@ input::-webkit-calendar-picker-indicator {
 	display: none;
 }
 
+/*Premier branch*/
+.Premier{
+  font-size: 25px;
+  border: 0px solid #26272b;
+  padding: 3px 10px;
+  border-radius: 10rem;
+  background-color: #ffc107;
+  color: #fff;
+}
+.Premier i{
+  color: #fff;
+}

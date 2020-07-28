@@ -12,11 +12,11 @@ module.exports = {
   allWithWriter: function (id) {
     return db.load(`
     select bv.*
-    from (select nw.NewsID, nw.Title, nw.TinyDes, nw.LastEdit,nw.ReleaseDate, nw.Writer,nw.IMG, nw.Issue, st.StaName, cat.CatName , cat.CatParent
+    from (select nw.NewsID, nw.Title, nw.TinyDes, nw.LastEdit,nw.ReleaseDate, nw.isPremium ,nw.Writer,nw.IMG, nw.Issue, st.StaName, cat.CatName , cat.CatParent
           from ${TBL_NEWS} nw, ${TBL_Status} st, (SELECT d1.CatID,d2.CatName as CatParent,d1.CatName 
           FROM ${TBL_CATEGORIES} d1 LEFT JOIN ${TBL_CATEGORIES} d2 ON d1.ParentID=d2.CatID 
           ORDER BY CatName) cat 
-          where nw.StatusID = st.StaID and cat.CatID = nw.CatID) as bv 
+          where nw.StatusID = st.StaID and cat.CatID = nw.CatID and nw.isDelete = 0) as bv 
         join ${TBL_User} us on bv.Writer = ${id}
     `);
   },
@@ -34,6 +34,13 @@ module.exports = {
       NewsID: entity.NewsID
     }
     delete entity.NewsID;
+    return db.patch(TBL_NEWS, entity, condition);
+  },
+  remove: function (id) {
+    const condition = {
+      NewsID: id
+    }
+    const entity = { isDelete: 1 };
     return db.patch(TBL_NEWS, entity, condition);
   },
   del: function (id) {

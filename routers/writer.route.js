@@ -29,16 +29,6 @@ router.get('/list-article', async function (req, res) {
         News: listNews
     });
 })
-
-router.get('/new-article', async function (req, res) {
-    const listCat = await categoryModel.allNameCat();
-    const listTag = await tagModel.allPermitTag();
-
-    res.render('vwWriter/add', {
-        cb_categories: listCat,
-        tags: listTag
-    });
-})
 router.get('/view-article', async function (req, res) {
     const id = req.query.id;
     const listCat = await categoryModel.allNameCat();
@@ -53,6 +43,58 @@ router.get('/view-article', async function (req, res) {
         news: News[0],
         taging: Taging
     });
+})
+router.get('/new-article', async function (req, res) {
+    const listCat = await categoryModel.allNameCat();
+    const listTag = await tagModel.allPermitTag();
+
+    res.render('vwWriter/add', {
+        cb_categories: listCat,
+        tags: listTag
+    });
+})
+router.post('/new-article', upload.single('fuNews'), async function (req, res) {
+    // var today = new Date(); 
+    const article = {
+        Title: req.body.Title,
+        TinyDes: req.body.TinyDes,
+        FullDes: req.body.FullDes,
+        Writer: 1,
+        CatID: req.body.CatID,
+        IMG: req.file.filename,
+        isPremium: parseInt(req.body.NewsType),
+        StatusID: 4,
+        LastEdit: new Date(),
+    };
+
+    const newTags = req.body.newtags;
+    const availableTags = req.body.tags;
+
+    const renewTags = [];
+    if (newTags !== undefined) {
+        for (let i = 0; i < newTags.length; i++) {
+            const rstag = await tagModel.add(newTags[i]);
+            renewTags.push(rstag.insertId);
+        }
+    }
+    // console.log(renewTags);
+    // console.log(availableTags);
+    let Tags;
+    if (renewTags === undefined) {
+        Tags = availableTags;
+    }
+    else if (availableTags === undefined) {
+        Tags = renewTags;
+    } else {
+        Tags = renewTags.concat(availableTags);
+    }
+    const rs = await newsModel.add(article);
+    // console.log(Tags);
+    for (let i = 0; i < Tags.length; i++) {
+        await tagingModel.add(Tags[i], rs.insertId);
+    }
+
+    res.redirect('./list-article');
 })
 router.get('/edit-article', async function (req, res) {
     const id = req.query.id;
@@ -80,7 +122,7 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
         FullDes: req.body.FullDes,
         Writer: 1,
         CatID: req.body.CatID,
-        // IMG: req.file.filename,
+        isPremium: parseInt(req.body.NewsType),
         StatusID: 4,
         LastEdit: new Date(),
     };
@@ -127,50 +169,13 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
 
     res.redirect(`./view-article?id=${id}`);
 })
+router.post('/delete-article',async function (req, res) {
+    newsModel.remove(req.body.id);
 
-
-
-router.post('/new-article', upload.single('fuNews'), async function (req, res) {
-    // var today = new Date(); 
-    const article = {
-        Title: req.body.Title,
-        TinyDes: req.body.TinyDes,
-        FullDes: req.body.FullDes,
-        Writer: 1,
-        CatID: req.body.CatID,
-        IMG: req.file.filename,
-        StatusID: 4,
-        LastEdit: new Date(),
-    };
-
-    const newTags = req.body.newtags;
-    const availableTags = req.body.tags;
-
-    const renewTags = [];
-    if (newTags !== undefined) {
-        for (let i = 0; i < newTags.length; i++) {
-            const rstag = await tagModel.add(newTags[i]);
-            renewTags.push(rstag.insertId);
-        }
-    }
-    // console.log(renewTags);
-    // console.log(availableTags);
-    let Tags;
-    if (renewTags === undefined) {
-        Tags = availableTags;
-    }
-    else if (availableTags === undefined) {
-        Tags = renewTags;
-    } else {
-        Tags = renewTags.concat(availableTags);
-    }
-    const rs = await newsModel.add(article);
-    // console.log(Tags);
-    for (let i = 0; i < Tags.length; i++) {
-        await tagingModel.add(Tags[i], rs.insertId);
-    }
-
-    res.redirect('./list-article');
+    res.redirect(`./list-article`);
 })
+
+
+
 
 module.exports = router;

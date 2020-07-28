@@ -6,23 +6,25 @@
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 Chỉnh sửa
             </a>
-            <form action="/writer/delete-article" method="post">
+            <form action="/writer/delete-article" method="POST">
                 <input type="hidden" name="id" value="{{news.NewsID}}">
                 <button class="btn btn-outline-danger ml-2" type="submit">
                     <i class="fa fa-trash" aria-hidden="true"></i>
-                     Xóa
+                    Xóa
                 </button>
             </form>
         </div>
         <div class="pt-3 pb-5 pl-5 pr-5">
-            <div style="width: 100%; float: left;">
+            <div class="d-flex justify-content-between mb-2" style="width: 100%;">
                 <ul class="breadcrumb" style="float: left;">
                     {{#if news.CatParent}}
                     <li><a>{{news.CatParent}}</a></li>
                     {{/if}}
                     <li><a style="color: gray;">{{news.CatName}}</a></li>
                 </ul>
-                <span style="float: right;"></span>
+                {{#ifEquals news.isPremium 1}}
+                <div class="mr-4 Premier"><i class="fa fa-star" aria-hidden="true"></i> Premium</div>
+                {{/ifEquals}}
             </div>
             <h1>{{news.Title}}</h1>
             <div style="margin-top: 20px;">
