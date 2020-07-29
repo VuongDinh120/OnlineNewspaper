@@ -69,7 +69,8 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
 
     const newTags = req.body.newtags;
     const availableTags = req.body.tags;
-
+    // console.log(newTags);
+    // console.log(availableTags);
     const renewTags = [];
     if (newTags !== undefined) {
         for (let i = 0; i < newTags.length; i++) {
@@ -77,8 +78,7 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
             renewTags.push(rstag.insertId);
         }
     }
-    // console.log(renewTags);
-    // console.log(availableTags);
+   
     let Tags;
     if (renewTags === undefined) {
         Tags = availableTags;
@@ -126,7 +126,6 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
         StatusID: 4,
         LastEdit: new Date(),
     };
-    console.log(article);
     const oldIMG = req.body.oldIMG;
     if (req.file !== undefined) {
         article.IMG = req.file.filename;
@@ -162,7 +161,7 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
         Tags = renewTags.concat(availableTags);
     }
     await newsModel.patch(article);
-    console.log(Tags);
+    // console.log(Tags);
     for (let i = 0; i < Tags.length; i++) {
         await tagingModel.add(Tags[i], req.body.id);
     }

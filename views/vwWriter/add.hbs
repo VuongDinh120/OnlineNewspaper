@@ -43,9 +43,63 @@
 
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $("#tag-typer").keypress(function (event) {
+                var key = event.which;
+                var data = $("#tag-typer-hidden").val();
+                if (key == 13 || key == 44) {
+                    event.preventDefault();
+                    var tag = $(this).val();
+
+                    const isBlank = $.trim(tag);
+                    if (tag.length > 0 && isBlank != '') {
+                        if (isNaN(data)) {
+                            $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                                tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
+                                " </span>").insertBefore(this);
+                            $(this).val("");
+                        } else {
+                            $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                                tag + " <input type='hidden' name='tags[]' value='" + data + "'>" +
+                                " </span>").insertBefore(this);
+                            $(this).val("");
+                        }
+
+                    } else
+                        $(this).val("");
+                }
+            });
+
+            $("#tags").on("click", ".close-tag", function () {
+                $(this).parent("span").remove();
+            });
+        });
+    </script>
+    <script>
+        document.querySelector('input[list]').addEventListener('input', function (e) {
+            var input = e.target,
+                list = input.getAttribute('list'),
+                options = document.querySelectorAll('#' + list + ' option'),
+                hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden'),
+                inputValue = input.value;
+
+            hiddenInput.value = inputValue;
+
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+
+                if (option.innerText === inputValue) {
+                    hiddenInput.value = option.getAttribute('data-value');
+                    break;
+                }
+            }
+        });
+    </script>
+    <script src="/javascript/validate.js"></script>
     {{/section}}
 
-    <form method="post" novalidate enctype="multipart/form-data">
+    <form id="frmEditNews" method="post" novalidate enctype="multipart/form-data">
         <div class="card">
             <div class="card-header">
                 <h4>Biên tập bài báo</h4>
@@ -53,17 +107,21 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="txtHead"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tiêu đề</label>
-                    <input class="form-control form-control-lg" type="text" id="txtHead" name="Title"
-                        placeholder="Tiêu đề bài báo">
+                    <input class="form-control form-control-lg" type="text" id="txtTitle" name="Title"
+                        placeholder="Tiêu đề bài báo" onclick="ClearError('err_Title',this)" autocomplete="off">
+                    <small id="err_Title" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group form-row">
-                    <div class="col-7">
+                    <div class="col-6">
                         <label for="lbcat"><i class="fa fa-bars" aria-hidden="true"></i> Danh mục</label>
-                        <select class="form-control" id="lbcat" name="CatID" size="auto">
+                        <select class="form-control" id="lbcat" name="CatID" size="auto"
+                            onclick="ClearError('err_Title',this)">
+                            <option value="" selected>-- Chọn danh mục</option>
                             {{#each cb_categories}}
                             <option value="{{CatID}}">{{CatName}}</option>
                             {{/each}}
                         </select>
+                        <small id="err_cat" class="form-text text-danger"></small>
                         <label for="tags" style="margin-top: 20px;"><i class="fa fa-tags" aria-hidden="true"></i> Thẻ
                             tag</label>
                         <label for="tag-typer" style="width: 100%;">
@@ -78,48 +136,53 @@
                                 <input type="hidden" name="answer" id="tag-typer-hidden">
                             </div>
                         </label>
+                        <small id="err_Tag" class="form-text text-danger"></small>
                         <label for="tags" style="margin-top: 20px;"><i class="fa fa-suitcase" aria-hidden="true"></i>
                             Loại bài viết</label>
                         <div class="d-flex justify-content-around">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="NewsType" id="NewsType1" value="0"
-                                    {{#if news.isPremium}}checked{{/if}}>
+                                    checked>
                                 <p class="form-check-label">
                                     Bản thường
                                 </p>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="NewsType" id="NewsType2" value="1"
-                                    {{#if news.isPremium}}checked{{/if}}>
+                                <input class="form-check-input" type="radio" name="NewsType" id="NewsType2" value="1">
                                 <p class="form-check-label">
                                     Bản premium
                                 </p>
                             </div>
                         </div>
                     </div>
+                    <div class="col-1"></div>
                     <div class="col-5">
                         <label for="fuNews" style="width: 100%;"><i class="fa fa-file-image-o" aria-hidden="true"></i>
                             Hình bìa</label>
+                        <small id="err_IMG" class="form-text text-danger"></small>
                         <div class="file-loading">
-                            <input id="fuNews" name="fuNews" type="file">
+                            <input id="fuNews" name="fuNews" type="file" onclick="ClearError('err_IMG', this)">
                         </div>
                     </div>
                 </div>
                 <div class="form-group mt-3">
                     <label for="txtTinyDes"><i class="fa fa-comments-o" aria-hidden="true"></i> Nội dung tóm
                         tắt</label>
-                    <textarea class="form-control" rows="2" id="txtTinyDes" name="TinyDes"></textarea>
+                    <textarea class="form-control" rows="2" id="txtTinyDes" name="TinyDes"
+                        onclick="ClearError('err_TinyDes',this)"></textarea>
+                    <small id="err_TinyDes" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label for=""><i class="fa fa-pencil" aria-hidden="true"></i> Nội dung</label>
-                    <textarea name="FullDes" id="txtFullDes" class="form-control" cols="30" rows="10"></textarea>
+                    <small id="err_FullDes" class="form-text text-danger"></small>
+                    <textarea name="FullDes" id="txtFullDes" class="form-control" cols="30" rows="10"
+                        onclick="ClearError('err_FullDes',this)"></textarea>
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-lg btn-success btn-block">
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                    Submit
-                </button>
+                <button type="button" class="btn btn-success btn-block" onclick="Validate_Submit_EditNews()"> <i
+                        class="fa fa-check" aria-hidden="true"></i>
+                    Đăng bài</button>
                 <button type="button" class="btn btn-lg btn-danger btn-block" onclick="history.back()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                     Cancel
@@ -128,70 +191,3 @@
         </div>
     </form>
 </div>
-<script>
-    document.querySelector('input[list]').addEventListener('input', function (e) {
-        var input = e.target,
-            list = input.getAttribute('list'),
-            options = document.querySelectorAll('#' + list + ' option'),
-            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden'),
-            inputValue = input.value;
-
-        hiddenInput.value = inputValue;
-
-        for (var i = 0; i < options.length; i++) {
-            var option = options[i];
-
-            if (option.innerText === inputValue) {
-                hiddenInput.value = option.getAttribute('data-value');
-                break;
-            }
-        }
-    });
-</script>
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#tag-typer").keypress(function (event) {
-            var key = event.which;
-            var data = $("#tag-typer-hidden").val();
-            if (key == 13 || key == 44) {
-                event.preventDefault();
-                var tag = $(this).val();
-
-                const isBlank = $.trim(tag);
-                if (tag.length > 0 && isBlank != '') {
-                    if (isNaN(data)) {
-                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
-                            tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
-                            " </span>").insertBefore(this);
-                        $(this).val("");
-                    } else {
-                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
-                            tag + " <input type='hidden' name='tags[]' value='" + data + "'>" +
-                            " </span>").insertBefore(this);
-                        $(this).val("");
-                    }
-
-                } else
-                    $(this).val("");
-            }
-        });
-
-        $("#tags").on("click", ".close-tag", function () {
-            $(this).parent("span").remove();
-        });
-    });
-</script>
-{{!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script>
-    function addTag() {
-        var selectedTagText = $("#answerInput").val();
-        var selectedTagVal = $("#answerInput-hidden").val();
-        console.log(selectedTagText);
-        console.log(selectedTagVal);
-        $("<span class='tag''><span class='close-tag'>&times;</span>" +
-            selectedTagText + " <input type='hidden' name='tags[]'' value=" + selectedTagVal + ">" +
-            " </span>").insertBefore($("#tag-typer"));
-    }
-</script> --}}

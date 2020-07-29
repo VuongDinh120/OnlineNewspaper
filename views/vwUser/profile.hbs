@@ -1,0 +1,68 @@
+<div class="container-xl">
+    <div class="row">
+        <div class="col-4" style="background-color: yellow; ; text-align: center;">
+            <h3>Ảnh đại diện</h3>
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <form id="uploadForm" enctype="multipart/form-data" action="./api/photo" method="post">
+                        <input type='file' id="imageUpload" name="userPhoto" accept=".png, .jpg, .jpeg" />
+                        <label for="imageUpload"></label>
+                        <input type="submit" value="Upload Image" name="submit" style="display: none;">
+                    </form>
+                </div>
+                <div class="avatar-preview">
+                    <div id="imagePreview" style="background-image: url(/img/img_nature_wide.jpg);">
+                    </div>
+                </div>
+                <span id="status"></span>
+            </div>
+        </div>
+        <div class="col-5">
+            <h3>Thông tin người dùng</h3>
+
+        </div>
+    </div>
+</div>
+{{#section 'js'}}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#uploadForm').submit(function () {
+            $("#status").empty().text("File is uploading...");
+            $(this).ajaxSubmit({
+
+                error: function (xhr) {
+                    status('Error: ' + xhr.status);
+                },
+
+                success: function (response) {
+                    $("#status").empty().text(response);
+                    console.log(response);
+                }
+            });
+            //Very important line, it disable the page refresh.
+            return false;
+        });
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            console.log(input.files[0]);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imageUpload").change(function () {
+        readURL(this);
+        $('#uploadForm').trigger("submit");
+    });
+</script>
+{{/section}}

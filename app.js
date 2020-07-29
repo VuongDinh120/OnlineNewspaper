@@ -22,6 +22,8 @@ require('./middlewares/view.mdw')(app);
 
 app.use('/', require('./routers/home.route'));
 app.use('/writer', require('./routers/writer.route'));
+app.use('/account', require('./routers/user.route'));
+
 
 
 app.use(function (req, res) {

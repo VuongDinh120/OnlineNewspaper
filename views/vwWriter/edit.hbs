@@ -102,7 +102,7 @@
                     <small id="err_Title" class="form-text text-danger"></small>
                 </div>
                 <div class="form-group form-row">
-                    <div class="col-7">
+                    <div class="col-6">
                         <label for="lbcat"><i class="fa fa-bars" aria-hidden="true"></i> Danh mục</label>
                         <select class="form-control" id="lbcat" name="CatID" size="auto" style="width:auto;">
                             {{#each cb_categories}}
@@ -164,8 +164,7 @@
                             </div>
                         </div>
                     </div>
-
-
+                    <div class="col-1"></div>
                     <div class="col-5">
                         <label for="fuNews" style="width: 100%;"><i class="fa fa-file-image-o" aria-hidden="true"></i>
                             Hình bìa</label>
@@ -194,10 +193,6 @@
                 <button type="button" class="btn btn-success btn-block" onclick="Validate_Submit_EditNews()"> <i
                         class="fa fa-check" aria-hidden="true"></i>
                     Đăng bài</button>
-                {{!-- <button class="btn btn-lg btn-success btn-block" onclick="Validate_Submit_EditNews()">
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                    Đăng bài
-                </button> --}}
                 <button type="button" class="btn btn-lg btn-danger btn-block" onclick="history.back()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                     Hủy

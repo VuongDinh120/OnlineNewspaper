@@ -5,16 +5,18 @@ const TBL_ROLE = 'roles';
 
 module.exports = {
   all: function () {
-    return db.load(`SELECT us.ID, us.TenTaiKhoan, us.HoTen, us.MatKhau, us.ButDanh, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.ROLE = rol.ID`);
+    return db.load(`SELECT us.UserID, us.UserName, us.FullName, us.PassWord, us.Pseudonym, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID`);
   },
-  singleByName: async function (TenTaiKhoan) {
-    const rows = await db.load(`SELECT us.ID, us.TenTaiKhoan, us.HoTen, us.MatKhau, us.ButDanh, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.ROLE = rol.ID where us.TenTaiKhoan = '${TenTaiKhoan}'`);
+  singleByName: async function (UserName) {
+    const rows = await db.load(`SELECT us.UserID, us.UserName, us.FullName, us.PassWord, us.Pseudonym, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID where us.UserName = '${UserName}'`);
     if (rows.length === 0)
       return null;
     return rows[0];
   },
   singleByID: async function (id) {
-    const rows = await db.load(`SELECT us.ID, us.TenTaiKhoan, us.HoTen, us.MatKhau, us.ButDanh, us.Email, us.IMG, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.ROLE = rol.ID where us.ID = ${id}`);
+    
+    const rows = await db.load(`SELECT us.UserID, us.UserName, us.FullName, us.PassWord, us.Pseudonym, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID where us.UserID = ${id}`);
+    console.log(rows[0]);
     if (rows.length === 0)
       return null;
     return rows[0];
@@ -24,9 +26,9 @@ module.exports = {
   },
   patch: function (entity) {
     const condition = {
-      TenTaiKhoan: entity.TenTaiKhoan
+      UserID: entity.UserID
     }
-    delete entity.TenTaiKhoan;
+    delete entity.UserID;
     return db.patch(TBL_USER, entity, condition);
   }
 };

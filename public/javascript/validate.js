@@ -9,16 +9,21 @@ function Validate_Submit_EditNews() {
     let a = document.getElementsByTagName("small");
     for (i = 0; i < a.length; i++) {
         a[i].innerHTML = "";
-      }
+    }
     const title = document.getElementById('txtTitle'),
         tinyDes = document.getElementById('txtTinyDes'),
         fullDes = tinymce.get("txtFullDes").getContent(),
         img = document.getElementsByTagName('img'),
-        tag = document.getElementsByClassName('tag');
-    // console.log(title);
-    // console.log(tinyDes);
-    // console.log(tag);
-    console.log(img);
+        tag = document.getElementsByClassName('tag'),
+        cat = document.getElementById('lbcat');
+    console.log(cat.value);
+    if (cat.value == '') {
+        cat.classList.add("border-danger");
+        document.getElementById('err_cat').innerHTML = 'Chưa chọn danh mục';
+        cat.scrollIntoView();
+        isValid = false;
+    }
+
     if (title.value == '') {
         title.classList.add("border-danger");
         document.getElementById('err_Title').innerHTML = 'Tiêu đề không được trống';
@@ -41,7 +46,7 @@ function Validate_Submit_EditNews() {
         document.getElementById('err_FullDes').scrollIntoView();
         isValid = false;
     }
-    if (fullDes.length <=1500) {
+    if (fullDes.length <= 1500 && fullDes.length != 0) {
         document.getElementById('err_FullDes').innerHTML = 'Phải có ít nhất 500 từ';
         document.getElementById('err_FullDes').scrollIntoView();
         isValid = false;
@@ -53,7 +58,7 @@ function Validate_Submit_EditNews() {
         document.getElementById('err_IMG').scrollIntoView();
         isValid = false;
     }
-   
+
     if (isValid == true)
         document.getElementById("frmEditNews").submit();
 }
