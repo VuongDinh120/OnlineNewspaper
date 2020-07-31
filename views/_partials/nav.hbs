@@ -1,15 +1,62 @@
-<div class="d-block p-2 bg-dark" id="top-nav" style="text-align: center;">
-    <div class="d-inline text-white bold float-left" id="currdate" style="margin-left: 10%; line-height:80px"></div>
-    <a class="float-center" href="/" style="margin-right: 10%;">
-        <img src="/img/logo.png" style="width: 80px; height:80px">
+<div class="d-flex justify-content-between align-items-center bg-dark top-nav" >
+    <a class="logo" href="/">
+        <img src="/img/logo2.png">
     </a>
-    <a class="text-white float-right bold" href="#" style="margin-right: 10%; line-height:80px">Register</a>
-    <a class="text-white float-right bold" href="#" style="padding-right: 15px;line-height:80px">Login</a>
+     <div class="text-white bold" id="currdate"></div>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="search">
+            <input type="text" class="searchTerm" placeholder="Tìm kiếm...">
+            <button type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <a href="#" class="text-muted mr-2">LOGIN</a>
+        <a href="#">REGISTER</a>
+    </div>
+</div>
+<div class="wrapper">
+	<div class="mega_menu">
+		<ul>
+			<li><a href="#">popular</a></li>
+			<li><a href="#">sports</a>
+				<div class="sub_menu d-flex align-content-start flex-wrap text-white">
+					<div>col-1</div>
+                    <div>col-1</div>
+                    <div>col-1</div>
+                    <div>col-1</div>
+                    <div>col-1</div>
+                    <div>col-1</div>
+                    <div>col-1</div>
+                    <div>col-1</div>
+                    <div>col-1</div>
+				</div>
+			</li>
+			<li><a href="#">tv shows</a></li>
+			<li><a href="#">movies</a></li>
+			<li><a href="#">music</a></li>
+			<li><a href="#">tech</a>
+				<div class="sub_menu tech">
+					<div class="col">
+						<h4>The best way to predict the future is to invent it.</h4>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti officiis doloremque perferendis laborum cupiditate totam.</p>
+					</div>
+					<div class="col">
+						<h4>The best way to predict the future is to invent it.</h4>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti officiis doloremque perferendis laborum cupiditate totam.</p>
+					</div>
+					<div class="col">
+						<h4>The best way to predict the future is to invent it.</h4>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti officiis doloremque perferendis laborum cupiditate totam.</p>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
 </div>
 <!-- <div class="d-block p-2 bg-white border-bottom border-dark" id="mid-nav">
         <h1 class="bold"><a href="">WhiteNews</a> </h1>
     </div> -->
-<nav class="bg-dark">
+{{!-- <nav class="bg-dark">
     <div class="container">
         <ul id="menu-main">
             {{#each categories}}
@@ -26,14 +73,8 @@
             {{/if}}
 
         </ul>
-        <div id="search-bar">
-            <form id="content" autocomplete="off">
-                <input type="text" name="input" class="input" id="search-input">
-                <button type="reset" class="search" id="search-btn"></button>
-            </form>
-        </div>
     </div>
-</nav>
+</nav> --}}
 <script src="/javascript/date.js"></script>
 <script>
     //Date on nav

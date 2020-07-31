@@ -1,35 +1,246 @@
-<div class="container-xl">
+<div class="container-xl mt-5">
     <div class="row">
-        <div class="col-4" style="background-color: yellow; ; text-align: center;">
-            <h3>Ảnh đại diện</h3>
-            <div class="avatar-upload">
-                <div class="avatar-edit">
-                    <form id="uploadForm" enctype="multipart/form-data" action="./api/photo" method="post">
-                        <input type='file' id="imageUpload" name="userPhoto" accept=".png, .jpg, .jpeg" />
-                        <label for="imageUpload"></label>
-                        <input type="submit" value="Upload Image" name="submit" style="display: none;">
-                    </form>
+        <div class="col-4">
+            <div class="shadow p-3 mb-5 mr-2 bg-white rounded center">
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <form id="uploadForm" enctype="multipart/form-data" action="./api/photo" method="post">
+                            <input type='file' id="imageUpload" name="userPhoto" accept=".png, .jpg, .jpeg" />
+                            <label for="imageUpload"></label>
+                            <input type="submit" value="Upload Image" name="submit" style="display: none;">
+                        </form>
+                    </div>
+                    <div class="avatar-preview">
+                        {{#if User.Avatar}}
+                        <div id="imagePreview" style="background-image: url(/img/user/{{User.Avatar}});">
+                        </div>
+                        {{else}}
+                        <div id="imagePreview" style="background-image: url(/img/user.png); background-color: #fafafa;">
+                        </div>
+
+                        {{/if}}
+                    </div>
+                    <span id="status" style="color: #4CAF50;"></span>
                 </div>
-                <div class="avatar-preview">
-                    <div id="imagePreview" style="background-image: url(/img/img_nature_wide.jpg);">
+                <div class="info-title">Hello, {{User.UserName}}</div>
+            </div>
+            <div class="shadow p-3 mb-5 mr-2 bg-white rounded center" {{#ifEquals User.isExpire 0}}
+                style="background-color: #ffc107 !important;" {{/ifEquals}}>
+                {{#ifEquals User.isExpire 0}}
+                <div class="has-premium">
+                    <h2>Premium Pass</h2>
+                    <p>Bạn đang sở hữu gói premium.</p>
+                    <p>Tài khoản sẽ hết hiệu lực sau</p>
+                    <div id="timer">
+                        <div id="days"></div>
+                        <div id="hours"></div>
+                        <div id="minutes"></div>
+                        <div id="seconds"></div>
+                    </div>
+                    <div class="text-box mt-3">
+                        <a href="#" class="btn btn-white btn-animate"><i class="fa fa-star-o" aria-hidden="true"></i>
+                            Gia hạn thêm</a>
                     </div>
                 </div>
-                <span id="status"></span>
+                {{/ifEquals}}
+                {{#ifEquals User.isExpire 1}}
+                <div class="register-premium">
+                    <h4>Gói Premium của bạn đã hết hạn</h4>
+                    <p>Gia hạn tài khoản để sở hữu những trải nghiệm tốt nhất của chúng tôi</p>
+                    <div class="text-box">
+                        <a href="#" class="btn btn-white btn-animate"><i class="fa fa-star-o" aria-hidden="true"></i>
+                            Gia hạn</a>
+                    </div>
+                </div>
+                {{/ifEquals}}
+                {{#ifEquals User.PremiumExpireTime null}}
+                <div class="register-premium">
+                    <h4>Nâng cấp tài khoản</h4>
+                    <p>Nâng cấp ngay để trải nghiệm những bài báo chất lượng</p>
+                    <div class="text-box">
+                        <a href="#" class="btn btn-white btn-animate"><i class="fa fa-star-o" aria-hidden="true"></i>
+                            Nâng cấp</a>
+                    </div>
+                </div>
+                {{/ifEquals}}
+
             </div>
         </div>
-        <div class="col-5">
-            <h3>Thông tin người dùng</h3>
-
+        <div class="col-8">
+            <div class="shadow p-3 mb-4 ml-3 bg-white rounded">
+                <div class="head-info d-flex justify-content-between">
+                    <div class="info-title">Thông tin cá nhân</div>
+                    <a href="#edit-personal-detail" data-toggle="modal">Thay đổi</a>
+                </div>
+                {{!--edit-personal-detail model --}}
+                <div class="modal fade" id="edit-personal-detail" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Thông tin cá nhân</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <form id="personalForm" action="./profile/upi" method="post">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="fullName">Họ tên</label>
+                                                <input type="text" value="{{User.FullName}}" class="form-control"
+                                                    data-bv-field="fullName" id="fullName" name="FullName" required=""
+                                                    placeholder="Full Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="userName">Tên đăng nhập</label>
+                                                <input type="text" value="{{User.UserName}}" class="form-control"
+                                                    data-bv-field="userName" id="userName" name="UserName" required=""
+                                                    placeholder="UserName">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="birthDate">Ngày sinh</label>
+                                                <input type="text" name="birthday"
+                                                    value="{{formatDate User.BirthDay "short2"}}" id="birthDate"
+                                                    class="form-control" required="" placeholder="mm-dd-yyyy">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-block mt-2" type="submit">Lưu lại</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{!--END edit-personal-detail model --}}
+                <div class="info-body">
+                    <div class="row ml-5">
+                        <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Họ tên</p>
+                        <p class="col-9">{{User.FullName}}</p>
+                    </div>
+                    <div class="row ml-5">
+                        <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Tên đăng nhập</p>
+                        <p class="col-9">{{User.UserName}}</p>
+                    </div>
+                    <div class="row ml-5">
+                        <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Ngày sinh</p>
+                        <p class="col-9">{{formatDate User.BirthDay "short"}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="shadow p-3 mb-4 ml-3 bg-white rounded">
+                <div class="head-info d-flex justify-content-between">
+                    <div class="info-title">Địa chỉ Email</div>
+                    <a href="#edit-email" data-toggle="modal">Thay đổi</a>
+                </div>
+                <div class="modal fade" id="edit-email" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Địa chỉ Email</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <form id="emailForm" action="./profile/upe" method="post">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="email">Email</label>
+                                                <input type="email" value="{{User.Email}}" class="form-control"
+                                                    data-bv-field="email" id="email" name="Email" required=""
+                                                    placeholder="email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-block mt-2" type="submit">Lưu lại</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-body">
+                    <div class="row ml-5">
+                        <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Email</p>
+                        <p class="col-9">{{User.Email}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="shadow p-3 mb-4 ml-3 bg-white rounded">
+                <div class="head-info d-flex justify-content-between">
+                    <div class="info-title">Bảo mật</div>
+                    <a href="#edit-password" data-toggle="modal">Thay đổi</a>
+                </div>
+                <div class="modal fade" id="edit-password" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Thay đổi mật khẩu</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <form id="passwForm" action="./profile/uppw" method="post">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="pwd">Mật khẩu hiện tại</label>
+                                                <input type="password" value="" class="form-control"
+                                                    data-bv-field="password" id="pwd" name="password" required=""
+                                                    placeholder="Nhập mật khẩu hiện tại">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="newpwd">Mật khẩu mới</label>
+                                                <input type="password" value="" class="form-control"
+                                                    data-bv-field="newpwd" id="newpwd" name="newPassword" required=""
+                                                    placeholder="Nhập mật khẩu mới">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="repwd">Mật khẩu hiện tại</label>
+                                                <input type="password" value="" class="form-control"
+                                                    data-bv-field="repwd" id="repwd" required=""
+                                                    placeholder="Xác nhận mật khẩu">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-block mt-2" type="submit">Lưu lại</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-body">
+                    <div class="row ml-5">
+                        <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Mật khẩu</p>
+                        <p class="col-9">**********</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+{{#section 'css'}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
 {{#section 'js'}}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(document).ready(function () {
-
         $('#uploadForm').submit(function () {
             $("#status").empty().text("File is uploading...");
             $(this).ajaxSubmit({
@@ -41,11 +252,16 @@
                 success: function (response) {
                     $("#status").empty().text(response);
                     console.log(response);
+
                 }
             });
+            setTimeout(function () {
+                $("#status").hide('blind', {}, 500)
+            }, 5000);
             //Very important line, it disable the page refresh.
             return false;
         });
+
     });
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -59,10 +275,45 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
     $("#imageUpload").change(function () {
         readURL(this);
         $('#uploadForm').trigger("submit");
     });
+    $('#birthDate').datetimepicker({
+        format: 'm-d-Y',
+        timepicker: false,
+
+    });
+    function makeTimer() {
+
+        //var endTime = new Date("29 August 2020 9:56:00 GMT+01:00");
+        var endTime = new Date("{{User.PremiumExpireTime}}");
+        endTime = (Date.parse(endTime) / 1000);
+
+        var now = new Date();
+        now = (Date.parse(now) / 1000);
+
+        var timeLeft = endTime - now;
+
+        var days = Math.floor(timeLeft / 86400);
+        var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+        var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600)) / 60);
+        var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+        if (hours < "10") { hours = "0" + hours; }
+        if (minutes < "10") { minutes = "0" + minutes; }
+        if (seconds < "10") { seconds = "0" + seconds; }
+
+        $("#days").html(days + "<span>Ngày</span>");
+        $("#hours").html(hours + "<span>Giờ</span>");
+        $("#minutes").html(minutes + "<span>Phút</span>");
+        $("#seconds").html(seconds + "<span>Giây</span>");
+
+        if (days == 0 && hours == 0 && minutes == 0 && seconds == 0) {
+            location.reload();
+        }
+    }
+
+    setInterval(function () { makeTimer(); }, 1000);
 </script>
 {{/section}}

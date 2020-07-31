@@ -4,6 +4,8 @@ const numeral = require('numeral');
 const moment = require('moment');
 var DateFormats = {
   short: "DD-MM-YYYY",
+  short2: "MM-DD-YYYY",
+  short3: "YYYY/MM/DD",
   long: "DD-MM-YYYY HH:mm"
 };
 
@@ -24,6 +26,7 @@ module.exports = function (app) {
       formatDate: function (datetime, format) {
         if (moment) {
           // can use other formats like 'lll' too
+          // console.log(datetime);
           format = DateFormats[format] || format;
           return moment(datetime).format(format);
         }
