@@ -1,4 +1,4 @@
-<div class="container-xl" style="margin-top: 60px;">
+<div class="container-xl contain-siz">
     <div class="card">
         <div class="card-header d-flex">
             <h4 class="mr-auto">Mô tả bài viết</h4>
@@ -26,6 +26,7 @@
                 <div class="mr-4 Premier"><i class="fa fa-star" aria-hidden="true"></i> Premium</div>
                 {{/ifEquals}}
             </div>
+            <div class="mb-1 mt-1"><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
             <h1>{{news.Title}}</h1>
             <div style="margin-top: 20px;">
                 {{!-- <span>Tag:</span> --}}
@@ -33,10 +34,14 @@
                 <span class="tag">{{TagName}}</span>
                 {{/each}}
             </div>
-            <div class="mt-4 mb-4" style="font-weight: 500; font-size:20px;">
+            <div class="mt-4 mb-4 text-mute" style="font-weight: 700; font-size:20px;">
                 {{news.TinyDes}}
             </div>
-            <div>
+            <div style="width: 100%; text-align: center; margin:30px 0">
+                <img src="/img/articles/{{news.IMG}}" style="width: 100%; object-fit: cover; ">
+            </div>
+            
+            <div style="border-top: 1px solid #EBEBEB;padding-top:20px">
                 {{{news.FullDes}}}
             </div>
             <div style="font-weight: bold; font-size:1rem; text-align:right">

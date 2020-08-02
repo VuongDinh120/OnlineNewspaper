@@ -1,8 +1,8 @@
-<div class="d-flex justify-content-between align-items-center bg-dark top-nav" >
+<div class="d-flex justify-content-between align-items-center bg-dark top-nav">
     <a class="logo" href="/">
         <img src="/img/logo2.png">
     </a>
-     <div class="text-white bold" id="currdate"></div>
+    <div class="text-white bold" id="currdate"></div>
     <div class="d-flex justify-content-between align-items-center">
         <div class="search">
             <input type="text" class="searchTerm" placeholder="Tìm kiếm...">
@@ -15,12 +15,56 @@
     </div>
 </div>
 <div class="wrapper">
-	<div class="mega_menu">
-		<ul>
-			<li><a href="#">popular</a></li>
-			<li><a href="#">sports</a>
-				<div class="sub_menu d-flex align-content-start flex-wrap text-white">
-					<div>col-1</div>
+    <div class="mega_menu">
+        <ul>{{#each categories}}
+            <li><a href="#">{{CatName}}</a>
+                {{#if Descendants}}
+                <div class="sub_menu d-flex align-content-start flex-wrap text-white">
+                    {{#each Descendants}}
+                    <div class="subCat-item"><a href="#">{{this}}</a></div>
+                    {{/each}}
+                </div>
+                {{/if}}
+            </li>
+            {{/each}}
+            {{#ifEquals isFull false }}
+            <li><a href="">Thêm</a>
+                <div class="sub_menu tech">
+                    {{#each extras}}
+                    <div class="d-flex justify-content-center">
+                        <div>
+                            <h5><a href="#" style="max-width: 500px;">{{CatName}}</a></h5>
+                            {{#each Descendants}}
+                            <div class="subExCat">
+                                <a href="#">{{this}}</a>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{!-- <div class="col">
+                        <h4>The best way to predict the future is to invent it.</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
+                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
+                            officiis doloremque perferendis laborum cupiditate totam.</p>
+                    </div>
+                    <div class="col">
+                        <h4>The best way to predict the future is to invent it.</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
+                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
+                            officiis doloremque perferendis laborum cupiditate totam.</p>
+                    </div> --}}
+                </div>
+            </li>
+            {{/ifEquals}}
+            {{!-- <li><a href="#">popular</a></li>
+            <li><a href="#">popular</a></li>
+
+
+            <li><a href="#">popular</a></li>
+            <li><a href="#">popular</a></li>
+            <li><a href="#">sports</a>
+                <div class="sub_menu d-flex align-content-start flex-wrap text-white">
                     <div>col-1</div>
                     <div>col-1</div>
                     <div>col-1</div>
@@ -29,29 +73,36 @@
                     <div>col-1</div>
                     <div>col-1</div>
                     <div>col-1</div>
-				</div>
-			</li>
-			<li><a href="#">tv shows</a></li>
-			<li><a href="#">movies</a></li>
-			<li><a href="#">music</a></li>
-			<li><a href="#">tech</a>
-				<div class="sub_menu tech">
-					<div class="col">
-						<h4>The best way to predict the future is to invent it.</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti officiis doloremque perferendis laborum cupiditate totam.</p>
-					</div>
-					<div class="col">
-						<h4>The best way to predict the future is to invent it.</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti officiis doloremque perferendis laborum cupiditate totam.</p>
-					</div>
-					<div class="col">
-						<h4>The best way to predict the future is to invent it.</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti officiis doloremque perferendis laborum cupiditate totam.</p>
-					</div>
-				</div>
-			</li>
-		</ul>
-	</div>
+                    <div>col-1</div>
+                </div>
+            </li>
+            <li><a href="#">tv shows</a></li>
+            <li><a href="#">movies</a></li>
+            <li><a href="#">music</a></li>
+            <li><a href="#">tech</a>
+                <div class="sub_menu tech">
+                    <div class="col">
+                        <h4>The best way to predict the future is to invent it.</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
+                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
+                            officiis doloremque perferendis laborum cupiditate totam.</p>
+                    </div>
+                    <div class="col">
+                        <h4>The best way to predict the future is to invent it.</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
+                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
+                            officiis doloremque perferendis laborum cupiditate totam.</p>
+                    </div>
+                    <div class="col">
+                        <h4>The best way to predict the future is to invent it.</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
+                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
+                            officiis doloremque perferendis laborum cupiditate totam.</p>
+                    </div>
+                </div>
+            </li> --}}
+        </ul>
+    </div>
 </div>
 <!-- <div class="d-block p-2 bg-white border-bottom border-dark" id="mid-nav">
         <h1 class="bold"><a href="">WhiteNews</a> </h1>

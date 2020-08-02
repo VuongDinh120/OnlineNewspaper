@@ -1,310 +1,117 @@
 {{#section 'css'}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.green.min.css" />
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
 {{/section}}
-{{#section 'js'}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
+{{#section 'js'}}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.owl-carousel').owlCarousel({
-            loop: false,
+
+        $("#owl-demo").owlCarousel({
+            loop: true,
+            items: 1,
+            navigation: true, // Show next and prev buttons
+            slideSpeed: 1000,
+            paginationSpeed: 1000,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            // "singleItem:true" is a shortcut for:
+        });
+        $("#owl-list").owlCarousel({
+            loop: true,
+            items: 2,
+            center: true,
             margin: 10,
-            nav: true,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 3
-                },
-                1000: {
-                    items: 5
-                }
-            }
-        })
+            navigation: true, // Show next and prev buttons
+            slideSpeed: 1000,
+            paginationSpeed: 1000,
+            autoplay: true,
+            autoplayTimeout: 5000,
+
+            // "singleItem:true" is a shortcut for:
+        });
     });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/readmore-js@2.2.1/readmore.min.js"
+    integrity="sha256-ygz7RPJkJA9GMkV/1XKiK5GEfenXOdkEj2yhi8LRipU=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        let a = $('#mostview').height();
+        a /= 2;
+        $('#mostview').readmore({
+            speed: 100,
+            collapsedHeight: a,
+            heightMargin: 16,
+            moreLink: '<div class="read-more"><a href="#" class="button">Xem thêm</a></div>',
+            lessLink: '<div class="read-more"><a href="#" class="button">Thu gọn</a></div>',
+            embedCSS: true,
+            blockCSS: 'display: block; width: 100%;',
+            startOpen: false,
+
+            // callbacks
+            blockProcessed: function () { },
+            beforeToggle: function () { },
+            afterToggle: function () { }
+        });
+    });
+
 </script>
 {{/section}}
 
-<div class="container-xl" style="margin-top: 20em;">
-    <div class="row">
-        <div class="col-xl-8">
-            <div id="">
-                <h2>Tin nổi bật</h2>
-                <div id="famousNew-carousel" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#famousNew-carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#famousNew-carousel" data-slide-to="1"></li>
-                        <li data-target="#famousNew-carousel" data-slide-to="2"></li>
-                        <li data-target="#famousNew-carousel" data-slide-to="3"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <a href=""> <img src="/img/200621donaldtrumpcs143p98ee372-6500-8835-1592800823.jpg"
-                                    class="d-block w-100" alt="..."></a>
-
-                            <div class="carousel-caption d-none d-md-block" style="text-align: left;">
-                                <div><a href=""><span class="categoryText">Chuyên mục</span></a>/ <span>1 giờ
-                                        trước</span></div>
-                                <h5>First slide labelFirst slide labelFirst slide label</h5>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/img/200621donaldtrumpcs143p98ee372-6500-8835-1592800823.jpg"
-                                class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/img/img_nature_wide.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/img/200621donaldtrumpcs143p98ee372-6500-8835-1592800823.jpg"
-                                class="d-block w-100" alt="...">
-                        </div>
+<div class="container-xl contain-siz" style="">
+    <div id="owl-demo" class="owl-carousel owl-theme">
+        <div class="item">
+            <div class="wrapif">
+                <a href="http://">
+                    <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                </a>
+                <div class="content">
+                    <h4 class="tittle"><a href="#">Heading</a> </h4>
+                    <div class="has-transition "><a href="#"><span class="categoryText">Chuyên mục</span></a>
                     </div>
-                    <a class="carousel-control-prev" href="#famousNew-carousel" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#famousNew-carousel" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-            <div id="">
-                <h2>Top chuyên mục</h2>
-                <div id="TopCateg-carousel" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#TopCateg-carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#TopCateg-carousel" data-slide-to="1"></li>
-                        <li data-target="#TopCateg-carousel" data-slide-to="2"></li>
-                        <li data-target="#TopCateg-carousel" data-slide-to="3"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <a href=""> <img src="/img/200621donaldtrumpcs143p98ee372-6500-8835-1592800823.jpg"
-                                    class="d-block w-100" alt="..."></a>
-
-                            <div class="carousel-caption d-none d-md-block" style="text-align: left;">
-                                <div><a href=""><span class="categoryText">Chuyên mục</span></a>/ <span>1 giờ
-                                        trước</span></div>
-                                <h5>First slide labelFirst slide labelFirst slide label</h5>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/img/200621donaldtrumpcs143p98ee372-6500-8835-1592800823.jpg"
-                                class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/img/img_nature_wide.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/img/200621donaldtrumpcs143p98ee372-6500-8835-1592800823.jpg"
-                                class="d-block w-100" alt="...">
-                        </div>
-                    </div>
-                    <a class="carousel-control-prev" href="#TopCateg-carousel" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#TopCateg-carousel" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
+                    <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+                    <p>Lorem ipsum dolor sit amet, an his etiam torquatos. Tollit soleat phaedrum te duo, eum cu
+                        recteque expetendis neglegentur. Cu mentitum maiestatis persequeris pro, pri ponderum
+                        tractatos ei.</p>
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
-            <h2>Bài viết mới nhất</h2>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
+        <div class="item">
+            <div class="wrapif">
+                <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                <div class="content">
+                    <h1>Heading</h1>
+                    <p>Lorem ipsum dolor sit amet, an his etiam torquatos. Tollit soleat phaedrum te duo, eum cu
+                        recteque expetendis neglegentur. Cu mentitum maiestatis persequeris pro, pri ponderum
+                        tractatos ei.</p>
                 </div>
             </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <span class="news-item-premium">
-                        Premium
-                    </span>
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
-                </div>
-            </div>
-            <div class="news-item">
-                <div class="news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="news-item-meta">
-                    <a href="">
-                        <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
-                            tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <a href=""><span class="categoryText">Chuyên mục</span></a> /
-                    <span class="news-item-date">
-                        1 giờ trước
-                    </span>
+        </div>
+        <div class="item">
+            <div class="wrapif">
+                <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                <div class="content">
+                    <h1>Heading</h1>
+                    <p>Lorem ipsum dolor sit amet, an his etiam torquatos. Tollit soleat phaedrum te duo, eum cu
+                        recteque expetendis neglegentur. Cu mentitum maiestatis persequeris pro, pri ponderum
+                        tractatos ei.</p>
                 </div>
             </div>
         </div>
     </div>
-    <h2>Bài viết được xem nhiều nhất</h2>
     <div class="row">
-        <div class="col-xl-6">
-            <div id="">
+        <div class="col-xl-7">
+            <h4 class="tittleHeading">Xem nhiều nhất</h4>
+            <div id="mostview" class="viewest-news">
                 <div class="viewest-news-item">
                     <div class="viewest-news-item-thumbnail">
                         <a href="">
-                            <img src="/img/img_nature_wide.jpg" alt="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
                         </a>
                     </div>
                     <div class="viewest-news-item-meta">
@@ -329,7 +136,7 @@
                 <div class="viewest-news-item">
                     <div class="viewest-news-item-thumbnail">
                         <a href="">
-                            <img src="/img/img_nature_wide.jpg" alt="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
                         </a>
                     </div>
                     <div class="viewest-news-item-meta">
@@ -354,7 +161,7 @@
                 <div class="viewest-news-item">
                     <div class="viewest-news-item-thumbnail">
                         <a href="">
-                            <img src="/img/img_nature_wide.jpg" alt="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
                         </a>
                     </div>
                     <div class="viewest-news-item-meta">
@@ -379,7 +186,7 @@
                 <div class="viewest-news-item">
                     <div class="viewest-news-item-thumbnail">
                         <a href="">
-                            <img src="/img/img_nature_wide.jpg" alt="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
                         </a>
                     </div>
                     <div class="viewest-news-item-meta">
@@ -404,7 +211,134 @@
                 <div class="viewest-news-item">
                     <div class="viewest-news-item-thumbnail">
                         <a href="">
-                            <img src="/img/img_nature_wide.jpg" alt="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="viewest-news-item-meta">
+                        <a href=""><span class="categorylabel">Chuyên mục</span></a>
+                        <a href="">
+                            <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
+                                nhà
+                                tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
+                                tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <span class="news-item-date">
+                            1 giờ trước - 131 lượt xem
+                        </span>
+                        <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
+                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
+                            đã làm
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="viewest-news-item">
+                    <div class="viewest-news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="viewest-news-item-meta">
+                        <a href=""><span class="categorylabel">Chuyên mục</span></a>
+                        <a href="">
+                            <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
+                                nhà
+                                tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
+                                tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <span class="news-item-date">
+                            1 giờ trước - 131 lượt xem
+                        </span>
+                        <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
+                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
+                            đã làm
+                        </div>
+                    </div>
+                </div>
+                <div class="viewest-news-item">
+                    <div class="viewest-news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="viewest-news-item-meta">
+                        <a href=""><span class="categorylabel">Chuyên mục</span></a>
+                        <a href="">
+                            <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
+                                nhà
+                                tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
+                                tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <span class="news-item-date">
+                            1 giờ trước - 131 lượt xem
+                        </span>
+                        <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
+                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
+                            đã làm
+                        </div>
+                    </div>
+                </div>
+                <div class="viewest-news-item">
+                    <div class="viewest-news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="viewest-news-item-meta">
+                        <a href=""><span class="categorylabel">Chuyên mục</span></a>
+                        <a href="">
+                            <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
+                                nhà
+                                tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
+                                tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <span class="news-item-date">
+                            1 giờ trước - 131 lượt xem
+                        </span>
+                        <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
+                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
+                            đã làm
+                        </div>
+                    </div>
+                </div>
+                <div class="viewest-news-item">
+                    <div class="viewest-news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="viewest-news-item-meta">
+                        <a href=""><span class="categorylabel">Chuyên mục</span></a>
+                        <a href="">
+                            <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
+                                nhà
+                                tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
+                                tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <span class="news-item-date">
+                            1 giờ trước - 131 lượt xem
+                        </span>
+                        <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
+                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm
+                            trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
+                            đã làm
+                        </div>
+                    </div>
+                </div>
+                <div class="viewest-news-item">
+                    <div class="viewest-news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
                         </a>
                     </div>
                     <div class="viewest-news-item-meta">
@@ -431,222 +365,291 @@
 
             </div>
         </div>
-        <div class="col-xl-6">
-            <div class="viewest-news-item">
-                <div class="viewest-news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
+        <div class="col-xl-5">
+            <h2 class="tittleHeading">Bài viết mới nhất</h2>
+            <div class="Newest">
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
+                                tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Công nghệ thông tin</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
+                    </div>
                 </div>
-                <div class="viewest-news-item-meta">
-                    <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                    <a href="">
-                        <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                            nhà
-                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                            tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <span class="news-item-date">
-                        1 giờ trước - 131 lượt xem
-                    </span>
-                    <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                        đã làm
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <span class="news-item-premium">
+                            Premium
+                        </span>
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
 
                     </div>
-
                 </div>
-            </div>
-            <div class="viewest-news-item">
-                <div class="viewest-news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="viewest-news-item-meta">
-                    <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                    <a href="">
-                        <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                            nhà
-                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                            tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <span class="news-item-date">
-                        1 giờ trước - 131 lượt xem
-                    </span>
-                    <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                        đã làm
-
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
                     </div>
-
-                </div>
-            </div>
-            <div class="viewest-news-item">
-                <div class="viewest-news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="viewest-news-item-meta">
-                    <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                    <a href="">
-                        <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                            nhà
-                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                            tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <span class="news-item-date">
-                        1 giờ trước - 131 lượt xem
-                    </span>
-                    <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                        đã làm
-
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
                     </div>
-
                 </div>
-            </div>
-            <div class="viewest-news-item">
-                <div class="viewest-news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="viewest-news-item-meta">
-                    <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                    <a href="">
-                        <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                            nhà
-                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                            tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <span class="news-item-date">
-                        1 giờ trước - 131 lượt xem
-                    </span>
-                    <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                        đã làm
-
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
                     </div>
-
-                </div>
-            </div>
-            <div class="viewest-news-item">
-                <div class="viewest-news-item-thumbnail">
-                    <a href="">
-                        <img src="/img/img_nature_wide.jpg" alt="">
-                    </a>
-                </div>
-                <div class="viewest-news-item-meta">
-                    <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                    <a href="">
-                        <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                            nhà
-                            tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                            tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                    </a>
-                    <span class="news-item-date">
-                        1 giờ trước - 131 lượt xem
-                    </span>
-                    <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm
-                        trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                        đã làm
-
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
                     </div>
-
+                </div>
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-item-thumbnail">
+                        <a href="">
+                            <img src="../img/img_nature_wide.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="news-item-meta">
+                        <a href="">
+                            <h3 class="news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà tiệc
+                                tiệc tiệc tiệc tiệc tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
+                        </a>
+                        <a href=""><span class="categoryText">Chuyên mục</span></a> /
+                        <span class="news-item-date">
+                            1 giờ trước
+                        </span>
+                    </div>
                 </div>
             </div>
+
         </div>
-
     </div>
+    <div>
+        <h2 class="tittleHeading">Top chuyên mục</h2>
+        <div id="owl-list" class="owl-carousel owl-theme">
+            <div class="item">
+                <div class="wrapCat-list">
 
-    <div class="owl-carousel owl-theme">
-        <div class="viewest-news-item">
-            <div class="viewest-news-item-thumbnail">
-                <a href="">
-                    <img src="/img/img_nature_wide.jpg" alt="">
-                </a>
-            </div>
-            <div class="viewest-news-item-meta">
-                <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                <a href="">
-                    <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                        nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                        tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                </a>
-                <span class="news-item-date">
-                    1 giờ trước - 131 lượt xem
-                </span>
-                <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                    tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                    trõe đã làm trõe đã làm
-                    trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                    đã làm
-                </div>
-            </div>
-        </div>
-        <div class="viewest-news-item">
-            <div class="item viewest-news-item-thumbnail">
-                <a href="">
-                    <img src="/img/img_nature_wide.jpg" alt="">
-                </a>
-            </div>
-            <div class="viewest-news-item-meta">
-                <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                <a href="">
-                    <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                        nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                        tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                </a>
-                <span class="news-item-date">
-                    1 giờ trước - 131 lượt xem
-                </span>
-                <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                    tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                    trõe đã làm trõe đã làm
-                    trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                    đã làm
-                </div>
-            </div>
-        </div>
-        <div class="viewest-news-item">
-            <div class="item viewest-news-item-thumbnail">
-                <a href="">
-                    <img src="/img/img_nature_wide.jpg" alt="">
-                </a>
-            </div>
-            <div class="viewest-news-item-meta">
-                <a href=""><span class="categorylabel">Chuyên mục</span></a>
-                <a href="">
-                    <h3 class="viewest-news-item-title">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc
-                        nhà
-                        tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc
-                        tiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệctiệc ds</h3>
-                </a>
-                <span class="news-item-date">
-                    1 giờ trước - 131 lượt xem
-                </span>
-                <div class="news-item-decription ">Hùng trõe đã làm nên huyền thoại để đời sau bữa tiệc nhà
-                    tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc tiệc trõe đã làm trõe đã làm trõe đã làm
-                    trõe đã làm trõe đã làm
-                    trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe đã làm trõe
-                    đã làm
-                </div>
-            </div>
 
+                    <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+
+                    <div class="content">
+                        <h5 class="tittle"><a href="#">Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading Heading</a> </h5>
+                        <div><a href="#"><span class="categoryText">Chuyên mục</span></a>
+                        </div>
+                        <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="wrapCat-list">
+                    <a href="http://">
+                        <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                    </a>
+                    <div class="content">
+                        <h4><a href="#">Heading</a> </h4>
+                        <div><a href="#"><span class="categoryText">Chuyên mục</span></a>
+                        </div>
+                        <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="wrapCat-list">
+                    <a href="http://">
+                        <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                    </a>
+                    <div class="content">
+                        <h4><a href="#">Heading</a> </h4>
+                        <div><a href="#"><span class="categoryText">Chuyên mục</span></a>
+                        </div>
+                        <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="wrapCat-list">
+                    <a href="http://">
+                        <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                    </a>
+                    <div class="content">
+                        <h4><a href="#">Heading</a> </h4>
+                        <div><a href="#"><span class="categoryText">Chuyên mục</span></a>
+                        </div>
+                        <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="wrapCat-list">
+                    <a href="http://">
+                        <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                    </a>
+                    <div class="content">
+                        <h4><a href="#">Heading</a> </h4>
+                        <div><a href="#"><span class="categoryText">Chuyên mục</span></a>
+                        </div>
+                        <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="wrapCat-list">
+                    <a href="http://">
+                        <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                    </a>
+                    <div class="content">
+                        <h4><a href="#">Heading</a> </h4>
+                        <div><a href="#"><span class="categoryText">Chuyên mục</span></a>
+                        </div>
+                        <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="wrapCat-list">
+                    <a href="http://">
+                        <img src="/img/img_nature_wide.jpg" alt="The Last of us">
+                    </a>
+                    <div class="content">
+                        <h4><a href="#">Heading</a> </h4>
+                        <div><a href="#"><span class="categoryText">Chuyên mục</span></a>
+                        </div>
+                        <div><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

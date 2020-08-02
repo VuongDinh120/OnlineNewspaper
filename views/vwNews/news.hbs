@@ -1,4 +1,4 @@
-<div class="container-xl" style="margin-top: 60px;">
+<div class="container-xl contain-siz">
     <div style="width: 100%; float: left;">
         <ul class="breadcrumb" style="float: left;">
             {{#if news.CatParent}}
@@ -14,6 +14,9 @@
         {{#each taging}}
         <span class="tag">{{TagName}}</span>
         {{/each}}
+    </div>
+    <div style="width: 100%;">
+        <img src="/img/articles/{{news.IMG}}">
     </div>
     <div class="mt-4 mb-4" style="font-weight: 500; font-size:20px;">
         {{news.TinyDes}}
