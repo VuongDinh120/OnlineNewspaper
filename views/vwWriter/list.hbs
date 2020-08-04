@@ -12,7 +12,7 @@
                 <tr class="d-flex">
                     <th scope="col" class="text-center col-1">#</th>
                     <th scope="col" class="col-2">Tiêu đề</th>
-                    <th scope="col" class="col-1">Ảnh đại diện</th>
+                    <th scope="col" class="col-1">Loại bài viết</th>
                     <th scope="col" class="text-center col-2">Danh Mục</th>
                     <th scope="col" class="col-1 text-center">Lần chỉnh sửa cuối</th>
                     <th scope="col" class="col-1 text-center">Thời gian XB</th>
@@ -26,8 +26,13 @@
                 <tr class="d-flex">
                     <th scope="row" class="text-center col-1">{{stt}}</th>
                     <td class="col-2"> {{Title}}</td>
-                    <td class="col-1"><img src="/img/articles/{{IMG}}" alt=""
-                            style="max-width: 100px; object-fit: cover;"></td>
+                    <td class="col-1">
+                        {{#if isPremium}}
+                        Premium
+                        {{else}}
+                        Thường
+                        {{/if}}
+                    </td>
                     <td class="col-2 text-center">
                         {{#if CatParent}}
                         {{CatParent}} - {{CatName}}
@@ -37,7 +42,7 @@
 
                     </td>
                     <td class="col-1 text-center">
-                       {{formatDate LastEdit "long"}}
+                        {{formatDate LastEdit "long"}}
                     </td>
                     <td class="col-1 text-center">
                         {{#ifEquals ReleaseDate null}}

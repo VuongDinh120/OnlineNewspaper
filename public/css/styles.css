@@ -37,6 +37,13 @@ a {
 .top-nav {
   padding: 0 200px !important;
 }
+.catLink a {
+  color: #26272b !important;
+}
+.catLink a:hover {
+  color: #00aced !important;
+  cursor: pointer;
+}
 
 .logo img {
   width: 200px;
@@ -352,11 +359,8 @@ a {
   position: relative;
   overflow: hidden;
   margin: 15px 0;
-  border-radius: 10px;
 }
-.news-item:hover {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
+
 .news-item-thumbnail {
   float: left;
   width: 150px;
@@ -368,10 +372,11 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 2px;
 }
 
 .news-item-title {
-  max-height: 100px;
+  max-height: 80px;
   margin: 0;
   font-size: 17px;
   font-weight: 600;
@@ -388,9 +393,12 @@ a {
   /* top: 70px; */
   left: 85px;
   font-size: 15px;
-  color: gold;
+  color: #fafafa;
+  background-color: #ffc107;
   text-shadow: 0 0 10px #000;
   animation: blink 1.75s linear infinite;
+  border-radius: 10px;
+  padding: 0 2px;
 }
 
 @keyframes blink {
@@ -1221,3 +1229,174 @@ input::-webkit-calendar-picker-indicator {
   border-left-color: crimson;
 }
 /*END Danh sách theo Cat*/
+
+/*Danh sách ngẫu nhiên cùng Cate*/
+/*Trang NewsDetail*/
+.rand-item {
+  position: relative;
+  overflow: hidden;
+  margin: 15px 0;
+}
+.rand-item-thumbnail {
+  float: left;
+  width: 150px;
+  height: 120px;
+  margin-right: 10px;
+  overflow: hidden;
+}
+.rand-item-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.rand-item-title {
+  max-height: 80px;
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  overflow: hidden;
+}
+.rand-item-date {
+  font-size: 11px;
+  color: #888;
+}
+
+.rand-item-premium {
+  position: absolute;
+  /* top: 70px; */
+  left: 85px;
+  font-size: 15px;
+  color: #fafafa;
+  background-color: #ffc107;
+  text-shadow: 0 0 10px #000;
+  animation: blink 1.75s linear infinite;
+  border-radius: 10px;
+  padding: 0 2px;
+}
+/*end Danh sách ngẫu nhiên cùng Cate*/
+
+/*Comment block*/
+.comment-thing {
+  width: 100%;
+  height: auto;
+}
+.user_avatar {
+  width: 65px;
+  height: 65px;
+
+  display: inline-block;
+  vertical-align: middle;
+}
+.user_avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.comment_block {
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 10px;
+}
+.comment_block .create_new_comment {
+  width: 100%;
+  padding: 20px 0;
+}
+.comment_block .create_new_comment .input_comment {
+  display: inline-block;
+  vertical-align: middle;
+
+  margin-left: 10px;
+  width: calc(100% - 75px);
+}
+.comment_block .create_new_comment input[type="text"] {
+  width: 100%;
+
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-size: 1.3rem;
+
+  padding: 10px;
+
+  border: none;
+  border-bottom: 2px solid lighten(#ccc, 15%);
+}
+.comment_block .create_new_comment input[type="text"]:focus {
+  outline: none;
+  border-bottom: 2px solid lighten(#ccc, 10%);
+}
+
+.new_comment {
+  width: 100%;
+  height: auto;
+  padding: 20px 0;
+  border-top: 1px solid lighten(#ccc, 10%);
+}
+.new_comment .user_comment {
+  list-style-type: none;
+}
+
+.new_comment .comment_body {
+  display: inline-block;
+  vertical-align: middle;
+
+  width: calc(100% - 75px);
+  min-height: 65px;
+  margin-left: 10px;
+  padding: 0px 10px;
+  font-size: 0.9rem;
+  color: #555;
+  /* background-color: 0; */
+  border-bottom: 2px solid lighten(#ccc, 15%);
+}
+.new_comment .comment_body p {
+  padding: 0px;
+  margin: 0;
+}
+.new_comment .comment_body span {
+  color: #6495ed;
+  margin-right: 2px;
+}
+
+.new_comment .comment_body .comment_toolbar {
+  width: 100%;
+}
+.new_comment .comment_body .comment_toolbar ul {
+  list-style-type: none;
+  padding-left: 0px;
+  font-size: 0;
+}
+.new_comment .comment_toolbar ul li {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 0.7rem;
+  color: lighten(#ccc, 5%);
+}
+.new_comment .comment_toolbar ul li:hover {
+  cursor: pointer;
+}
+
+.new_comment .comment_toolbar .comment_details {
+  display: inline-block;
+  vertical-align: middle;
+  width: 70%;
+  text-align: left;
+}
+/*END Comment block*/
+
+/**/
+.news-detail {
+  margin: 10px;
+}
+.news-detail p{
+  margin: 5px 0;
+}
+.news-detail p span{
+  font-weight: 600;
+}
+/**/

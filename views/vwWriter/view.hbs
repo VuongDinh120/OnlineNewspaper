@@ -1,4 +1,52 @@
 <div class="container-xl contain-siz">
+    <div class="card mb-5">
+        <div class="card-header d-flex">
+            <h4 class="mr-auto">Thông tin bài viết</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-7">
+                    <div class="news-detail">
+                        <p>
+                            <span>Tiêu đề: </span>{{news.Title}}
+                        </p>
+                        <p>
+                            <span>Danh mục: </span> {{news.CatParent}} - {{news.CatName}}
+                        </p>
+                        <p>
+                            <span>Loại bài viết: </span> {{#ifEquals news.isPremium 1}}
+                        Premium
+                        {{else}}
+                        Thường
+                        {{/ifEquals}}
+                        </p>
+                        <p>
+                            <span>Lần chỉnh sửa cuối: </span> {{formatDate LastEdit "long"}}
+                        </p>
+                        <p>
+                            <span>Thời gian xuất bản: </span>
+                        </p>
+                        <p>
+                            <span>Trạng thái: </span>
+                        </p>
+                        <p>
+                            <span>Lý do: </span>
+                        </p>
+                        <p>
+                            <span>Nội dung tóm tát: </span> {{news.TinyDes}}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div style="width:100%">
+                        <img src="/img/articles/{{news.IMG}}" alt="Ảnh bìa"
+                            style="object-fit: cover; width: 400px; border-radius:3px">
+                        <div class="center" style="font-style: italic;">Ảnh bìa</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header d-flex">
             <h4 class="mr-auto">Mô tả bài viết</h4>
@@ -14,40 +62,46 @@
                 </button>
             </form>
         </div>
-        <div class="pt-3 pb-5 pl-5 pr-5">
-            <div class="d-flex justify-content-between mb-2" style="width: 100%;">
-                <ul class="breadcrumb" style="float: left;">
-                    {{#if news.CatParent}}
-                    <li><a>{{news.CatParent}}</a></li>
-                    {{/if}}
-                    <li><a style="color: gray;">{{news.CatName}}</a></li>
-                </ul>
-                {{#ifEquals news.isPremium 1}}
-                <div class="mr-4 Premier"><i class="fa fa-star" aria-hidden="true"></i> Premium</div>
-                {{/ifEquals}}
-            </div>
-            <div class="mb-1 mt-1"><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước</div>
-            <h1>{{news.Title}}</h1>
-            <div style="margin-top: 20px;">
-                {{!-- <span>Tag:</span> --}}
-                {{#each taging}}
-                <span class="tag">{{TagName}}</span>
-                {{/each}}
-            </div>
-            <div class="mt-4 mb-4 text-mute" style="font-weight: 700; font-size:20px;">
-                {{news.TinyDes}}
-            </div>
-            <div style="width: 100%; text-align: center; margin:30px 0">
-                <img src="/img/articles/{{news.IMG}}" style="width: 100%; object-fit: cover; ">
-            </div>
-            
-            <div style="border-top: 1px solid #EBEBEB;padding-top:20px">
-                {{{news.FullDes}}}
-            </div>
-            <div style="font-weight: bold; font-size:1rem; text-align:right">
-                Nguyễn Tiến (Theo GlobalTimes)
+        <div class="card-body">
+            <div class="pt-3 pb-5 pl-5 pr-5">
+                <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%;">
+                    <div>
+                        <ul class="breadcrumb d-flex justify-content-start align-items-center">
+                            {{#if news.CatParent}}
+                            <li style="font-size: 30px; cursor:pointer"><a>{{news.CatParent}}</a></li>
+                            {{/if}}
+                            <li class="catLink"><a>{{news.CatName}}</a></li>
+                        </ul>
+                    </div>
+                    {{#ifEquals news.isPremium 1}}
+                    <div class="mr-4 Premier"><i class="fa fa-star" aria-hidden="true"></i> Premium</div>
+                    {{/ifEquals}}
+                </div>
+                <div class="mb-1 mt-1"><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước
+                </div>
+                <h1>{{news.Title}}</h1>
+                <div style="margin-top: 20px;">
+                    {{!-- <span>Tag:</span> --}}
+                    {{#each taging}}
+                    <span class="tag">{{TagName}}</span>
+                    {{/each}}
+                </div>
+                <div class="mt-4 mb-4 text-mute" style="font-weight: 700; font-size:20px;">
+                    {{news.TinyDes}}
+                </div>
+                <div style="width: 100%; text-align: center; margin:30px 0">
+                    <img src="/img/articles/{{news.IMG}}" style="width: 100%; object-fit: cover; ">
+                </div>
+
+                <div style="border-top: 1px solid #EBEBEB;padding-top:20px">
+                    {{{news.FullDes}}}
+                </div>
+                <div style="font-weight: bold; font-size:1rem; text-align:right">
+                    Nguyễn Tiến (Theo GlobalTimes)
+                </div>
             </div>
         </div>
+
         <div class="card-footer text-muted" style="text-align: center;">
             <a href="./list-article" class="btn btn-info btn-block" role="button"><i class="fa fa-angle-double-left"
                     aria-hidden="true"></i> Trở về</a>

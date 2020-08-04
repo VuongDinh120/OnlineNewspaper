@@ -6,7 +6,7 @@ var DateFormats = {
   short: "DD-MM-YYYY",
   short2: "MM-DD-YYYY",
   short3: "YYYY/MM/DD",
-  long: "DD-MM-YYYY HH:mm"
+  long: "DD-MM-YYYY HH:mm",
 };
 
 module.exports = function (app) {

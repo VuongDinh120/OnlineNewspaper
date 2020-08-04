@@ -35,6 +35,8 @@ router.get('/', async function (req, res) {
   const listMenu = await categoryModel.allWithOnlyFirstNode();
   const listExtra = new Array();
   const isfull = getCat(listCat, listMenu, listExtra);
+  const listNews = await newsModel.
+
 
   res.render('home', {
     categories: listMenu,
