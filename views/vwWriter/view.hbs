@@ -15,10 +15,10 @@
                         </p>
                         <p>
                             <span>Loại bài viết: </span> {{#ifEquals news.isPremium 1}}
-                        Premium
-                        {{else}}
-                        Thường
-                        {{/ifEquals}}
+                            Premium
+                            {{else}}
+                            Thường
+                            {{/ifEquals}}
                         </p>
                         <p>
                             <span>Lần chỉnh sửa cuối: </span> {{formatDate LastEdit "long"}}
@@ -97,7 +97,11 @@
                     {{{news.FullDes}}}
                 </div>
                 <div style="font-weight: bold; font-size:1rem; text-align:right">
-                    Nguyễn Tiến (Theo GlobalTimes)
+                    {{#if writer.Pseudonym}}
+                    {{writer.Pseudonym}}
+                    {{else}}
+                    {{writer.FullName}}
+                    {{/if}}
                 </div>
             </div>
         </div>

@@ -10,8 +10,8 @@
                 <i class="fa fa-search"></i>
             </button>
         </div>
-        <a href="#" class="text-muted mr-2">LOGIN</a>
-        <a href="#">REGISTER</a>
+        <a href="#loginModal" data-toggle="modal" class="mr-2">LOGIN</a>
+        <a href="#registerModal" data-toggle="modal">REGISTER</a>
     </div>
 </div>
 <div class="wrapper">
@@ -42,113 +42,16 @@
                         </div>
                     </div>
                     {{/each}}
-                    {{!-- <div class="col">
-                        <h4>The best way to predict the future is to invent it.</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
-                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
-                            officiis doloremque perferendis laborum cupiditate totam.</p>
-                    </div>
-                    <div class="col">
-                        <h4>The best way to predict the future is to invent it.</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
-                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
-                            officiis doloremque perferendis laborum cupiditate totam.</p>
-                    </div> --}}
                 </div>
             </li>
             {{/ifEquals}}
-            {{!-- <li><a href="#">popular</a></li>
-            <li><a href="#">popular</a></li>
-
-
-            <li><a href="#">popular</a></li>
-            <li><a href="#">popular</a></li>
-            <li><a href="#">sports</a>
-                <div class="sub_menu d-flex align-content-start flex-wrap text-white">
-                    <div>col-1</div>
-                    <div>col-1</div>
-                    <div>col-1</div>
-                    <div>col-1</div>
-                    <div>col-1</div>
-                    <div>col-1</div>
-                    <div>col-1</div>
-                    <div>col-1</div>
-                    <div>col-1</div>
-                </div>
-            </li>
-            <li><a href="#">tv shows</a></li>
-            <li><a href="#">movies</a></li>
-            <li><a href="#">music</a></li>
-            <li><a href="#">tech</a>
-                <div class="sub_menu tech">
-                    <div class="col">
-                        <h4>The best way to predict the future is to invent it.</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
-                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
-                            officiis doloremque perferendis laborum cupiditate totam.</p>
-                    </div>
-                    <div class="col">
-                        <h4>The best way to predict the future is to invent it.</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
-                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
-                            officiis doloremque perferendis laborum cupiditate totam.</p>
-                    </div>
-                    <div class="col">
-                        <h4>The best way to predict the future is to invent it.</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, quibusdam ipsum
-                            dicta commodi, ipsa praesentium laboriosam sit quos rem molestias illo, nisi labore deleniti
-                            officiis doloremque perferendis laborum cupiditate totam.</p>
-                    </div>
-                </div>
-            </li> --}}
         </ul>
     </div>
 </div>
-<!-- <div class="d-block p-2 bg-white border-bottom border-dark" id="mid-nav">
-        <h1 class="bold"><a href="">WhiteNews</a> </h1>
-    </div> -->
-{{!-- <nav class="bg-dark">
-    <div class="container">
-        <ul id="menu-main">
-            {{#each categories}}
-            <li><a href="">{{CatName}}</a>
-                <div class="menu-sub">
-                    {{#each Descendants}}
-                    <div><a href="">{{this}}</a></div>
-                    {{/each}}
-                </div>
-            </li>
-            {{/each}}
-            {{#if isFull}}
-            <li><a href="">Thêm</a></li>
-            {{/if}}
 
-        </ul>
-    </div>
-</nav> --}}
 <script src="/javascript/date.js"></script>
 <script>
     //Date on nav
     document.getElementById("currdate").innerHTML = presentDate();
 
-    //nav search motion effect
-    const input = document.getElementById("search-input");
-    const searchBtn = document.getElementById("search-btn");
-    const categoryNav = document.getElementById("menu-main");
-    let check = false;
-    const expand = () => {
-        if (check == true) {
-            categoryNav.classList.add("delay");
-            check = false;
-        } else {
-            categoryNav.classList.remove("delay");
-            check = true;
-        }
-        console.log(check);
-        searchBtn.classList.toggle("close-searchbar");
-        input.classList.toggle("square");
-        categoryNav.classList.toggle("hidden");
-
-    };
-    searchBtn.addEventListener("click", expand);
 </script>

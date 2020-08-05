@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('express-session');
+// const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
 let flash = require('express-flash');
@@ -22,8 +22,10 @@ require('./middlewares/view.mdw')(app);
 
 app.use('/', require('./routers/home.route'));
 app.use('/writer', require('./routers/writer.route'));
+app.use('/editor', require('./routers/editor.route'));
 app.use('/account', require('./routers/user.route'));
 app.use('/news', require('./routers/news.route'));
+
 
 
 

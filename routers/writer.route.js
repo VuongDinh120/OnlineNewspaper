@@ -5,6 +5,7 @@ const categoryModel = require('../models/category.model');
 const tagModel = require('../models/tag.model');
 const tagingModel = require('../models/taging.model');
 const newsModel = require('../models/news.model');
+const accountModel = require('../models/account.model');
 
 const router = express.Router();
 
@@ -21,9 +22,9 @@ var upload = multer({ storage: storage });
 
 router.get('/list-article', async function (req, res) {
     const listNews = await newsModel.allWithWriter(1);
-    for (let index = 0; index < listNews.length; index++) {
-        listNews[index].stt = index + 1;
-    }
+    // for (let index = 0; index < listNews.length; index++) {
+    //     listNews[index].stt = index + 1;
+    // }
 
     res.render('vwWriter/list', {
         News: listNews
@@ -34,14 +35,16 @@ router.get('/view-article', async function (req, res) {
     const listCat = await categoryModel.allNameCat();
     const Taging = await tagingModel.allByIDNews(id);
     const News = await newsModel.single(id);
+    const Writer = await accountModel.singleByNews(id);
     if (Taging.length === 0 || News.length === 0)
         return res.send('Invalid parameter.');
 
-    // console.log(News);
+    // console.log(Writer);
     res.render('vwWriter/view', {
         cb_categories: listCat,
         news: News[0],
-        taging: Taging
+        taging: Taging,
+        writer: Writer
     });
 })
 router.get('/new-article', async function (req, res) {
@@ -78,7 +81,7 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
             renewTags.push(rstag.insertId);
         }
     }
-   
+
     let Tags;
     if (renewTags === undefined) {
         Tags = availableTags;
@@ -168,7 +171,7 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
 
     res.redirect(`./view-article?id=${id}`);
 })
-router.post('/delete-article',async function (req, res) {
+router.post('/delete-article', async function (req, res) {
     newsModel.remove(req.body.id);
 
     res.redirect(`./list-article`);

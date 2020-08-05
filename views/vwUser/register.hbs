@@ -1,0 +1,76 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"/>
+{{/section}}
+{{#section 'js'}}
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#BirthDate_login').datetimepicker({
+        inline:true,
+        timepicker: false,
+        format: 'd.m.Y'
+    });
+})
+    //jQuery.datetimepicker.setLocale('vi');
+    
+</script>
+<script src="/javascript/validate.js"></script>
+{{/section}}
+<div class="container-xl contain-siz">
+    <div class="row justify-content-center">
+        <div class="card " style="width: 30rem;">
+            <div class="card-header">
+                <h2 class="card-title text-center">Login</h2>
+            </div>
+            <div class="card-body">
+              
+                <form action="/register" id="registerForm" method="POST">
+                    <div class="form-group">
+                        <label for="name">Tên tài khoản<span style="color:red;">*</span></label>
+                        <input type="text" class="form-control" id="username" name="username" value=""
+                            onclick="ClearError('err_rusername',this)">
+                        <small id="err_rusername" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Tên hiển thị<span style="color:red;">*</span></label>
+                        <input type="text" class="form-control" id="fullname" name="fullname" value=""
+                            onclick="ClearError('err_fullname',this)">
+                        <small id="err_fullname" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="BirthDate">
+                            Ngày sinh<span style="color:red;">*</span></label>
+                        <input id="BirthDate_login" class="form-control" type="text" name="BirthDate"
+                            placeholder="DD/MM/YYYY" "ClearError('err_BirthDate_login',this)" readonly>
+                        <small id="err_BirthDate_login" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email<span style="color:red;">*</span></label>
+                        <input type="email" class="form-control" id="txtemail" name="email" value=""
+                            aria-describedby="emailHelp" onclick="ClearError('err_email',this)">
+                        <small id="err_email" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtpwd">Mật khẩu<span style="color:red;">*</span></label>
+                        <input type="password" class="form-control" id="txtpwd" name="password"
+                            onclick="ClearError('err_rpassword',this)">
+                        <small id="err_rpassword" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtpwd2">Xác nhận mật khẩu<span style="color:red;">*</span></label>
+                        <input type="password" class="form-control" id="txtpwd2" name="repassword"
+                            onclick="ClearError('err_password2',this)">
+                        <small id="err_password2" class="form-text text-danger"></small>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-block" onclick="Validate_Submit_Register()">Đăng
+                    kí</button>
+            </div>
+        </div>
+    </div>
+
+</div>

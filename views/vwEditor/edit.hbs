@@ -1,0 +1,338 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+{{!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+
+    /*var date = moment(d, "dd-mm-yyyy hh:mm a")
+       .add(5*60, 'minutes')
+       .format('LLL');*/
+    var checkPastTime = function (inputDateTime) {
+        if (typeof (inputDateTime) != "undefined" && inputDateTime !== null) {
+            var current = new Date();
+
+            //check past year and month
+            if (inputDateTime.getFullYear() < current.getFullYear()) {
+                $('#releaseDate').datetimepicker('reset');
+                alert("Sorry! Past date time not allow.");
+            } else if ((inputDateTime.getFullYear() == current.getFullYear()) && (inputDateTime.getMonth() < current.getMonth())) {
+                $('#releaseDate').datetimepicker('reset');
+                alert("Sorry! Past date time not allow.");
+            }
+
+            // 'this' is jquery object datetimepicker
+            // check input date equal to todate date
+            if (inputDateTime.getDate() == current.getDate()) {
+                if (inputDateTime.getHours() < current.getHours()) {
+                    $('#releaseDate').datetimepicker('reset');
+                }
+                this.setOptions({
+                    minTime: current.getHours() + ':00' //here pass current time hour
+                });
+            } else {
+                this.setOptions({
+                    minTime: false
+                });
+            }
+        }
+    };
+    let day = new Date();
+    jQuery.datetimepicker.setLocale('vi');
+    $('#releaseDate').datetimepicker({
+        format: 'd/m/Y h:i a',
+        timepicker: true,
+        minDateTime: day,
+        validateOnBlur: false,
+        //yearStart: d.getFullYear(), // Start value for current Year selector
+        onChangeDateTime: checkPastTime,
+        onShow: checkPastTime
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#tag-typer").keypress(function (event) {
+            var key = event.which;
+            var data = $("#tag-typer-hidden").val();
+            if (key == 13 || key == 44) {
+                event.preventDefault();
+                var tag = $(this).val();
+
+                const isBlank = $.trim(tag);
+                if (tag.length > 0 && isBlank != '') {
+                    if (isNaN(data)) {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    } else {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag + " <input type='hidden' name='tags[]' value='" + data + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    }
+
+                } else
+                    $(this).val("");
+            }
+        });
+
+        $("#tags").on("click", ".close-tag", function () {
+            $(this).parent("span").remove();
+        });
+    });
+</script>
+<script src="/javascript/validate.js"></script>
+{{/section}}
+<div class="container-xl contain-siz">
+    <div class="card mb-5">
+        <div class="card-header d-flex">
+            <h4 class="mr-auto">Thông tin bài viết</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-7">
+                    <div class="news-detail">
+                        <p>
+                            <span>Tiêu đề: </span>{{news.Title}}
+                        </p>
+                        <p>
+                            <span>Danh mục: </span> {{news.CatParent}} - {{news.CatName}}
+                        </p>
+                        <p>
+                            <span>Loại bài viết: </span> {{#ifEquals news.isPremium 1}}
+                            Premium
+                            {{else}}
+                            Thường
+                            {{/ifEquals}}
+                        </p>
+                        <p>
+                            <span>Tác giả: </span> {{#if writer.Pseudonym}}
+                            {{writer.Pseudonym}}
+                            {{else}}
+                            {{writer.FullName}}
+                            {{/if}}
+                        </p>
+                        <p>
+                            <span>Ngày đăng: </span> {{formatDateVN news.LastEdit "long"}}
+                        </p>
+                        {{#if news.ReleaseDate}}
+                        <p>
+                            <span>Ngày Xuất bản: </span> {{formatDateVN news.ReleaseDate "long"}}
+                        </p>
+                        {{else}}
+                        <p>
+                            <span>Ngày Xuất bản: </span> Chưa ấn định
+                        </p>
+                        {{/if}}
+                        <p>
+                            <span>Trạng thái: </span>{{news.State}}
+                        </p>
+                        {{#ifEquals news.StatusID 3}}
+                        <p>
+                            <span>Lý do: </span>
+                        </p>
+                        {{/ifEquals}}
+                        <p>
+                            <span>Nội dung tóm tát: </span> {{news.TinyDes}}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div style="width:100%">
+                        <img src="/img/articles/{{news.IMG}}" alt="Ảnh bìa"
+                            style="object-fit: cover; width: 400px; border-radius:3px">
+                        <div class="center" style="font-style: italic;">Ảnh bìa</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted" style="text-align: center;">
+            <a href="./list" class="btn btn-info" role="button"><i class="fa fa-angle-double-left"
+                    aria-hidden="true"></i> Trở về</a>
+            {{#ifEquals news.StatusID 4}}
+            <a href="#Accepted" data-toggle="modal" class="btn btn-success" role="button"><i class="fa fa-check"
+                    aria-hidden="true"></i> Phê duyệt</a>
+            <a href="#Denied" data-toggle="modal" class="btn btn-danger" role="button"><i class="fa fa-times"
+                    aria-hidden="true"></i> Từ chối</a>
+            {{else}}
+            
+            {{/ifEquals}}
+    
+        </div>
+    </div>
+    {{!-- Accepted modal --}}
+    <div class="modal fade" id="Accepted" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xử lý phê duyệt</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="AcceptedForm" action="./accept" method="post">
+                        <input type="hidden" name="id" value="{{news.NewsID}}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="lbcat" class="text-muted"><i class="fa fa-bars" aria-hidden="true"></i>
+                                        Danh mục</label>
+                                    <select class="form-control" id="lbcat" name="CatID" size="auto"
+                                        style="width:auto;">
+                                        {{#each cb_categories}}
+                                        {{#ifEquals ../news.CatID this.CatID}}
+                                        <option value="{{CatID}}" selected>
+                                            {{#if CatParent}}
+                                            {{CatParent}} - {{CatName}}
+                                            {{else}}
+                                            {{CatName}}
+                                            {{/if}}</option>
+                                        {{else}}
+                                        <option value="{{this.CatID}}">
+                                            {{#if CatParent}}
+                                            {{CatParent}} - {{CatName}}
+                                            {{else}}
+                                            {{CatName}}
+                                            {{/if}}
+                                        </option>
+                                        {{/ifEquals}}
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="text-muted" for="tags" style="margin-top: 20px;"><i class="fa fa-tags"
+                                            aria-hidden="true"></i> Thẻ
+                                        tag</label>
+                                    <label for="tag-typer" style="width: 100%;">
+                                        <div id="tags">
+                                            {{#each taging}}
+                                            <span class="tag">
+                                                <span class="close-tag">&times;</span>{{TagName}}
+                                                <input type="hidden" name="tags[]" value="{{TagID}}">
+                                            </span>
+                                            {{/each}}
+                                            <input list="suggestionList" id="tag-typer" placeholder="Thêm tag ..."
+                                                type="text" autocomplete="off" />
+                                            <datalist id="suggestionList">
+                                                {{#each tags}}
+                                                <option data-value="{{TagID}}">{{TagName}}</option>
+                                                {{/each}}
+                                            </datalist>
+                                            <input type="hidden" name="answer" id="tag-typer-hidden">
+                                        </div>
+                                    </label>
+                                    <small id="err_Tag" class="form-text text-danger"></small>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="text-muted" for="releaseDate"><i class="fa fa-clock-o"
+                                            aria-hidden="true"></i> Thời gian xuất bản</label>
+                                    <input class="form-control" type="text" name="releaseDate" id="releaseDate"
+                                        placeholder="Chọn ngày" "ClearError('err_ReleaseDate',this)" readonly>
+                                    <small id="err_ReleaseDate" class="form-text text-danger"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button class="btn btn-primary btn-block mt-2" onclick="Validate_Submit_AcceptNews()">Lưu
+                        lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{!-- Deny modal --}}
+    <div class="modal fade" id="Denied" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Từ chối</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="DeniedForm" action="./deny" method="post">
+                        <input type="hidden" name="id" value="{{news.NewsID}}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="text-muted" for="issue">Lý do</label>
+                                    <input type="text" value="" class="form-control" id="txtissue" name="issue"
+                                        onclick="ClearError('err_issu',this)" placeholder="Lý do từ chối">
+                                    <small id="err_issu" class="form-text text-danger"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button class="btn btn-primary btn-block mt-2" onclick="Validate_Submit_DenyNews()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{!-- End modal --}}
+    <div class="card">
+        <div class="card-header d-flex justify-content-center">
+            <h4>Mô tả bài viết</h4>
+        </div>
+        <div class="card-body">
+            <div class="pt-3 pb-5 pl-5 pr-5">
+                <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%;">
+                    <div>
+                        <ul class="breadcrumb d-flex justify-content-start align-items-center">
+                            {{#if news.CatParent}}
+                            <li style="font-size: 30px; cursor:pointer"><a>{{news.CatParent}}</a></li>
+                            {{/if}}
+                            <li class="catLink"><a>{{news.CatName}}</a></li>
+                        </ul>
+                    </div>
+                    {{#ifEquals news.isPremium 1}}
+                    <div class="mr-4 Premier"><i class="fa fa-star" aria-hidden="true"></i> Premium</div>
+                    {{/ifEquals}}
+                </div>
+                <div class="mb-1 mt-1"><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước
+                </div>
+                <h1>{{news.Title}}</h1>
+                <div class="ls-tag flex-wrap mt-3">
+                    {{!-- <span>Tag:</span> --}}
+                    {{#each taging}}
+                    <span class="tagr">{{TagName}}</span>
+                    {{/each}}
+                </div>
+                <div class="mt-4 mb-4 text-mute" style="font-weight: 700; font-size:20px;">
+                    {{news.TinyDes}}
+                </div>
+                <div style="width: 100%; text-align: center; margin:30px 0">
+                    <img src="/img/articles/{{news.IMG}}" style="width: 100%; object-fit: cover; ">
+                </div>
+
+                <div style="border-top: 1px solid #EBEBEB;padding-top:20px">
+                    {{{news.FullDes}}}
+                </div>
+                <div style="font-weight: bold; font-size:1rem; text-align:right; margin-right: 30px">
+
+                    {{#if writer.Pseudonym}}
+                    {{writer.Pseudonym}}
+                    {{else}}
+                    {{writer.FullName}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+        {{!-- <div class="card-footer text-muted" style="text-align: center;">
+            
+        </div> --}}
+    </div>
+</div>

@@ -32,7 +32,7 @@ router.get('/profile', async function (req, res) {
         User: user
     });
 })
-router.post('/profile/upi',async function (req, res) {
+router.post('/profile/upi', async function (req, res) {
     const date = new Date(req.body.birthday);
     const user = {
         UserID: 1,
@@ -71,5 +71,7 @@ router.post('/api/photo', function (req, res) {
         res.end("File is uploaded");
     });
 });
+
+
 
 module.exports = router;

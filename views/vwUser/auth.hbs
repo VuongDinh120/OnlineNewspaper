@@ -1,0 +1,131 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"/>{{/section}}
+
+{{#section 'js'}}
+ <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+    jQuery.datetimepicker.setLocale('vi');
+    $('#birthdate').datetimepicker({
+        format: 'd/m/Y',
+        timepicker: false
+
+    });
+
+    $("#reveal").on('click', function () {
+
+        var $pwd = $("#password_log");
+        console.log();
+        if ($pwd.attr('type') === 'password') {
+            $pwd.attr('type', 'text');
+        } else {
+            $pwd.attr('type', 'password');
+        }
+    });
+</script>
+<script src="/javascript/validate.js"></script>
+{{/section}}
+<div class="container-fluid contain-siz" style="background-color: #29aafe;">
+    <div class="d-flex justify-content-center">
+        <div class="card mx-auto border-0" style="width: 40%;">
+            <div class="d-flex justify-content-center" style="background-color: #333;">
+                <img src="/img/logo2.png">
+            </div>
+            <div class="card-header border-bottom-0 bg-transparent">
+                <ul class="nav nav-tabs justify-content-center pt-4" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active text-primary" id="pills-login-tab" data-toggle="pill"
+                            href="#pills-login" role="tab" aria-controls="pills-login" aria-selected="true">Đăng
+                            nhập</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" id="pills-register-tab" data-toggle="pill"
+                            href="#pills-register" role="tab" aria-controls="pills-register" aria-selected="false">Đăng
+                            kí</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body pb-4">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel" style="padding: 0 5rem;"
+                        aria-labelledby="pills-login-tab">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" name="username" class="form-control" id="username_log"
+                                    placeholder="Tên tài khoản" required autofocus
+                                    onclick="ClearError('err_username',this)">
+                                <small id="err_username_log" class="form-text text-danger"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="password" name="password" class="form-control" id="password_log"
+                                        placeholder="Mật khẩu" onclick="ClearError('err_password',this)" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="input-group-text" id="reveal">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <small id="err_password_log" class="form-text text-danger"></small>
+                            </div>
+                            <div class="text-center pt-4">
+                                <button type="button" class="btn btn-primary">Đăng nhập</button>
+                            </div>
+
+                            <div class="text-center pt-2">
+                                <a class="btn btn-link text-primary" href="#">Forgot Your Password?</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-register" role="tabpanel" style="padding: 0 5rem;" aria-labelledby="pills-register-tab">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" name="username" id="username_res" class="form-control"
+                                    placeholder="Tên tài khoản" onclick="ClearError('err_username_res',this)" required
+                                    autofocus>
+                                <small id="err_username_res" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="fullname" id="fullname" class="form-control"
+                                    placeholder="Tên hiển thị" onclick="ClearError('err_fullname',this)" required>
+                                <small id="err_fullname" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Email"
+                                    onclick="ClearError('err_email',this)" required>
+                                <small id="err_email" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="birthday" id="birthdate" class="form-control"
+                                    placeholder="Ngày sinh" onclick="ClearError('err_birthday',this)" required readonly>
+                                <small id="err_birthday" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password" id="password_res" class="form-control"
+                                    placeholder="Mật khẩu" onclick="ClearError('err_password_res',this)" required>
+                                <small id="err_password_res" class="form-text text-danger"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" name="password_confirmation" id="password2" class="form-control"
+                                    placeholder="Xác nhận mật khẩu" onclick="ClearError('err_password2',this)" required>
+                                <small id="err_password2" class="form-text text-danger"></small>
+                            </div>
+
+                            <div class="text-center pt-2 pb-1">
+                                <button type="button" class="btn btn-primary">Đăng kí</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

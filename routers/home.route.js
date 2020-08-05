@@ -1,7 +1,7 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
 const newsModel = require('../models/news.model');
-
+const passport = require("../config/passport")
 const router = express.Router();
 
 var getCat = function (listCat, listMenu, listExtra) {
@@ -35,7 +35,7 @@ router.get('/', async function (req, res) {
   const listMenu = await categoryModel.allWithOnlyFirstNode();
   const listExtra = new Array();
   const isfull = getCat(listCat, listMenu, listExtra);
-  const listNews = await newsModel.
+  // const listNews = await newsModel.
 
 
   res.render('home', {
@@ -64,7 +64,35 @@ router.get('/list-by-Cat', async function (req, res) {
   });
 })
 
+router.get('/login', async function (req, res) {
 
+  res.render('vwUser/auth');
+})
+
+router.post('/login', async function (req, res) {
+
+  res.render('vwUser/auth');
+})
+router.post('/', passport.authenticate('local', {
+  failureRedirect: '/login',
+  successRedirect: '/',
+  failureFlash: true
+}))
+router.get('/register', async function (req, res) {
+
+  res.render('vwUser/register');
+})
+// router.get('/', function (req, res) {
+//   if (req.isAuthenticated())
+//       res.redirect('/admin')
+//   else
+//       res.render('login');
+// })
+
+// router.get('/logout', function (req, res) {
+//   req.logout();
+//   res.redirect('/');
+// });
 
 
 

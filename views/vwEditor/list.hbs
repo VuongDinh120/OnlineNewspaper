@@ -1,0 +1,228 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css">
+{{!-- <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css"> --}}
+
+<style>
+    .tablesorter-pager .btn-group-sm .btn {
+        font-size: 1.2em;
+        /* make pager arrows more visible */
+    }
+</style>
+{{/section}}
+{{#section 'js'}}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js"></script>
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter-formatter-jui.min.js"></script> --}}
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/extras/jquery.tablesorter.pager.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter.min.js"></script>
+<script>
+    $(function () {
+
+        $("table").tablesorter({
+            theme: "bootstrap",
+
+            widthFixed: true,
+
+            // widget code contained in the jquery.tablesorter.widgets.js file
+            // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+            // the uitheme widget is NOT REQUIRED!
+            widgets: ["filter", "columns", "zebra"],
+
+            widgetOptions: {
+                // using the default zebra striping class name, so it actually isn't included in the theme variable above
+                // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+                zebra: ["even", "odd"],
+
+                // class names added to columns when sorted
+                columns: ["primary", "secondary", "tertiary"],
+
+                // reset filters button
+                filter_reset: ".reset",
+
+                // extra css class name (string or array) added to the filter element (input or select)
+                filter_cssFilter: [
+                    'form-control',
+                    'form-control',
+                    'form-control custom-select', // select needs custom class names :
+                    'form-control',
+                    'form-control',
+                    'form-control custom-select',
+                    'form-control',
+                    'form-control'
+                ]
+
+            }
+        })
+            .tablesorterPager({
+
+                // target the pager markup - see the HTML block below
+                container: $(".ts-pager"),
+
+                // target the pager page select dropdown - choose a page
+                cssGoto: ".pagenum",
+
+                // remove rows from the table to speed up the sort of large tables.
+                // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+                removeRows: false,
+
+                // output string - default is '{page}/{totalPages}';
+                // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+                output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+            });
+    });
+</script>
+{{/section}}
+<div class="container-fluid contain-siz">
+   
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h4>Danh sách bài viết</h4>
+            {{!-- <a class="btn btn-outline-success" href="/writer/new-article" role="button">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Thêm bài viết
+            </a> --}}
+        </div>
+        <div class="card-body ">
+            <button type="button" class="reset btn btn-primary mb-2" data-column="0" data-filter=""><i
+                    class="fa fa-filter" aria-hidden="true"></i> Reset
+                filters</button>
+            {{!-- <button type="button" class="btn btn-primary reset">reset</button> --}}
+            {{!-- <button class="reset">Reset</button> --}}
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <!-- add class="thead-light" for a light header -->
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Danh mục</th>
+                        <th class="filter-select filter-exact" data-placeholder="Chọn loại">Loại</th>
+                        <th>Tác giả</th>
+                        <th>Thời gian đăng</th>
+                        <th>Thời điểm XB</th>
+                        <th class="filter-select filter-exact" data-placeholder="Chọn trạng thái">Trạng thái</th>
+                        <th class="sorter-false filter-false">Xem</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Danh mục</th>
+                        <th>Loại bài viết</th>
+                        <th>Tác giả</th>
+                        <th>Thời gian đăng</th>
+                        <th>Thời điểm XB</th>
+                        <th>Trạng thái</th>
+                        <th>Xem</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8" class="ts-pager">
+                            <div class="form-inline">
+                                <div class="ml-5">Số dòng:</div>
+                                <select class="form-control-sm custom-select px-1 pagesize" title="Select page size">
+                                    <option selected="selected" value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="all">Tất cả</option>
+                                </select>
+                                <div class="ml-5">Trang:</div>
+                                <select class="form-control-sm custom-select px-4 mx-1 pagenum "
+                                    title="Select page number"></select>
+                                <div class="btn-group btn-group-sm mx-1 ml-5" role="group">
+                                    <button type="button" class="btn btn-secondary first" title="first">Trang
+                                        đầu</button>
+                                    <button type="button" class="btn btn-secondary prev" title="previous">←</button>
+                                </div>
+                                <span class="pagedisplay"></span>
+                                <div class="btn-group btn-group-sm mx-1" role="group">
+                                    <button type="button" class="btn btn-secondary next" title="next">→</button>
+                                    <button type="button" class="btn btn-secondary last" title="last">Trang
+                                        cuối</button>
+                                </div>
+
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {{#each News}}
+                    <tr>
+                        <td>{{Title}}</td>
+                        <td> {{#if ParentName}}
+                            {{ParentName}} - {{CatName}}
+                            {{else}}
+                            {{CatName}}
+                            {{/if}}</td>
+                        <td>{{#if isPremium}}
+                            <div style="color: #ffc107 ;">Premium</div>
+                            {{else}}
+                            Thường
+                            {{/if}}</td>
+                        <td>
+                            {{#if Pseudonym}}
+                            {{Pseudonym}}
+                            {{else}}
+                            {{FullName}}
+                            {{/if}}
+                        </td>
+                        <td>{{formatDateVN LastEdit "long2"}}</td>
+                        <td>
+                            {{#if ReleaseDate}}
+                            {{formatDateVN ReleaseDate "long2"}}
+                            {{else}}
+                            Chưa ấn định
+                            {{/if}}
+                        </td>
+                        <td> {{#ifEquals StatusID 3}}
+                            <div class="text-danger">{{StaName}}</div>
+                            {{/ifEquals}}
+
+                            {{#ifEquals StatusID 4}}
+                            <div>{{StaName}}</div>
+                            {{/ifEquals}}
+
+                            {{#ifEquals StatusID 2}}
+                            <div class="text-success">{{StaName}}</div>
+                            {{/ifEquals}}
+
+                            {{#ifEquals StatusID 1}}
+                            <div class="text-primary">{{StaName}}</div>
+                            {{/ifEquals}}</td>
+
+                        <td><a class="btn btn-success btn-sm" href="/editor/edit?id={{NewsID}}" role="button"
+                                title="See News">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+        {{!-- <div class="card-footer text-muted">
+            Footer
+        </div> --}}
+    </div>
+     <div class="d-flex justify-content-center mt-3">
+        <div class="card mb-3" style="max-width: 18rem;">
+            <div class="card-header" style="font-weight: 700;font-size: 20px;">Danh sách chuyên mục được phân công</div>
+            <div class="card-body">
+                <ul >
+                    {{#each Assign}}
+                    {{#if ParentName}}
+                    <li>{{ParentName}} - {{CatName}}</li>
+                    {{else}}
+
+                    {{/if}}
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

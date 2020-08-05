@@ -1,15 +1,14 @@
 const db = require('../utils/db');
 
 const TBL_CATEGORIES = 'category';
+const VW_CATEGORIES = 'catgroup';
 
 module.exports = {
   all: function () {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
   allNameCat: function () {
-    return db.load(`SELECT d1.CatID,IF(d1.ParentID IS null,d1.CatName,CONCAT_WS(" - ",d2.CatName,d1.CatName))as CatName 
-    FROM ${TBL_CATEGORIES} d1 LEFT JOIN ${TBL_CATEGORIES} d2 ON d1.ParentID=d2.CatID 
-    ORDER BY CatName`);
+    return db.load(`SELECT * FROM ${VW_CATEGORIES}`);
   },
   allWithSecondNode: function () {
     return db.load(`

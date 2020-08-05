@@ -1,3 +1,88 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css">
+{{!-- <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css"> --}}
+
+<style>
+    .tablesorter-pager .btn-group-sm .btn {
+        font-size: 1.2em;
+        /* make pager arrows more visible */
+    }
+</style>
+{{/section}}
+{{#section 'js'}}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js"></script>
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter-formatter-jui.min.js"></script> --}}
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/extras/jquery.tablesorter.pager.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter.min.js"></script>
+<script>
+    $(function () {
+
+        $("table").tablesorter({
+            theme: "bootstrap",
+
+            widthFixed: true,
+
+            // widget code contained in the jquery.tablesorter.widgets.js file
+            // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+            // the uitheme widget is NOT REQUIRED!
+            widgets: ["filter", "columns", "zebra"],
+
+            widgetOptions: {
+                // using the default zebra striping class name, so it actually isn't included in the theme variable above
+                // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+                zebra: ["even", "odd"],
+
+                // class names added to columns when sorted
+                columns: ["primary", "secondary", "tertiary"],
+
+                // reset filters button
+                filter_reset: ".reset",
+
+
+                // extra css class name (string or array) added to the filter element (input or select)
+                filter_cssFilter: [
+                    'form-control',
+                    'form-control',
+                    'form-control custom-select', // select needs custom class names :
+                    'form-control',
+                    'form-control',
+                    'form-control custom-select',
+                    'form-control',
+                    'form-control'
+                ]
+
+            }
+        })
+            .tablesorterPager({
+
+                // target the pager markup - see the HTML block below
+                container: $(".ts-pager"),
+
+                // target the pager page select dropdown - choose a page
+                cssGoto: ".pagenum",
+
+                // remove rows from the table to speed up the sort of large tables.
+                // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+                removeRows: false,
+
+                // output string - default is '{page}/{totalPages}';
+                // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+                output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+
+            });
+
+    });
+</script>
+{{/section}}
 <div class="container-fluid contain-siz">
     <div class="card">
         <div class="card-header d-flex justify-content-between">
@@ -7,65 +92,120 @@
                 Thêm bài viết
             </a>
         </div>
-        <table class="table table-hover table-striped">
-            <thead class="thead-dark">
-                <tr class="d-flex">
-                    <th scope="col" class="text-center col-1">#</th>
-                    <th scope="col" class="col-2">Tiêu đề</th>
-                    <th scope="col" class="col-1">Loại bài viết</th>
-                    <th scope="col" class="text-center col-2">Danh Mục</th>
-                    <th scope="col" class="col-1 text-center">Lần chỉnh sửa cuối</th>
-                    <th scope="col" class="col-1 text-center">Thời gian XB</th>
-                    <th scope="col" class="col-1">Trạng thái</th>
-                    <th scope="col" class="col-2 text-center">Lý do</th>
-                    <th scope="col" class="text-center col-1">Xem</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each News}}
-                <tr class="d-flex">
-                    <th scope="row" class="text-center col-1">{{stt}}</th>
-                    <td class="col-2"> {{Title}}</td>
-                    <td class="col-1">
-                        {{#if isPremium}}
-                        Premium
-                        {{else}}
-                        Thường
-                        {{/if}}
-                    </td>
-                    <td class="col-2 text-center">
-                        {{#if CatParent}}
-                        {{CatParent}} - {{CatName}}
-                        {{else}}
-                        {{CatName}}
-                        {{/if}}
+        <div class="card-body ">
+            <button type="button" class="reset btn btn-primary mb-2" data-column="0" data-filter="">Reset
+                filters</button>
+            {{!-- <button type="button" class="btn btn-primary reset">reset</button> --}}
+            {{!-- <button class="reset">Reset</button> --}}
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <!-- add class="thead-light" for a light header -->
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Danh mục</th>
+                        <th class="filter-select filter-exact" data-placeholder="Chọn loại">Loại</th>
+                        <th>Lần chỉnh sửa cuối</th>
+                        <th>Thời gian XB</th>
+                        <th class="filter-select filter-exact" data-placeholder="Chọn trạng thái">Trạng thái</th>
+                        <th>Lý do</th>
+                        <th class="sorter-false filter-false">Xem</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Danh mục</th>
+                        <th>Loại bài viết</th>
+                        <th>Lần chỉnh sửa cuối</th>
+                        <th>Thời gian XB</th>
+                        <th>Trạng thái</th>
+                        <th>Lý do</th>
+                        <th>Xem</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8" class="ts-pager">
+                            <div class="form-inline">
+                                <div class="ml-5">Số dòng:</div>
+                                <select class="form-control-sm custom-select px-1 pagesize" title="Select page size">
+                                    <option selected="selected" value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="all">Tất cả</option>
+                                </select>
+                                <div class="ml-5">Trang:</div>
+                                <select class="form-control-sm custom-select px-4 mx-1 pagenum "
+                                    title="Select page number"></select>
+                                <div class="btn-group btn-group-sm mx-1 ml-5" role="group">
+                                    <button type="button" class="btn btn-secondary first" title="first">Trang
+                                        đầu</button>
+                                    <button type="button" class="btn btn-secondary prev" title="previous">←</button>
+                                </div>
+                                <span class="pagedisplay"></span>
+                                <div class="btn-group btn-group-sm mx-1" role="group">
+                                    <button type="button" class="btn btn-secondary next" title="next">→</button>
+                                    <button type="button" class="btn btn-secondary last" title="last">Trang
+                                        cuối</button>
+                                </div>
 
-                    </td>
-                    <td class="col-1 text-center">
-                        {{formatDate LastEdit "long"}}
-                    </td>
-                    <td class="col-1 text-center">
-                        {{#ifEquals ReleaseDate null}}
-                        Chưa ấn định
-                        {{/ifEquals}}</td>
-                    <td class="col-1">{{StaName}}</td>
-                    <td class="col-2 text-center">
-                        {{#ifEquals Issue null}}
-                        Bài viết chưa được phê duyệt
-                        {{/ifEquals}}</td>
-                    <td class="text-center col-1">
-                        <a class="btn btn-success btn-sm" href="/writer/view-article?id={{NewsID}}" role="button"
-                            title="See News">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                        </a>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {{#each News}}
+                    <tr>
+                        <td>{{Title}}</td>
+                        <td> {{#if CatParent}}
+                            {{CatParent}} - {{CatName}}
+                            {{else}}
+                            {{CatName}}
+                            {{/if}}</td>
+                        <td>{{#if isPremium}}
+                            <div style="color: #ffc107 ;">Premium</div>
+                            {{else}}
+                            Thường
+                            {{/if}}</td>
+                        <td>{{formatDateVN LastEdit "long"}}</td>
+                        <td> {{#ifEquals ReleaseDate null}}
+                            Chưa ấn định
+                            {{else}}
+                            {{formatDateVN ReleaseDate "long"}}
+                            {{/ifEquals}}</td>
+                        <td>{{#ifEquals StatusID 3}}
+                            <div class="text-danger">{{StaName}}</div>
+                            {{/ifEquals}}
 
-        <div class="card-footer text-muted">
-            Footer
+                            {{#ifEquals StatusID 4}}
+                            <div>{{StaName}}</div>
+                            {{/ifEquals}}
+
+                            {{#ifEquals StatusID 2}}
+                            <div class="text-success">{{StaName}}</div>
+                            {{/ifEquals}}
+
+                            {{#ifEquals StatusID 1}}
+                            <div class="text-primary">{{StaName}}</div>
+                            {{/ifEquals}}</td>
+                        <td> {{#ifEquals StatusID 4}}
+                            Bài viết chưa được phê duyệt
+                            {{/ifEquals}}
+
+                            {{#ifEquals StatusID 3}}
+                            {{Issue}}
+                            {{/ifEquals}}
+                        </td>
+                        <td><a class="btn btn-success btn-sm" href="/writer/view-article?id={{NewsID}}" role="button"
+                                title="See News">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
         </div>
+        {{!-- <div class="card-footer text-muted">
+            Footer
+        </div> --}}
     </div>
 </div>

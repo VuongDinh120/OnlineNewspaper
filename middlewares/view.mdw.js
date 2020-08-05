@@ -7,6 +7,7 @@ var DateFormats = {
   short2: "MM-DD-YYYY",
   short3: "YYYY/MM/DD",
   long: "DD-MM-YYYY HH:mm",
+  long2: "Do MMMM YYYY HH:mm",
 };
 
 module.exports = function (app) {
@@ -27,6 +28,16 @@ module.exports = function (app) {
         if (moment) {
           // can use other formats like 'lll' too
           // console.log(datetime);
+          format = DateFormats[format] || format;
+          return moment(datetime).format(format);
+        }
+        else {
+          return datetime;
+        }
+      },
+      formatDateVN: function (datetime, format) {
+        if (moment) {
+          moment.locale('vi');
           format = DateFormats[format] || format;
           return moment(datetime).format(format);
         }

@@ -1,0 +1,55 @@
+<div class="container-xl contain-siz">
+    <div class="row justify-content-center">
+        <div class="card " style="width: 30rem;">
+            <div class="card-header">
+                <h2 class="card-title text-center">Login</h2>
+            </div>
+            <div class="card-body">
+                {{!-- {{>message}} --}}
+                <form id="loginForm" action="/login" method="POST">
+                    <div class="form-group">
+                        <label for="txtname">Tên tài khoản</label>
+                        <input type="text" class="form-control" id="usname" name="username"
+                            onclick="ClearError('err_username',this)">
+                        <small id="err_username" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtpwd">Mật khẩu</label>
+                        <div class="input-group">
+                            <input type="password" id="pwd" name="password" class="form-control"
+                                onclick="ClearError('err_password',this)" data-toggle="password">
+                            <div class="input-group-append">
+                                <button type="button" class="input-group-text" id="reveal">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <small id="err_password" class="form-text text-danger"></small>
+                    </div>
+                </form>
+                <div class="center"><a href="#">Quên mật khẩu?</a></div>
+            </div>
+            <div class="card-footer">
+                <button type="button" id="btnSubmit" class="btn btn-primary btn-block"
+                    onclick="Validate_Submit_Login()">Đăng
+                    nhập</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+{{#section 'js'}}
+<script src="/javascript/validate.js"></script>
+<script>
+    $("#reveal").on('click', function () {
+
+        var $pwd = $("#pwd");
+        console.log();
+        if ($pwd.attr('type') === 'password') {
+            $pwd.attr('type', 'text');
+        } else {
+            $pwd.attr('type', 'password');
+        }
+    });
+</script>
+{{/section}}
