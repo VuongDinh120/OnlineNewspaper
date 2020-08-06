@@ -3,33 +3,32 @@ const bcrypt = require('bcrypt');
 const localStrategy = require('passport-local').Strategy;
 const TB_USER = require('../models/account.model');
 
-const saltRounds = 10;
-const salt = bcrypt.genSaltSync(saltRounds);
+// const saltRounds = 10;
+// const salt = bcrypt.genSaltSync(saltRounds);
 
 passport.use(new localStrategy(
     async function (username, password, done) {
         const user = await TB_USER.singleByName(username);
-        console.log(user);
+        // console.log(user);
         if (user !== null) {
             const match = await bcrypt.compare(password, user.PassWord);
             if (match) {
                 return done(null, user);
             } else {
-                return done(null, false, { message: 'Sai Mật khẩu' });
+                return done(null, false, { message: 'Mật khẩu không đúng' });
             }
         } else {
-            return done(null, false, { message: 'Tên tài khoản đã được sử dụng' });
+            return done(null, false, { message: 'Không tồn tại tài khoản này' });
         }
     }
 ))
 
 passport.serializeUser((user, done) => {
-    done(null, user.ID);
+    done(null, user.UserID);
 })
 
 passport.deserializeUser(async (id, done) => {
-    const user = await TB_USER.singleByID(id);
-    delete user.PassWord;
+    const user = await TB_USER.singleSesByID(id);
     return done(null, user);
 })
 

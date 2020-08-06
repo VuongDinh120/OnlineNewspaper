@@ -1,8 +1,9 @@
 {{#section 'css'}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"/>{{/section}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" />{{/section}}
 
 {{#section 'js'}}
- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
@@ -10,14 +11,19 @@
     jQuery.datetimepicker.setLocale('vi');
     $('#birthdate').datetimepicker({
         format: 'd/m/Y',
-        timepicker: false
-
+        timepicker: false,
     });
 
     $("#reveal").on('click', function () {
-
         var $pwd = $("#password_log");
-        console.log();
+        if ($pwd.attr('type') === 'password') {
+            $pwd.attr('type', 'text');
+        } else {
+            $pwd.attr('type', 'password');
+        }
+    });
+    $("#reveal2").on('click', function () {
+        var $pwd = $("#password_res");
         if ($pwd.attr('type') === 'password') {
             $pwd.attr('type', 'text');
         } else {
@@ -36,14 +42,15 @@
             <div class="card-header border-bottom-0 bg-transparent">
                 <ul class="nav nav-tabs justify-content-center pt-4" id="pills-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active text-primary" id="pills-login-tab" data-toggle="pill"
-                            href="#pills-login" role="tab" aria-controls="pills-login" aria-selected="true">Đăng
+                        <a class="nav-link {{#if isLog}}active{{/if}} text-primary" id="pills-login-tab"
+                            data-toggle="pill" href="#pills-login" role="tab" aria-controls="pills-login"
+                            aria-selected="{{#if isLog}}true{{/if}}">Đăng
                             nhập</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link text-primary" id="pills-register-tab" data-toggle="pill"
-                            href="#pills-register" role="tab" aria-controls="pills-register" aria-selected="false">Đăng
+                        <a class="nav-link {{#if isLog}}{{else}}active{{/if}} text-primary" id="pills-register-tab"
+                            data-toggle="pill" href="#pills-register" role="tab" aria-controls="pills-register"
+                            aria-selected="{{#if isLog}}{{else}}false{{/if}}">Đăng
                             kí</a>
                     </li>
                 </ul>
@@ -51,20 +58,21 @@
 
             <div class="card-body pb-4">
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel" style="padding: 0 5rem;"
-                        aria-labelledby="pills-login-tab">
-                        <form>
+                    <div class="tab-pane fade {{#if isLog}}show active{{/if}}" id="pills-login" role="tabpanel"
+                        style="padding: 0 5rem;" aria-labelledby="pills-login-tab">
+                        {{#if isLog}} {{>message}}{{/if}}
+                        <form id="loginForm" action="/login" method="POST">
                             <div class="form-group">
                                 <input type="text" name="username" class="form-control" id="username_log"
                                     placeholder="Tên tài khoản" required autofocus
-                                    onclick="ClearError('err_username',this)">
+                                    onclick="ClearError('err_username_log',this)">
                                 <small id="err_username_log" class="form-text text-danger"></small>
                             </div>
 
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="password" name="password" class="form-control" id="password_log"
-                                        placeholder="Mật khẩu" onclick="ClearError('err_password',this)" required>
+                                        placeholder="Mật khẩu" onclick="ClearError('err_password_log',this)" required>
                                     <div class="input-group-append">
                                         <button type="button" class="input-group-text" id="reveal">
                                             <i class="fa fa-eye"></i>
@@ -74,7 +82,8 @@
                                 <small id="err_password_log" class="form-text text-danger"></small>
                             </div>
                             <div class="text-center pt-4">
-                                <button type="button" class="btn btn-primary">Đăng nhập</button>
+                                <button type="button" class="btn btn-primary" onclick="Validate_Submit_Login()">Đăng
+                                    nhập</button>
                             </div>
 
                             <div class="text-center pt-2">
@@ -83,8 +92,10 @@
                         </form>
                     </div>
 
-                    <div class="tab-pane fade" id="pills-register" role="tabpanel" style="padding: 0 5rem;" aria-labelledby="pills-register-tab">
-                        <form>
+                    <div class="tab-pane fade {{#if isLog}}{{else}}show active{{/if}}" id="pills-register"
+                        role="tabpanel" style="padding: 0 5rem;" aria-labelledby="pills-register-tab">
+                        {{#if isLog}}{{else}}{{>message}}{{/if}}
+                        <form action="/register" id="registerForm" method="POST">
                             <div class="form-group">
                                 <input type="text" name="username" id="username_res" class="form-control"
                                     placeholder="Tên tài khoản" onclick="ClearError('err_username_res',this)" required
@@ -103,12 +114,22 @@
                             </div>
                             <div class="form-group">
                                 <input type="text" name="birthday" id="birthdate" class="form-control"
-                                    placeholder="Ngày sinh" onclick="ClearError('err_birthday',this)" required readonly>
+                                    placeholder="Ngày sinh" onclick="ClearError('err_birthday',this)" autocomplete="off" required>
                                 <small id="err_birthday" class="form-text text-danger"></small>
                             </div>
-                            <div class="form-group">
-                                <input type="password" name="password" id="password_res" class="form-control"
-                                    placeholder="Mật khẩu" onclick="ClearError('err_password_res',this)" required>
+                            <div class="form-group" style="position: relative;">
+                                <div class="input-group">
+                                    <input type="password" name="password" id="password_res" class="form-control"
+                                        placeholder="Mật khẩu" onclick="ClearError('err_password_res',this)" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="input-group-text" id="reveal2">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                {{!-- <div style="position: absolute; top:10px; right:-60px">
+                                    <span>thường</span>
+                                </div> --}}
                                 <small id="err_password_res" class="form-text text-danger"></small>
                             </div>
 
@@ -119,7 +140,8 @@
                             </div>
 
                             <div class="text-center pt-2 pb-1">
-                                <button type="button" class="btn btn-primary">Đăng kí</button>
+                                <button type="button" class="btn btn-primary" onclick="Validate_Submit_Register()">Đăng
+                                    kí</button>
                             </div>
                         </form>
                     </div>

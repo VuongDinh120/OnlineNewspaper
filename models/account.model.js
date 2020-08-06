@@ -16,7 +16,19 @@ module.exports = {
   },
   singleByID: async function (id) {
     const rows = await db.load(`SELECT us.UserID, us.UserName, us.FullName, us.PassWord, us.Pseudonym, us.Email, us.Avatar, us.BirthDay ,us.PremiumExpireTime,rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID where us.UserID = ${id}`);
-    // console.log(rows[0]);
+
+    if (rows.length === 0)
+      return null;
+    return rows[0];
+  },
+  singleSesByID: async function (id) {
+    const rows = await db.load(`SELECT us.UserID, us.UserName, us.FullName, us.Pseudonym, us.Email, us.Avatar, us.RoleID ,rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID where us.UserID = ${id}`);
+    if (rows.length === 0)
+      return null;
+    return rows[0];
+  },
+  checkEmail: async function (email) {
+    const rows = await db.load(`SELECT UserID, UserName, Email  FROM ${TBL_USER} WHERE Email = '${email}'`);
     if (rows.length === 0)
       return null;
     return rows[0];

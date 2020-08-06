@@ -1,4 +1,5 @@
 <div class="container-xl mt-5">
+    {{>message}}
     <div class="row">
         <div class="col-4">
             <div class="shadow p-3 mb-5 mr-2 bg-white rounded center">
@@ -7,12 +8,13 @@
                         <form id="uploadForm" enctype="multipart/form-data" action="./api/photo" method="post">
                             <input type='file' id="imageUpload" name="userPhoto" accept=".png, .jpg, .jpeg" />
                             <label for="imageUpload"></label>
+                            <input type="hidden" name="UserID" value="{{Account.UserID}}">
                             <input type="submit" value="Upload Image" name="submit" style="display: none;">
                         </form>
                     </div>
                     <div class="avatar-preview">
-                        {{#if User.Avatar}}
-                        <div id="imagePreview" style="background-image: url(/img/user/{{User.Avatar}});">
+                        {{#if Account.Avatar}}
+                        <div id="imagePreview" style="background-image: url(/img/user/{{Account.Avatar}});">
                         </div>
                         {{else}}
                         <div id="imagePreview" style="background-image: url(/img/user.png); background-color: #fafafa;">
@@ -22,11 +24,11 @@
                     </div>
                     <span id="status" style="color: #4CAF50;"></span>
                 </div>
-                <div class="info-title">Hello, {{User.UserName}}</div>
+                <div class="info-title">Hello, {{Account.UserName}}</div>
             </div>
-            <div class="shadow p-3 mb-5 mr-2 bg-white rounded center" {{#ifEquals User.isExpire 0}}
+            <div class="shadow p-3 mb-5 mr-2 bg-white rounded center" {{#ifEquals Account.isExpire 0}}
                 style="background-color: #ffc107 !important;" {{/ifEquals}}>
-                {{#ifEquals User.isExpire 0}}
+                {{#ifEquals Account.isExpire 0}}
                 <div class="has-premium">
                     <h2>Premium Pass</h2>
                     <p>Bạn đang sở hữu gói premium.</p>
@@ -43,7 +45,7 @@
                     </div>
                 </div>
                 {{/ifEquals}}
-                {{#ifEquals User.isExpire 1}}
+                {{#ifEquals Account.isExpire 1}}
                 <div class="register-premium">
                     <h4>Gói Premium của bạn đã hết hạn</h4>
                     <p>Gia hạn tài khoản để sở hữu những trải nghiệm tốt nhất của chúng tôi</p>
@@ -53,7 +55,7 @@
                     </div>
                 </div>
                 {{/ifEquals}}
-                {{#ifEquals User.PremiumExpireTime null}}
+                {{#ifEquals Account.PremiumExpireTime null}}
                 <div class="register-premium">
                     <h4>Nâng cấp tài khoản</h4>
                     <p>Nâng cấp ngay để trải nghiệm những bài báo chất lượng</p>
@@ -87,31 +89,46 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <label class="text-muted" for="fullName">Họ tên</label>
-                                                <input type="text" value="{{User.FullName}}" class="form-control"
+                                                <label class="text-muted" for="fullName">Tên hiển thị</label>
+                                                <input type="text" value="{{Account.FullName}}" class="form-control"
                                                     data-bv-field="fullName" id="fullName" name="FullName" required=""
-                                                    placeholder="Full Name">
+                                                    onclick="ClearError('err_fullname',this)" placeholder="Full Name">
+                                                <small id="err_fullname" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label class="text-muted" for="userName">Tên đăng nhập</label>
-                                                <input type="text" value="{{User.UserName}}" class="form-control"
+                                                <input type="text" value="{{Account.UserName}}" class="form-control"
                                                     data-bv-field="userName" id="userName" name="UserName" required=""
-                                                    placeholder="UserName">
+                                                    onclick="ClearError('err_username',this)" placeholder="UserName">
+                                                <small id="err_username" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="text-muted" for="pseudonym">Bút danh</label>
+                                                <input type="text" value="{{Account.Pseudonym}}" class="form-control"
+                                                    data-bv-field="userName" id="pseudonym" name="Pseudonym" required=""
+                                                    onclick="ClearError('err_pseudonym',this)" placeholder="Bút danh">
+                                                <small id="err_pseudonym" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label class="text-muted" for="birthDate">Ngày sinh</label>
                                                 <input type="text" name="birthday"
-                                                    value="{{formatDate User.BirthDay "short2"}}" id="birthDate"
-                                                    class="form-control" required="" placeholder="mm-dd-yyyy">
+                                                    value="{{formatDate Account.BirthDay "short"}}" id="birthDate"
+                                                    onclick="ClearError('err_birthday',this)" class="form-control"
+                                                    required="" placeholder="mm-dd-yyyy">
+                                                <small id="err_birthday" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-block mt-2" type="submit">Lưu lại</button>
+                                    <input type="hidden" name="UserID" value="{{Account.UserID}}">
                                 </form>
+                                <button class="btn btn-primary btn-block mt-2" type="button"
+                                    onclick="Validate_Profile_Change_info()">Lưu những thay đổi</button>
                             </div>
                         </div>
                     </div>
@@ -120,15 +137,19 @@
                 <div class="info-body">
                     <div class="row ml-5">
                         <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Tên hiển thị</p>
-                        <p class="col-9">{{User.FullName}}</p>
+                        <p class="col-9">{{Account.FullName}}</p>
                     </div>
                     <div class="row ml-5">
                         <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Tên đăng nhập</p>
-                        <p class="col-9">{{User.UserName}}</p>
+                        <p class="col-9">{{Account.UserName}}</p>
+                    </div>
+                     <div class="row ml-5">
+                        <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Bút danh</p>
+                        <p class="col-9">{{Account.Pseudonym}}</p>
                     </div>
                     <div class="row ml-5">
                         <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Ngày sinh</p>
-                        <p class="col-9">{{formatDate User.BirthDay "short2"}}</p>
+                        <p class="col-9">{{formatDate Account.BirthDay "short2"}}</p>
                     </div>
                 </div>
             </div>
@@ -152,14 +173,18 @@
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label class="text-muted" for="email">Email</label>
-                                                <input type="email" value="{{User.Email}}" class="form-control"
+                                                <input type="email" value="{{Account.Email}}" class="form-control"
                                                     data-bv-field="email" id="email" name="Email" required=""
-                                                    placeholder="email">
+                                                    onclick="ClearError('err_email',this)" placeholder="email">
+                                                <small id="err_email" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-block mt-2" type="submit">Lưu lại</button>
+                                    <input type="hidden" name="UserID" value="{{Account.UserID}}">
                                 </form>
+                                <button class="btn btn-primary btn-block mt-2" type="button"
+                                    onclick="Validate_Profile_Change_email()">Lưu những thay đổi</button>
+
                             </div>
                         </div>
                     </div>
@@ -167,7 +192,7 @@
                 <div class="info-body">
                     <div class="row ml-5">
                         <p class="col-3 text-muted text-md-right mb-0 mb-sm-3">Email</p>
-                        <p class="col-9">{{User.Email}}</p>
+                        <p class="col-9">{{Account.Email}}</p>
                     </div>
                 </div>
             </div>
@@ -193,7 +218,9 @@
                                                 <label class="text-muted" for="pwd">Mật khẩu hiện tại</label>
                                                 <input type="password" value="" class="form-control"
                                                     data-bv-field="password" id="pwd" name="password" required=""
+                                                    onclick="ClearError('err_password',this)"
                                                     placeholder="Nhập mật khẩu hiện tại">
+                                                <small id="err_password" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-sm-12">
@@ -201,7 +228,9 @@
                                                 <label class="text-muted" for="newpwd">Mật khẩu mới</label>
                                                 <input type="password" value="" class="form-control"
                                                     data-bv-field="newpwd" id="newpwd" name="newPassword" required=""
+                                                    onclick="ClearError('err_newpassword',this)"
                                                     placeholder="Nhập mật khẩu mới">
+                                                <small id="err_newpassword" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-sm-12">
@@ -209,12 +238,16 @@
                                                 <label class="text-muted" for="repwd">Mật khẩu hiện tại</label>
                                                 <input type="password" value="" class="form-control"
                                                     data-bv-field="repwd" id="repwd" required=""
+                                                    onclick="ClearError('err_renewpassword',this)"
                                                     placeholder="Xác nhận mật khẩu">
+                                                <small id="err_renewpassword" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-block mt-2" type="submit">Lưu lại</button>
+                                    <input type="hidden" name="UserID" value="{{Account.UserID}}">
                                 </form>
+                                <button class="btn btn-primary btn-block mt-2" type="button"
+                                    onclick="Validate_Profile_Change_pwd()">Lưu những thay đổi</button>
                             </div>
                         </div>
                     </div>
@@ -280,14 +313,14 @@
         $('#uploadForm').trigger("submit");
     });
     $('#birthDate').datetimepicker({
-        format: 'm-d-Y',
+        format: 'd/m/Y',
         timepicker: false,
 
     });
     function makeTimer() {
 
         //var endTime = new Date("29 August 2020 9:56:00 GMT+01:00");
-        var endTime = new Date("{{User.PremiumExpireTime}}");
+        var endTime = new Date("{{Account.PremiumExpireTime}}");
         endTime = (Date.parse(endTime) / 1000);
 
         var now = new Date();
@@ -316,4 +349,5 @@
 
     setInterval(function () { makeTimer(); }, 1000);
 </script>
+<script src="/javascript/validate.js"></script>
 {{/section}}

@@ -6,7 +6,7 @@ const tagModel = require('../models/tag.model');
 const tagingModel = require('../models/taging.model');
 const newsModel = require('../models/news.model');
 const accountModel = require('../models/account.model');
-
+const { ensureAuthenticated, ensureAuthenticatedAdmin } = require('../config/auth');
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -21,16 +21,19 @@ const storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.get('/list-article', async function (req, res) {
+    const user = req.user;
     const listNews = await newsModel.allWithWriter(1);
     // for (let index = 0; index < listNews.length; index++) {
     //     listNews[index].stt = index + 1;
     // }
 
     res.render('vwWriter/list', {
-        News: listNews
+        News: listNews,
+        user
     });
 })
 router.get('/view-article', async function (req, res) {
+    const user = req.user;
     const id = req.query.id;
     const listCat = await categoryModel.allNameCat();
     const Taging = await tagingModel.allByIDNews(id);
@@ -44,16 +47,19 @@ router.get('/view-article', async function (req, res) {
         cb_categories: listCat,
         news: News[0],
         taging: Taging,
-        writer: Writer
+        writer: Writer,
+        user
     });
 })
 router.get('/new-article', async function (req, res) {
+    const user = req.user;
     const listCat = await categoryModel.allNameCat();
     const listTag = await tagModel.allPermitTag();
 
     res.render('vwWriter/add', {
         cb_categories: listCat,
-        tags: listTag
+        tags: listTag,
+        user
     });
 })
 router.post('/new-article', upload.single('fuNews'), async function (req, res) {
@@ -100,6 +106,7 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
     res.redirect('./list-article');
 })
 router.get('/edit-article', async function (req, res) {
+    const user = req.user;
     const id = req.query.id;
     const listCat = await categoryModel.allNameCat();
     const listTag = await tagModel.allPermitTag();
@@ -112,7 +119,8 @@ router.get('/edit-article', async function (req, res) {
         cb_categories: listCat,
         tags: listTag,
         news: News[0],
-        taging: Taging
+        taging: Taging,
+        user
     });
 })
 router.post('/edit-article', upload.single('fuNews'), async function (req, res) {

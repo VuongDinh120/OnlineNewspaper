@@ -1,7 +1,7 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
 const newsModel = require('../models/news.model');
-
+const { ensureAuthenticated, ensureAuthenticatedAdmin } = require('../config/auth');
 const router = express.Router();
 
 var getCat = function (listCat, listMenu, listExtra) {
@@ -31,6 +31,7 @@ var getCat = function (listCat, listMenu, listExtra) {
 }
 
 router.get('/', async function (req, res) {
+    const user = req.user;
     const listCat = await categoryModel.all();
     const listMenu = await categoryModel.allWithOnlyFirstNode();
     const listExtra = new Array();
@@ -41,11 +42,13 @@ router.get('/', async function (req, res) {
         categories: listMenu,
         isFull: isfull,
         extras: listExtra,
-        news: row[0]
+        news: row[0],
+        user
     });
 })
 
 router.get('/list-by-Cat', async function (req, res) {
+    const user = req.user;
     // const listNews = await newsModel.single();
     const listCat = await categoryModel.all();
     const listMenu = await categoryModel.allWithOnlyFirstNode();
@@ -56,6 +59,7 @@ router.get('/list-by-Cat', async function (req, res) {
         categories: listMenu,
         isFull: isfull,
         extras: listExtra,
+        user,
         // page_items,
         // prev_value: page - 1,
         // next_value: page + 1,

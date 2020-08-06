@@ -10,8 +10,57 @@
                 <i class="fa fa-search"></i>
             </button>
         </div>
-        <a href="#loginModal" data-toggle="modal" class="mr-2">LOGIN</a>
-        <a href="#registerModal" data-toggle="modal">REGISTER</a>
+        {{#if user}}
+        <div class="user-menu-wrap">
+            <div class="text-white d-flex justify-content-between align-items-center dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div>
+                     {{#if user.Avatar}}
+                    <img src="/img/user/{{user.Avatar}}" class="avatar">
+                    {{else}}
+                    <img src="/img/user.png" class="avatar" style="background-color: #fafafafa;">
+                    {{/if}}
+                </div>
+                <div class="user-menu-name ">
+                    {{user.UserName}}
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <div class="user-img d-flex align-items-center flex-column pt-3 pb-3">
+                    {{#if user.Avatar}}
+                    <img src="/img/user/{{user.Avatar}}" class="avatar">
+                    {{else}}
+                    <img src="/img/user.png" class="avatar" style="background-color: #fafafafa;">
+                    {{/if}}
+
+                    <p class="name">{{user.UserName}}</p>
+                    <p class="role">({{user.RoleName}})</p>
+                </div>
+                <a href="/account/profile?id={{user.UserID}}" class="dropdown-item"><i class="fa fa-user"
+                        aria-hidden="true"></i> Thông tin cá
+                    nhân</a>
+                <a class="dropdown-item" href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Biên tập
+                    bài báo</a>
+                <a class="dropdown-item" href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tạo bài
+                    báo mới</a>
+                <a class="dropdown-item" href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Bài báo
+                    của tôi</a>
+                <a class="dropdown-item" href="#"><i class="fa fa-star" aria-hidden="true"></i> Đăng ký Premium
+                    pass</a>
+                <a class="dropdown-item" href="#"><i class="fa fa-briefcase" aria-hidden="true"></i> Tới trang
+                    admin</a>
+                <div class="logout">
+                    <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <a href="/auth/login" class="mr-2">LOGIN</a>
+        <a href="/auth/register">REGISTER</a>
+        {{/if}}
+
+
+
     </div>
 </div>
 <div class="wrapper">
@@ -53,5 +102,4 @@
 <script>
     //Date on nav
     document.getElementById("currdate").innerHTML = presentDate();
-
 </script>

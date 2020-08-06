@@ -6,9 +6,8 @@ module.exports = function (app) {
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        maxAge: 1000 * 50 * 5
-      // secure: true
+    cookie: { 
+      
     }
   }))
 }

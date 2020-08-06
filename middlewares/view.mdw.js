@@ -24,6 +24,9 @@ module.exports = function (app) {
       ifEquals: function (arg1, arg2, options) {
         return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
       },
+      ifNotEquals: function (arg1, arg2, options) {
+        return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
+      },
       formatDate: function (datetime, format) {
         if (moment) {
           // can use other formats like 'lll' too

@@ -1,8 +1,11 @@
 const express = require('express');
 const multer = require('multer');
+const moment = require('moment');
 const accountModel = require('../models/account.model');
-
+const bcrypt = require('bcrypt');
 const router = express.Router();
+const config = require('../config/default.json');
+const { ensureAuthenticated, ensureAuthenticatedAdmin } = require('../config/auth');
 var date_diff_indays = function (date) {
     dt1 = new Date(date);
     dt2 = new Date();
@@ -19,51 +22,72 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('userPhoto');
 
 router.get('/profile', async function (req, res) {
-    const user = await accountModel.singleByID(1);
-    user.isExpire = -1;
-    // console.log(user);
-    if (user.PremiumExpireTime != null) {
-        if (date_diff_indays(user.PremiumExpireTime) > 0)
-            user.isExpire = 0;
+    const user = req.user;
+    const acc = await accountModel.singleByID(req.query.id);
+    var messages = req.flash('error');
+    var success = req.flash('success_msg');
+    acc.isExpire = -1;
+    if (acc.PremiumExpireTime != null) {
+        if (date_diff_indays(acc.PremiumExpireTime) > 0)
+            acc.isExpire = 0;
         else
-            user.isExpire = 1;
+            acc.isExpire = 1;
     };
     res.render('vwUser/profile', {
-        User: user
+        Account: acc,
+        error: messages,
+        success_msg: success,
+        user
     });
 })
 router.post('/profile/upi', async function (req, res) {
-    const date = new Date(req.body.birthday);
+    // const date = new Date(req.body.birthday);
+    const dob = moment(req.body.birthday, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const user = {
-        UserID: 1,
+        UserID: req.body.UserID,
         UserName: req.body.UserName,
         FullName: req.body.FullName,
-        BirthDay: date
+        BirthDay: dob
     }
     await accountModel.patch(user);
-
-    res.redirect('../profile');
+    req.flash('success_msg', 'Đổi thông tin thành công');
+    res.redirect(`../profile?id=${req.body.UserID}`);
 })
 router.post('/profile/upe', async function (req, res) {
-    const user = {
-        UserID: 1,
+    const entity = {
+        UserID: req.body.UserID,
         Email: req.body.Email,
     }
-    await accountModel.patch(user);
-    res.redirect('../profile');
+    console.log(entity);
+    await accountModel.patch(entity);
+    req.flash('success_msg', 'Đổi email thành công');
+    res.redirect(`../profile?id=${req.body.UserID}`);
 })
 router.post('/profile/uppw', async function (req, res) {
-    const user = {
-        UserID: 1,
-        PassWord: req.body.NewPassWord,
+    const acc =await accountModel.singleByID(req.body.UserID);
+    // console.log(acc);
+    const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
+    console.log(password_hash);
+    const match = await bcrypt.compare(password_hash, acc.PassWord);
+
+    if (match) {
+        const newpassword_hash = bcrypt.hashSync(req.body.newPassword, config.authentication.saltRounds);
+        const entity = {
+            UserID: req.body.UserID,
+            PassWord: newpassword_hash,
+        }
+        await accountModel.patch(entity);
+        req.flash('success_msg', 'Đổi mật khẩu thành công');
+    } else {
+        req.flash('error', 'Lỗi: Mật khẩu cũ không khớp!!');
     }
-    await accountModel.patch(user);
-    res.redirect('../profile');
+    res.redirect(`../profile?id=${req.body.UserID}`);
 })
 
 router.post('/api/photo', function (req, res) {
     upload(req, res, async function (err) {
-        const ob = { UserID: 1, Avatar: req.file.filename };
+        const ob = { UserID: req.body.UserID, Avatar: req.file.filename };
+        
         await accountModel.patch(ob);
         if (err) {
             return res.end("Error uploading file.");
@@ -72,6 +96,21 @@ router.post('/api/photo', function (req, res) {
     });
 });
 
+router.get('/is-available', async function (req, res) {
+    const user = await accountModel.singleByName(req.query.user);
+    if (!user) {
+        return res.json(true);
+    }
+    res.json(false);
+})
+
+router.get('/isEmail-available', async function (req, res) {
+    const email = await accountModel.checkEmail(req.query.email);
+    if (!email) {
+        return res.json(true);
+    }
+    res.json(false);
+})
 
 
 module.exports = router;

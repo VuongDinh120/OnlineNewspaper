@@ -6,18 +6,22 @@ const tagingModel = require('../models/taging.model');
 const newsModel = require('../models/news.model');
 const accountModel = require('../models/account.model');
 const assignModel = require('../models/assign.model');
+const { ensureAuthenticated, ensureAuthenticatedAdmin } = require('../config/auth');
 
 const router = express.Router();
 
 router.get('/list', async function (req, res) {
+    const user = req.user;
     const listNews = await newsModel.allWithCat(4);
     const listCat = await assignModel.allCatAssign(4);
     res.render('vwEditor/list', {
         News: listNews,
-        Assign: listCat
+        Assign: listCat,
+        user
     });
 })
 router.get('/edit', async function (req, res) {
+    const user = req.user;
     const id = req.query.id;
     const listCat = await categoryModel.allNameCat();
     const listTag = await tagModel.allPermitTag();
@@ -33,7 +37,8 @@ router.get('/edit', async function (req, res) {
         news: News[0],
         tags: listTag,
         taging: Taging,
-        writer: Writer
+        writer: Writer,
+        user
     });
 })
 router.post('/accept', async function (req, res) {

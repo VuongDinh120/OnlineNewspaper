@@ -50,6 +50,7 @@
     <div class="card">
         <div class="card-header d-flex">
             <h4 class="mr-auto">Mô tả bài viết</h4>
+            {{#ifEquals news.StatusID 4}}
             <a class="btn btn-outline-success" href="/writer/edit-article?id={{news.NewsID}}" role="button">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 Chỉnh sửa
@@ -61,6 +62,23 @@
                     Xóa
                 </button>
             </form>
+            {{else}}
+            {{#ifEquals news.StatusID 3}}
+            <a class="btn btn-outline-success" href="/writer/edit-article?id={{news.NewsID}}" role="button">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                Chỉnh sửa
+            </a>
+            <form action="/writer/delete-article" method="POST">
+                <input type="hidden" name="id" value="{{news.NewsID}}">
+                <button class="btn btn-outline-danger ml-2" type="submit">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    Xóa
+                </button>
+            </form>
+            {{else}}
+            {{/ifEquals}}
+            {{/ifEquals}}
+
         </div>
         <div class="card-body">
             <div class="pt-3 pb-5 pl-5 pr-5">
