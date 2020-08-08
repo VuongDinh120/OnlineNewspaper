@@ -8,6 +8,7 @@ var DateFormats = {
   short3: "YYYY/MM/DD",
   long: "DD-MM-YYYY HH:mm",
   long2: "Do MMMM YYYY HH:mm",
+  long3: "HH:mm DD/MM/YYYY",
 };
 
 module.exports = function (app) {
@@ -33,6 +34,21 @@ module.exports = function (app) {
           // console.log(datetime);
           format = DateFormats[format] || format;
           return moment(datetime).format(format);
+        }
+        else {
+          return datetime;
+        }
+      },
+      formatDateAgo: function (datetime) {
+        if (moment) {
+          moment.locale('vi');
+          var end = moment();
+          var duration = moment.duration(end.diff(datetime));
+          var day = duration.asDays();
+          if (day < 1) {
+            return moment(datetime).fromNow();
+          }
+          return moment(datetime).format('HH:mm DD/MM/YYYY');
         }
         else {
           return datetime;

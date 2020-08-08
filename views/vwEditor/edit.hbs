@@ -58,27 +58,36 @@
 </script>
 <script>
     $(document).ready(function () {
-        $("#tag-typer").keypress(function (event) {
+        $("#tag-typer").keypress(async function (event) {
             var key = event.which;
             var data = $("#tag-typer-hidden").val();
             if (key == 13 || key == 44) {
                 event.preventDefault();
-                var tag = $(this).val();
-
+                const str = $(this).val();
+                str.replace(/\s\s+/g, ' ');
+                var tag = $.trim(str);
+                console.log(str);
+                await $.getJSON(`/istag-available?tag=${tag}`, function (ob) {
+                    if (ob) {
+                        data = ob;
+                    }
+                })
+                console.log(data);
                 const isBlank = $.trim(tag);
                 if (tag.length > 0 && isBlank != '') {
                     if (isNaN(data)) {
                         $("<span class='tag''><span class='close-tag'>&times;</span>" +
-                            tag + " <input type='hidden' name='newtags[]' value='" + tag + "'>" +
+                            tag.toLowerCase() + " <input type='hidden' name='newtags[]' value='" + tag.toLowerCase() + "'>" +
                             " </span>").insertBefore(this);
                         $(this).val("");
                     } else {
                         $("<span class='tag''><span class='close-tag'>&times;</span>" +
-                            tag + " <input type='hidden' name='tags[]' value='" + data + "'>" +
+                            tag.toLowerCase() + " <input type='hidden' name='tags[]' value='" + data + "'>" +
                             " </span>").insertBefore(this);
                         $(this).val("");
                     }
-
+                    var num = +$("#tagchange").val() + 1;
+                    $("#tagchange").val(num);
                 } else
                     $(this).val("");
             }
@@ -86,7 +95,31 @@
 
         $("#tags").on("click", ".close-tag", function () {
             $(this).parent("span").remove();
+            var num = +$("#tagchange").val() + 1;
+            $("#tagchange").val(num);
         });
+    });
+</script>
+<script>
+    document.querySelector('input[list]').addEventListener('input', function (e) {
+        var input = e.target,
+            list = input.getAttribute('list'),
+            options = document.querySelectorAll('#' + list + ' option'),
+            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden'),
+            mytrim = input.value.replace(/\s\s+/g, ' '),
+            inputValue = mytrim.trim();
+
+        hiddenInput.value = inputValue;
+
+        for (var i = 0; i < options.length; i++) {
+            var option = options[i];
+
+
+            if (option.innerText === inputValue) {
+                hiddenInput.value = option.getAttribute('data-value');
+                break;
+            }
+        }
     });
 </script>
 <script src="/javascript/validate.js"></script>
@@ -163,9 +196,9 @@
             <a href="#Denied" data-toggle="modal" class="btn btn-danger" role="button"><i class="fa fa-times"
                     aria-hidden="true"></i> Từ chối</a>
             {{else}}
-            
+
             {{/ifEquals}}
-    
+
         </div>
     </div>
     {{!-- Accepted modal --}}
@@ -230,6 +263,7 @@
                                                 {{/each}}
                                             </datalist>
                                             <input type="hidden" name="answer" id="tag-typer-hidden">
+                                            <input type="hidden" name="tagchange" id="tagchange" value="0">
                                         </div>
                                     </label>
                                     <small id="err_Tag" class="form-text text-danger"></small>

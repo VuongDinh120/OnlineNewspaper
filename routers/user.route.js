@@ -5,7 +5,9 @@ const accountModel = require('../models/account.model');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const config = require('../config/default.json');
-const { ensureAuthenticated, ensureAuthenticatedAdmin } = require('../config/auth');
+const getCat = require('../config/getCat');
+const { ensureAuthenticated, forwardAuthenticated, ensureAuthenticatedAdmin, ensureAuthenticatedWriter, ensureAuthenticatedEditor } = require('../config/auth');
+
 var date_diff_indays = function (date) {
     dt1 = new Date(date);
     dt2 = new Date();
@@ -21,8 +23,9 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage }).single('userPhoto');
 
-router.get('/profile', async function (req, res) {
+router.get('/profile',ensureAuthenticated ,async function (req, res) {
     const user = req.user;
+    const ob = await getCat();
     const acc = await accountModel.singleByID(req.query.id);
     var messages = req.flash('error');
     var success = req.flash('success_msg');
@@ -37,34 +40,37 @@ router.get('/profile', async function (req, res) {
         Account: acc,
         error: messages,
         success_msg: success,
-        user
+        user,
+        categories: ob.listMenu,
+        isFull: ob.isfull,
+        extras: ob.listExtra,
     });
 })
 router.post('/profile/upi', async function (req, res) {
     // const date = new Date(req.body.birthday);
     const dob = moment(req.body.birthday, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const user = {
-        UserID: req.body.UserID,
+        UserID: req.user.UserID,
         UserName: req.body.UserName,
         FullName: req.body.FullName,
         BirthDay: dob
     }
     await accountModel.patch(user);
     req.flash('success_msg', 'Đổi thông tin thành công');
-    res.redirect(`../profile?id=${req.body.UserID}`);
+    res.redirect(`../profile?id=${req.user.UserID}`);
 })
 router.post('/profile/upe', async function (req, res) {
     const entity = {
-        UserID: req.body.UserID,
+        UserID: req.user.UserID,
         Email: req.body.Email,
     }
     console.log(entity);
     await accountModel.patch(entity);
     req.flash('success_msg', 'Đổi email thành công');
-    res.redirect(`../profile?id=${req.body.UserID}`);
+    res.redirect(`../profile?id=${req.user.UserID}`);
 })
 router.post('/profile/uppw', async function (req, res) {
-    const acc =await accountModel.singleByID(req.body.UserID);
+    const acc =await accountModel.singleByID(req.user.UserID);
     // console.log(acc);
     const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
     console.log(password_hash);
@@ -73,7 +79,7 @@ router.post('/profile/uppw', async function (req, res) {
     if (match) {
         const newpassword_hash = bcrypt.hashSync(req.body.newPassword, config.authentication.saltRounds);
         const entity = {
-            UserID: req.body.UserID,
+            UserID: req.user.UserID,
             PassWord: newpassword_hash,
         }
         await accountModel.patch(entity);
@@ -81,12 +87,12 @@ router.post('/profile/uppw', async function (req, res) {
     } else {
         req.flash('error', 'Lỗi: Mật khẩu cũ không khớp!!');
     }
-    res.redirect(`../profile?id=${req.body.UserID}`);
+    res.redirect(`../profile?id=${req.user.UserID}`);
 })
 
 router.post('/api/photo', function (req, res) {
     upload(req, res, async function (err) {
-        const ob = { UserID: req.body.UserID, Avatar: req.file.filename };
+        const ob = { UserID: req.user.UserID, Avatar: req.file.filename };
         
         await accountModel.patch(ob);
         if (err) {

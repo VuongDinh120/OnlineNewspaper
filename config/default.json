@@ -7,7 +7,10 @@
     "database": "newspapermanagerdb",
     "connectionLimit": 50
   },
-  "authentication":{
+  "authentication": {
     "saltRounds": 8
+  },
+  "pagination": {
+    "limit": 6
   }
 }

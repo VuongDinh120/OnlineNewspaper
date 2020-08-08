@@ -86,8 +86,8 @@ function Validate_Submit_EditNews() {
         title.scrollIntoView();
         isValid = false;
     }
-    if (tag.length <= 1) {
-        document.getElementById('err_Tag').innerHTML = 'Phải có ít nhất 2 nhãn tag';
+    if (tag.length == 0) {
+        document.getElementById('err_Tag').innerHTML = 'Phải có ít nhất 1 nhãn tag';
         document.getElementById('err_Tag').scrollIntoView();
         isValid = false;
     }
@@ -129,8 +129,8 @@ function Validate_Submit_AcceptNews() {
     const releasedate = document.getElementById('releaseDate'),
         tag = document.getElementsByClassName('tag');
     console.log(tag);
-    if (tag.length <= 1) {
-        document.getElementById('err_Tag').innerHTML = 'Phải có ít nhất 2 nhãn tag';
+    if (tag.length < 1) {
+        document.getElementById('err_Tag').innerHTML = 'Phải có ít nhất 1 nhãn tag';
         // document.getElementById('err_Tag').scrollIntoView();
         isValid = false;
     }

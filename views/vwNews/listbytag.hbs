@@ -1,0 +1,68 @@
+<div class="container-xl contain-siz">
+    <div class="ml-4 mb-5">
+        <h3>Thẻ: {{tag.TagName}}</h3>
+    </div>
+    <div>
+        <div class="byCat-news">
+            {{#each news}}
+            <div class="item d-flex align-items-start">
+                <div class="item-thumbnail">
+                    <a href="">
+                        <img src="/img/articles/{{IMG}}" alt="">
+                    </a>
+                </div>
+                <div class="item-meta">
+                    <a href="/news/list-by-Cat/{{CatID}}"><span class="categorylabel">{{CatName}}</span></a>
+                    <h3 class="item-title"><a href="" style="color: #333;">{{Title}}</a> </h3>
+                    <div class="ls-tag flex-wrap">
+                        {{#each Tags}}
+                        <a href="/news/list-by-tag/{{TagID}}" class="tagr">{{TagName}}</a>
+                        {{/each}}
+                    </div>
+                    <div class="item-date">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i> {{formatDate ReleaseDate "HH:mm"}} <i
+                            class="fa fa-calendar" aria-hidden="true"></i> {{formatDate ReleaseDate "DD/MM/YYYY"}}
+                    </div>
+                    <div class="item-date">
+                        {{Views}} lượt xem
+                    </div>
+                    <div class="item-decription text-muted">
+                        {{TinyDes}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item {{#unless can_go_prev}}disabled{{/unless}}">
+                        <a class="page-link" href="?page={{prev_value}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {{#each this.page_items}}
+                    {{#if isActive}}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">
+                            {{value}}
+                            <span class="sr-only">(current)</span>
+                        </span>
+                    </li>
+                    {{else}}
+                    <li class="page-item {{#if isDisabled}}disabled{{/if}}">
+                        <a class="page-link" href="?page={{value}}">{{value}}</a>
+                    </li>
+                    {{/if}}
+                    {{/each}}
+                    <li class="page-item {{#unless can_go_next}}disabled{{/unless}}">
+                        <a class="page-link" href="?page={{next_value}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

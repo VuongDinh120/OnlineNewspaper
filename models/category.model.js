@@ -2,7 +2,8 @@ const db = require('../utils/db');
 
 const TBL_CATEGORIES = 'category';
 const VW_CATEGORIES = 'catgroup';
-
+const VW_catfamily = 'catfamily';
+const VW_CatOnlySon = 'catonlyson'
 module.exports = {
   all: function () {
     return db.load(`select * from ${TBL_CATEGORIES}`);
@@ -17,11 +18,31 @@ module.exports = {
     order by d1.CatID asc`);
   },
   allWithOnlyFirstNode: function () {
-    return db.load(`
-    SELECT CatID, CatName FROM ${TBL_CATEGORIES} WHERE ParentID is null`);
+    return db.load(`SELECT CatID, CatName FROM ${TBL_CATEGORIES} WHERE ParentID is null`);
   },
-  single: function (id) {
-    return db.load(`select * from ${TBL_CATEGORIES} where CatID = ${id}`);
+  getSonCat: function (id) {
+    const rows = db.load(`select CatID, CatName, ParentID from ${VW_CatOnlySon} where ParentID = ${id}`);
+    if (rows.length === 0)
+      return null;
+    return rows;
+  },
+  getfatherCat: async function (id) {
+    const rows = await db.load(`select CatID,CatName from ${VW_catfamily} where SonID = ${id}`);
+    if (rows.length === 0)
+      return null;
+    return rows[0];
+  },
+  getCatName: async function (id) {
+    const rows = await db.load(`select CatID,CatName from ${TBL_CATEGORIES} where CatID = ${id}`);
+    if (rows.length === 0)
+      return null;
+    return rows[0];
+  },
+  single: async function (id) {
+    const rows = await db.load(`select * from ${TBL_CATEGORIES} where CatID = ${id}`);
+    if (rows.length === 0)
+      return null;
+    return rows[0];
   },
   add: function (entity) {
     return db.add(TBL_CATEGORIES, entity);

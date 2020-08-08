@@ -30,6 +30,15 @@
             $pwd.attr('type', 'password');
         }
     });
+
+    $('#loginForm').keydown(function () {
+        var key = e.which;
+        if (key == 13) {
+            // As ASCII code for ENTER key is "13"
+            $('#loginForm').submit(); // Submit form code
+        }
+    });
+
 </script>
 <script src="/javascript/validate.js"></script>
 {{/section}}
@@ -87,7 +96,8 @@
                             </div>
 
                             <div class="text-center pt-2">
-                                <a class="btn btn-link text-primary" href="#">Forgot Your Password?</a>
+                                <a class="btn btn-link text-primary" href="#forgotPass" data-toggle="modal"
+                                    data-target="#forgotPass">Quên mật khẩu?</a>
                             </div>
                         </form>
                     </div>
@@ -114,7 +124,8 @@
                             </div>
                             <div class="form-group">
                                 <input type="text" name="birthday" id="birthdate" class="form-control"
-                                    placeholder="Ngày sinh" onclick="ClearError('err_birthday',this)" autocomplete="off" required>
+                                    placeholder="Ngày sinh" onclick="ClearError('err_birthday',this)" autocomplete="off"
+                                    required>
                                 <small id="err_birthday" class="form-text text-danger"></small>
                             </div>
                             <div class="form-group" style="position: relative;">
@@ -150,4 +161,28 @@
         </div>
     </div>
 
+</div>
+{{!-- Modal forgotpass --}}
+<div class="modal fade" id="forgotPass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <input type="email" name="forfot-email" class="form-control" placeholder="Email"
+                     required>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>

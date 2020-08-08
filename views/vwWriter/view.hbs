@@ -1,7 +1,8 @@
 <div class="container-xl contain-siz">
-    <div class="card mb-5">
-        <div class="card-header d-flex">
+    <div class="card mb-2">
+        <div class="card-header">
             <h4 class="mr-auto">Thông tin bài viết</h4>
+
         </div>
         <div class="card-body">
             <div class="row">
@@ -47,7 +48,11 @@
             </div>
         </div>
     </div>
-    <div class="card">
+    <div class="d-flex justify-content-center">
+        <a href="./list-article" class="btn btn-info" role="button"><i class="fa fa-angle-double-left"
+                aria-hidden="true"></i> Trở về</a>
+    </div>
+    <div class="card mt-2">
         <div class="card-header d-flex">
             <h4 class="mr-auto">Mô tả bài viết</h4>
             {{#ifEquals news.StatusID 4}}
@@ -76,6 +81,17 @@
                 </button>
             </form>
             {{else}}
+            <a class="btn btn-outline-success" href="/writer/edit-article?id={{news.NewsID}}" role="button">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                Chỉnh sửa
+            </a>
+            <form action="/writer/delete-article" method="POST">
+                <input type="hidden" name="id" value="{{news.NewsID}}">
+                <button class="btn btn-outline-danger ml-2" type="submit">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    Xóa
+                </button>
+            </form>
             {{/ifEquals}}
             {{/ifEquals}}
 
@@ -98,10 +114,10 @@
                 <div class="mb-1 mt-1"><i class="fa fa-clock-o" aria-hidden="true"></i> Thời gian đăng: 1 giờ trước
                 </div>
                 <h1>{{news.Title}}</h1>
-                <div style="margin-top: 20px;">
+                <div class="ls-tag flex-wrap mt-3">
                     {{!-- <span>Tag:</span> --}}
                     {{#each taging}}
-                    <span class="tag">{{TagName}}</span>
+                    <span class="tagr">{{TagName}}</span>
                     {{/each}}
                 </div>
                 <div class="mt-4 mb-4 text-mute" style="font-weight: 700; font-size:20px;">
@@ -122,11 +138,6 @@
                     {{/if}}
                 </div>
             </div>
-        </div>
-
-        <div class="card-footer text-muted" style="text-align: center;">
-            <a href="./list-article" class="btn btn-info btn-block" role="button"><i class="fa fa-angle-double-left"
-                    aria-hidden="true"></i> Trở về</a>
         </div>
 
     </div>
