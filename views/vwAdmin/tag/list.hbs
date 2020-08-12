@@ -1,0 +1,195 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css">
+{{!-- <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css"> --}}
+
+<style>
+    .tablesorter-pager .btn-group-sm .btn {
+        font-size: 1.2em;
+        /* make pager arrows more visible */
+    }
+</style>
+{{/section}}
+{{#section 'js'}}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js"></script>
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter-formatter-jui.min.js"></script> --}}
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/extras/jquery.tablesorter.pager.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter.min.js"></script>
+<script>
+    $(function () {
+
+        $("table").tablesorter({
+            theme: "bootstrap",
+
+            widthFixed: true,
+
+            // widget code contained in the jquery.tablesorter.widgets.js file
+            // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+            // the uitheme widget is NOT REQUIRED!
+            widgets: ["filter", "columns", "zebra"],
+
+            widgetOptions: {
+                // using the default zebra striping class name, so it actually isn't included in the theme variable above
+                // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+                zebra: ["even", "odd"],
+
+                // class names added to columns when sorted
+                columns: ["primary", "secondary", "tertiary"],
+
+                // reset filters button
+                filter_reset: ".reset",
+
+                // extra css class name (string or array) added to the filter element (input or select)
+                filter_cssFilter: [
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control'
+                ]
+
+            }
+        })
+            .tablesorterPager({
+
+                // target the pager markup - see the HTML block below
+                container: $(".ts-pager"),
+
+                // target the pager page select dropdown - choose a page
+                cssGoto: ".pagenum",
+
+                // remove rows from the table to speed up the sort of large tables.
+                // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+                removeRows: false,
+
+                // output string - default is '{page}/{totalPages}';
+                // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+                output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+            });
+    });
+</script>
+{{/section}}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark pl-0">
+            <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
+                <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                        lý tài khoản</a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-3 nav">
+                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <div class="card contain-siz">
+                <div class="card-header d-flex justify-content-between">
+                    <h4>Danh sách tag</h4>
+                    <a class="btn btn-outline-success" href="/admin/tags/add" role="button">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Thêm tag
+                    </a>
+                </div>
+                <div class="card-body ">
+                    <button type="button" class="reset btn btn-primary mb-2" data-column="0" data-filter=""><i
+                            class="fa fa-filter" aria-hidden="true"></i> Reset
+                        filters</button>
+
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên tag</th>
+                                <th>Số liên kết</th>
+                                <th class="sorter-false filter-false">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên tag</th>
+                                <th>Số liên kết</th>
+                                <th>Thao tác</th>
+                            </tr>
+                            <tr>
+                                <th colspan="4" class="ts-pager">
+                                    <div class="form-inline">
+                                        <div class="ml-5">Số dòng:</div>
+                                        <select class="form-control-sm custom-select px-4 pagesize"
+                                            title="Select page size">
+                                            <option selected="selected" value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="30">30</option>
+                                            <option value="all">Tất cả</option>
+                                        </select>
+                                        <div class="ml-5">Trang:</div>
+                                        <select class="form-control-sm custom-select px-4 mx-1 pagenum "
+                                            title="Select page number"></select>
+                                        <div class="btn-group btn-group-sm mx-1 ml-5" role="group">
+                                            <button type="button" class="btn btn-secondary first" title="first">Trang
+                                                đầu</button>
+                                            <button type="button" class="btn btn-secondary prev"
+                                                title="previous">←</button>
+                                        </div>
+                                        <span class="pagedisplay"></span>
+                                        <div class="btn-group btn-group-sm mx-1" role="group">
+                                            <button type="button" class="btn btn-secondary next" title="next">→</button>
+                                            <button type="button" class="btn btn-secondary last" title="last">Trang
+                                                cuối</button>
+                                        </div>
+
+                                    </div>
+                                </th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {{#each tags}}
+                            <tr>
+                                <td>{{@index}}</td>
+                                <td>{{TagName}}</td>
+                                <td>{{CountNews}}</td>
+                                <td class="d-flex justify-content-center">
+                                    <a class="btn btn-primary btn-sm" href="/admin/tags/edit/{{TagID}}" role="button"
+                                        title="update">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                    <form action="/admin/tags/del" method="post">
+                                        <input type="hidden" name="id" value="{{TagID}}">
+                                        <button type="submit" class="btn btn-danger btn-sm ml-1"> <i class="fa fa-trash"
+                                                aria-hidden="true"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+
+                </div>
+                {{!-- <div class="card-footer text-muted">
+            Footer
+        </div> --}}
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

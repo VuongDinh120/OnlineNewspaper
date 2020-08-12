@@ -35,7 +35,12 @@ module.exports = {
   },
   singleByNews: async function (id) {
     const rows = await db.load(`SELECT us.UserID, us.UserName, us.FullName, us.PassWord, us.Pseudonym, us.Email, us.Avatar, us.BirthDay ,us.PremiumExpireTime FROM ${TBL_USER} us join ${TBL_NEWS} nw on us.UserID = nw.Writer where nw.NewsID = ${id} LIMIT 1`);
-    // console.log(rows[0]);
+    if (rows.length === 0)
+      return null;
+    return rows[0];
+  },
+  singleByToken: async function (token) {
+    const rows = await db.load(`SELECT UserID, ResetPasswordExpireTime FROM ${TBL_USER} WHERE ResetPasswordToken = '${token}'`);
     if (rows.length === 0)
       return null;
     return rows[0];
@@ -49,5 +54,12 @@ module.exports = {
     }
     delete entity.UserID;
     return db.patch(TBL_USER, entity, condition);
-  }
+  },
+  patchByEmai: function (entity) {
+    const condition = {
+      Email: entity.Email
+    }
+    delete entity.Email;
+    return db.patch(TBL_USER, entity, condition);
+  },
 };

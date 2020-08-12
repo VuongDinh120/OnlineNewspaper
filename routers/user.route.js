@@ -23,7 +23,7 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage }).single('userPhoto');
 
-router.get('/profile',ensureAuthenticated ,async function (req, res) {
+router.get('/profile', ensureAuthenticated, async function (req, res) {
     const user = req.user;
     const ob = await getCat();
     const acc = await accountModel.singleByID(req.query.id);
@@ -70,7 +70,7 @@ router.post('/profile/upe', async function (req, res) {
     res.redirect(`../profile?id=${req.user.UserID}`);
 })
 router.post('/profile/uppw', async function (req, res) {
-    const acc =await accountModel.singleByID(req.user.UserID);
+    const acc = await accountModel.singleByID(req.user.UserID);
     // console.log(acc);
     const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
     console.log(password_hash);
@@ -89,11 +89,10 @@ router.post('/profile/uppw', async function (req, res) {
     }
     res.redirect(`../profile?id=${req.user.UserID}`);
 })
-
 router.post('/api/photo', function (req, res) {
     upload(req, res, async function (err) {
         const ob = { UserID: req.user.UserID, Avatar: req.file.filename };
-        
+
         await accountModel.patch(ob);
         if (err) {
             return res.end("Error uploading file.");
@@ -101,6 +100,29 @@ router.post('/api/photo', function (req, res) {
         res.end("File is uploaded");
     });
 });
+
+router.get('/buy-premier', ensureAuthenticated, async function (req, res) {
+    const user = req.user;
+    const ob = await getCat();
+    res.render('vwUser/buyPremier', {
+        user,
+        categories: ob.listMenu,
+        isFull: ob.isfull,
+        extras: ob.listExtra,
+    });
+})
+
+router.post('/buy-premier', ensureAuthenticated, async function (req, res) {
+   // const date = new Date(req.body.birthday);
+   var timeExpire = moment(new Date()).add(1, 'minutes').format('YYYY-MM-DD hh:mm:ss');
+   const user = {
+       UserID: req.user.UserID,
+       PremiumExpireTime: timeExpire
+   }
+   await accountModel.patch(user);
+   req.flash('success_msg', 'Đăng kí gói premier thành công');
+   res.redirect(`/`);
+})
 
 router.get('/is-available', async function (req, res) {
     const user = await accountModel.singleByName(req.query.user);

@@ -1,0 +1,98 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" />{{/section}}
+
+{{#section 'js'}}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="/javascript/validate.js"></script>
+<script>
+
+    $("#reveal").on('click', function () {
+        var $pwd = $("#password");
+        if ($pwd.attr('type') === 'password') {
+            $pwd.attr('type', 'text');
+        } else {
+            $pwd.attr('type', 'password');
+        }
+    });
+    $("#reveal2").on('click', function () {
+        var $pwd = $("#password2");
+        if ($pwd.attr('type') === 'password') {
+            $pwd.attr('type', 'text');
+        } else {
+            $pwd.attr('type', 'password');
+        }
+    });
+
+    $('#resetForm').keydown(function () {
+        var key = e.which;
+        if (key == 13) {
+            // As ASCII code for ENTER key is "13"
+            Validate_Submit_Reset()// Submit form code
+        }
+    });
+
+</script>
+
+{{/section}}
+<div class="container-fluid contain-siz" style="background-color: #29aafe;">
+    <div class="d-flex justify-content-center">
+        <div class="card mx-auto border-0" style="width: 40%;">
+            <div class="d-flex justify-content-center" style="background-color: #333;">
+                <img src="/img/logo2.png">
+            </div>
+            <div class="card-header border-bottom-0 bg-transparent">
+                <ul class="nav nav-tabs justify-content-center pt-4" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active text-primary" id="pills-login-tab"
+                            data-toggle="pill" href="#pills-login" role="tab" aria-controls="pills-login"
+                            aria-selected="true">Reset mật khẩu</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body pb-4">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel"
+                        style="padding: 0 5rem;" aria-labelledby="pills-login-tab">
+                        <form id="resetForm" action="/auth/reset" method="POST">
+                            <div class="form-group">
+                                 <div class="input-group">
+                                    <input type="password" name="password" class="form-control" id="password"
+                                        placeholder="Mật khẩu mới" onclick="ClearError('err_password',this)" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="input-group-text" id="reveal">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <small id="err_password" class="form-text text-danger"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password2"
+                                        placeholder="Xác nhận mật khẩu" onclick="ClearError('err_password2',this)" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="input-group-text" id="reveal2">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <small id="err_password2" class="form-text text-danger"></small>
+                            </div>
+                            <input type="hidden" name="id" value="{{user.UserID}}">
+                            <div class="text-center pt-4">
+                                <button type="button" class="btn btn-primary" onclick="Validate_Submit_Reset()">Xác nhận</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

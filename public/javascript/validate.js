@@ -6,57 +6,7 @@ function ClearError(errMsg, input) {
     document.getElementById(errMsg).innerHTML = '';
 }
 
-// function checkpassword(password) {
-//     var strength = 0;
-//     if (password.match(/[a-z]+/)) {
-//         strength += 1;
-//     }
-//     if (password.match(/[A-Z]+/)) {
-//         strength += 1;
-//     }
-//     if (password.match(/[0-9]+/)) {
-//         strength += 1;
-//     }
-//     if (password.match(/[$@#&!]+/)) {
-//         strength += 1;
 
-//     }
-
-//     if (password.length < 6) {
-//         display.innerHTML = "minimum number of characters is 6";
-//     }
-
-//     if (password.length > 12) {
-//         display.innerHTML = "maximum number of characters is 12";
-//     }
-
-//     switch (strength) {
-//         case 0:
-//             strengthbar.value = 0;
-//             break;
-//             switch (strength) {
-//                 case 0:
-//                     strengthbar.value = 0;
-//                     break;
-
-//                 case 1:
-//                     strengthbar.value = 25;
-//                     break;
-
-//                 case 2:
-//                     strengthbar.value = 50;
-//                     break;
-
-//                 case 3:
-//                     strengthbar.value = 75;
-//                     break;
-
-//                 case 4:
-//                     strengthbar.value = 100;
-//                     break;
-//             }
-//     }
-// }
 
 //kiểm tra input trước khi submit
 //Trang sửa bài viết của nhà báo
@@ -167,8 +117,8 @@ function Validate_Submit_DenyNews() {
     if (isValid == true)
         document.getElementById("DeniedForm").submit();
 }
-
- function Validate_Profile_Change_pwd() {
+//xử lý đổi mật khẩu profile
+function Validate_Profile_Change_pwd() {
     let isValid = true;
     let a = document.getElementsByTagName("small");
     for (i = 0; i < a.length; i++) {
@@ -211,6 +161,7 @@ function Validate_Submit_DenyNews() {
     if (isValid == true)
         document.getElementById("passwForm").submit();
 }
+//xử lí thay đổi email
 async function Validate_Profile_Change_email() {
     let isValid = true;
     let a = document.getElementsByTagName("small");
@@ -235,6 +186,7 @@ async function Validate_Profile_Change_email() {
     if (isValid == true)
         document.getElementById("emailForm").submit();
 }
+//xử lí thay đổi thông tin profile
 async function Validate_Profile_Change_info() {
     var isValid = true;
     const username = document.getElementById('userName');
@@ -280,7 +232,7 @@ async function Validate_Profile_Change_info() {
     if (isValid == true)
         document.getElementById("personalForm").submit();
 }
-
+//xử lí đăng nhập
 function Validate_Submit_Login() {
     var isValid = true;
     const username = document.getElementById('username_log');
@@ -307,7 +259,7 @@ function Validate_Submit_Login() {
     if (isValid == true)
         document.getElementById("loginForm").submit();
 }
-
+//xử lí đăng kí
 async function Validate_Submit_Register() {
     var isValid = true;
     const username = document.getElementById('username_res');
@@ -382,3 +334,162 @@ async function Validate_Submit_Register() {
     if (isValid == true)
         document.getElementById("registerForm").submit();
 }
+//xử lí quên mật khẩu
+async function Validate_Submit_Forgot() {
+    var isValid = true;
+
+    const email = document.getElementById('forfot-email');
+
+    if (email.value == '') {
+        email.classList.add("border-danger");
+        document.getElementById('err_forfot_email').innerHTML = 'Email không được trống';
+        isValid = false;
+    } else {
+        await $.getJSON(`/account/isEmail-available?email=${email.value}`, function (data) {
+            if (data === true) {
+                email.classList.add("border-danger");
+                document.getElementById('err_forfot_email').innerHTML = 'Email chưa được đăng kí';
+                isValid = false;
+            }
+        })
+    }
+
+    console.log(isValid);
+    if (isValid == true)
+        document.getElementById("forgotForm").submit();
+}
+//Xử lý reset mật khẩu
+function Validate_Submit_Reset() {
+    var isValid = true;
+    const password = document.getElementById('password');
+    const password2 = document.getElementById('password2');
+
+
+    if (password.value == '') {
+        password.classList.add("border-danger");
+        document.getElementById('err_password').innerHTML = 'không được để trống';
+        isValid = false;
+    }
+    else if (password.value.length < 6) {
+        password.classList.add("border-danger");
+        document.getElementById('err_password').innerHTML = 'Mật khẩu phải có ít nhất 6 kí tự';
+        isValid = false;
+    }
+
+    if (password2.value == '') {
+        password2.classList.add("border-danger");
+        document.getElementById('err_password2').innerHTML = 'không được để trống';
+        isValid = false;
+    }
+    else if (password2.value != password.value) {
+        password2.classList.add("border-danger");
+        document.getElementById('err_password2').innerHTML = 'Mật khẩu không khớp';
+        isValid = false;
+    }
+
+    console.log(isValid);
+    if (isValid == true)
+        document.getElementById("resetForm").submit();
+}
+
+async function Validate_edit_tag() {
+    let isValid = true;
+    const tag = document.getElementById('tagname');
+    if (tag.value == '') {
+        tag.classList.add("border-danger");
+        document.getElementById('err_tag').innerHTML = 'không được để trống';
+        isValid = false;
+    } else {
+        const val = tag.value
+        await $.getJSON(`/istag-available?tag=${val.toLowerCase()}`, function (data) {
+            if (data !== false) {
+                tag.classList.add("border-danger");
+                document.getElementById('err_tag').innerHTML = 'đã có tag này';
+                isValid = false;
+            }
+        })
+    }
+
+    if (isValid == true)
+        document.getElementById("tagForm").submit();
+}
+
+async function Validate_edit_category() {
+    let isValid = true;
+    const cat = document.getElementById('catname');
+    var e = document.getElementById("lbcat");
+    var id = e.options[e.selectedIndex].value;
+    if (cat.value == '') {
+        cat.classList.add("border-danger");
+        document.getElementById('err_cat').innerHTML = 'Không được để trống';
+        isValid = false;
+    } else {
+        const val = cat.value
+        await $.getJSON(`/iscat-available?cat=${val}&id=${id}`, function (data) {
+            if (data === false) {
+                cat.classList.add("border-danger");
+                document.getElementById('err_cat').innerHTML = 'Đã có danh mục này';
+                isValid = false;
+            }
+        })
+    }
+
+    if (isValid == true)
+        document.getElementById("catForm").submit();
+}
+
+
+
+
+
+// function checkpassword(password) {
+//     var strength = 0;
+//     if (password.match(/[a-z]+/)) {
+//         strength += 1;
+//     }
+//     if (password.match(/[A-Z]+/)) {
+//         strength += 1;
+//     }
+//     if (password.match(/[0-9]+/)) {
+//         strength += 1;
+//     }
+//     if (password.match(/[$@#&!]+/)) {
+//         strength += 1;
+
+//     }
+
+//     if (password.length < 6) {
+//         display.innerHTML = "minimum number of characters is 6";
+//     }
+
+//     if (password.length > 12) {
+//         display.innerHTML = "maximum number of characters is 12";
+//     }
+
+//     switch (strength) {
+//         case 0:
+//             strengthbar.value = 0;
+//             break;
+//             switch (strength) {
+//                 case 0:
+//                     strengthbar.value = 0;
+//                     break;
+
+//                 case 1:
+//                     strengthbar.value = 25;
+//                     break;
+
+//                 case 2:
+//                     strengthbar.value = 50;
+//                     break;
+
+//                 case 3:
+//                     strengthbar.value = 75;
+//                     break;
+
+//                 case 4:
+//                     strengthbar.value = 100;
+//                     break;
+//             }
+//     }
+// }

@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark">
+            <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
+                <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                        lý tài khoản</a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-3 nav">
+                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <div class="card contain-siz">
+                <div class="card-header d-flex justify-content-center">
+                    <h4>Thêm tag</h4>
+                </div>
+                <div class="card-body" style="padding: 0 300px;">
+                    <form id="tagForm" action="/admin/tags/add" method="post">
+                        <div class="form-group">
+                            <label for="tagname">Tên tag</label>
+                            <input type="text" class="form-control" name="name" id="tagname"
+                                onclick="ClearError('err_tag',this)">
+                            <small id="err_tag" class="form-text text-danger"></small>
+                        </div>
+                    </form>
+                     <div>
+                        <button type="button" class="btn btn-danger float-right mx-2" onclick="history.back()">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            Hủy
+                        </button>
+                       <button type="button" class="btn btn-info float-right" onclick="Validate_edit_tag()">Thêm</button>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#section 'js'}}
+<script src="/javascript/validate.js"></script>
+{{/section}}

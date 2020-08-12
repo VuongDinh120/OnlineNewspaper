@@ -12,5 +12,9 @@
   },
   "pagination": {
     "limit": 6
+  },
+  "admin":{
+    "email": "newshopenewspage@gmail.com",
+    "password": "news@page"
   }
 }

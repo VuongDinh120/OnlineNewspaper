@@ -55,8 +55,8 @@ router.post('/accept', async function (req, res) {
     };
     const newTags = req.body.newtags || null;
     const availableTags = req.body.tags;
-    console.log('ádasdasdas')
-    console.log(newTags);
+    // console.log('ádasdasdas')
+    // console.log(newTags);
     await newsModel.patch(article);
     // console.log(req.body.tagchange);
     if (req.body.tagchange > 0 || newTags != null) {
