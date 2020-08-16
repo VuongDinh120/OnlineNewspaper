@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark">
+            <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
+                <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                        lý tài khoản</a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-3 nav">
+                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <div class="contain-siz">
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4 class="mr-auto">Thông tin tài khoản</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="center" style="width:100%">
+                                    {{#if account.Avatar}}
+                                    <img src="/img/user/{{account.Avatar}}" alt="Ảnh đại diện"
+                                        style="object-fit: cover; width: 200px; height: 200px; border-radius:50%">
+                                    {{else}}
+                                    <img src="/img/user.png" alt="Ảnh đại diện"
+                                        style="object-fit: cover; width: 200px; border-radius:3px">
+                                    {{/if}}
+
+                                    <div class="center" style="font-style: italic;">Ảnh đại diện</div>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="news-detail">
+                                    <p>
+                                        <span>ID: </span>{{account.UserID}}
+                                    </p>
+                                    <p>
+                                        <span>Tên tài khoản: </span>{{account.UserName}}
+                                    </p>
+                                    <p>
+                                        <span>Tên đầy đủ: </span> {{account.FullName}}
+                                    </p>
+                                    <p>
+                                        <span>Email: </span> {{account.Email}}
+                                    </p>
+                                    <p>
+                                        <span>Ngày sinh:
+                                        </span>{{formatDate account.BirthDay "DD/MM/YYYY"}}
+                                    </p>
+                                    {{#ifEquals account.RoleID 3}}
+                                    <p>
+                                        <span>Bút danh: </span>{{account.Pseudonym}}
+                                    </p>
+                                    {{/ifEquals}}
+                                    <p>
+                                        <span>Loại tài khoản: </span> {{account.RoleName}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="/admin/account/list" class="btn btn-info" role="button"><i class="fa fa-angle-double-left"
+                            aria-hidden="true"></i> Trở về</a>
+                    <a href="/admin/account/edit/{{account.UserID}}" class="btn btn-success ml-2" role="button"><i
+                            class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
+
+                    <form action="/admin/account/del?id={{account.UserID}}" method="POST">
+                        <button class="btn btn-danger ml-2" type="submit">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Xóa
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{#section 'js'}}
+<script src="/javascript/validate.js"></script>
+{{/section}}

@@ -1,0 +1,187 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark">
+            <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
+                <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                        lý tài khoản</a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-3 nav">
+                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <div class="contain-siz">
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4 class="mr-auto">Thông tin bài viết</h4>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="news-detail">
+                                    <p>
+                                        <span>ID: </span>{{news.NewsID}}
+                                    </p>
+                                    <p>
+                                        <span>Tiêu đề: </span>{{news.Title}}
+                                    </p>
+                                    <p>
+                                        <span>Danh mục: </span> {{news.CatParent}} - {{news.CatName}}
+                                    </p>
+                                    <p>
+                                        <span>Loại bài viết: </span> {{#ifEquals news.isPremium 1}}
+                                        Premium
+                                        {{else}}
+                                        Thường
+                                        {{/ifEquals}}
+                                    </p>
+                                    <p>
+                                        <span>Thời gian xuất bản:
+                                        </span>{{formatDate news.ReleaseDate "HH:mm DD/MM/YYYY"}}
+                                    </p>
+                                    <p>
+                                        <span>Lượt xem: </span>{{news.Views}}
+                                    </p>
+                                    <p>
+                                        <span>Trạng thái: </span>{{news.StaName}}
+                                    </p>
+                                    {{#if news.Issue}}
+                                    <p>
+                                        <span>Lý do: </span>{{news.Issue}}
+                                    </p>
+                                    {{/if}}
+                                    <p>
+                                        <span>Nội dung tóm tát: </span> {{news.TinyDes}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="center" style="width:100%">
+                                    <img src="/img/articles/{{news.IMG}}" alt="Ảnh bìa"
+                                        style="object-fit: cover; width: 400px; border-radius:3px">
+                                    <div class="center" style="font-style: italic;">Ảnh bìa</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="/admin/news/list" class="btn btn-info" role="button"><i class="fa fa-angle-double-left"
+                            aria-hidden="true"></i> Trở về</a>
+                    {{#ifNotEquals news.StatusID 2}}
+                    <form action="/admin/news/status?id={{news.NewsID}}" method="POST">
+                        <button class="btn btn-success ml-2" type="submit">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            Xuất bản
+                        </button>
+                    </form>
+                    {{/ifNotEquals}}
+                </div>
+                <div class="card mt-2">
+                    <div class="card-header d-flex">
+                        <h4 class="mr-auto">Nội dung bài viết</h4>
+                        {{#ifEquals news.StatusID 4}}
+                        <a class="btn btn-outline-success" href="/admin/news/edit?id={{news.NewsID}}" role="button">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Chỉnh sửa
+                        </a>
+                        <form action="/admin/news/del?id={{news.NewsID}}" method="POST">
+                            <button class="btn btn-outline-danger ml-2" type="submit">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                Xóa
+                            </button>
+                        </form>
+                        {{else}}
+                        {{#ifEquals news.StatusID 3}}
+                        <a class="btn btn-outline-success" href="/admin/news/edit?id={{news.NewsID}}" role="button">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Chỉnh sửa
+                        </a>
+                        <form action="/admin/news/del?id={{news.NewsID}}" method="POST">
+                            <button class="btn btn-outline-danger ml-2" type="submit">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                Xóa
+                            </button>
+                        </form>
+                        {{else}}
+                        <a class="btn btn-outline-success" href="/admin/news/edit?id={{news.NewsID}}" role="button">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Chỉnh sửa
+                        </a>
+                        <form action="/admin/news/del?id={{news.NewsID}}" method="POST">
+                            <button class="btn btn-outline-danger ml-2" type="submit">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                Xóa
+                            </button>
+                        </form>
+                        {{/ifEquals}}
+                        {{/ifEquals}}
+
+                    </div>
+                    <div class="card-body">
+                        <div class="pt-3 pb-5 pl-5 pr-5">
+                            <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%;">
+                                <div>
+                                    <ul class="breadcrumb d-flex justify-content-start align-items-center">
+                                        {{#if news.CatParent}}
+                                        <li style="font-size: 30px; cursor:pointer"><a>{{news.CatParent}}</a></li>
+                                        {{/if}}
+                                        <li class="catLink"><a>{{news.CatName}}</a></li>
+                                    </ul>
+                                </div>
+                                {{#ifEquals news.isPremium 1}}
+                                <div class="mr-4 Premier"><i class="fa fa-star" aria-hidden="true"></i> Premium</div>
+                                {{/ifEquals}}
+                            </div>
+                            <div class="mb-1 mt-1"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                                {{formatDate news.ReleaseDate "HH:mm DD/MM/YYYY"}}
+                            </div>
+                            <h1>{{news.Title}}</h1>
+                            <div class="ls-tag flex-wrap mt-3">
+
+                                {{#each taging}}
+                                <span class="tagr">{{TagName}}</span>
+                                {{/each}}
+                            </div>
+                            <div class="mt-4 mb-4 text-mute" style="font-weight: 700; font-size:20px;">
+                                {{news.TinyDes}}
+                            </div>
+                            <div style="width: 100%; text-align: center; margin:30px 0">
+                                <img src="/img/articles/{{news.IMG}}" style="width: 100%; object-fit: cover; ">
+                            </div>
+
+                            <div style="border-top: 1px solid #EBEBEB;padding-top:20px">
+                                {{{news.FullDes}}}
+                            </div>
+                            <div style="font-weight: bold; font-size:1rem; text-align:right">
+                                {{#if news.Pseudonym}}
+                                {{news.Pseudonym}}
+                                {{else}}
+                                {{news.FullName}}
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{#section 'js'}}
+<script src="/javascript/validate.js"></script>
+{{/section}}

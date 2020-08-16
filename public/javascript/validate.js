@@ -21,7 +21,8 @@ function Validate_Submit_EditNews() {
         fullDes = tinymce.get("txtFullDes").getContent(),
         img = document.getElementsByTagName('img'),
         tag = document.getElementsByClassName('tag'),
-        cat = document.getElementById('lbcat');
+        cat = document.getElementById('lbcat'),
+        releasedate = document.getElementById('releaseDate') || null;
     // console.log(cat.value);
     if (cat.value == '') {
         cat.classList.add("border-danger");
@@ -52,8 +53,8 @@ function Validate_Submit_EditNews() {
         document.getElementById('err_FullDes').scrollIntoView();
         isValid = false;
     }
-    if (fullDes.length <= 1500 && fullDes.length != 0) {
-        document.getElementById('err_FullDes').innerHTML = 'Phải có ít nhất 500 từ';
+    if (fullDes.length <= 100 && fullDes.length != 0) {
+        document.getElementById('err_FullDes').innerHTML = 'Phải có ít nhất 100 từ';
         document.getElementById('err_FullDes').scrollIntoView();
         isValid = false;
     }
@@ -63,6 +64,13 @@ function Validate_Submit_EditNews() {
         document.getElementById('err_IMG').innerHTML = 'Thiếu ảnh bìa bài báo';
         document.getElementById('err_IMG').scrollIntoView();
         isValid = false;
+    }
+    if (releasedate !== null) {
+        if (releasedate.value == '') {
+            releasedate.classList.add("border-danger");
+            document.getElementById('err_ReleaseDate').innerHTML = 'không được để trống';
+            isValid = false;
+        }
     }
 
     if (isValid == true)

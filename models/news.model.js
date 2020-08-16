@@ -11,7 +11,7 @@ const VW_CatGroup = 'catgroup';
 const VW_CatFamily = 'catfamily ';
 module.exports = {
   all: function () {
-    return db.load(`select * from ${TBL_NEWS}`);
+    return db.load(`select nw.*, cat.CatName, st.StaName, us.FullName from ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID join ${TBL_Status} st on nw.StatusID = st.StaID join ${TBL_User} us on nw.Writer = us.UserID ORDER BY nw.ReleaseDate DESC`);
   },
   allbytag: function (id, limit, offset) {
     return db.load(`SELECT nw.*,cat.CatID,cat.CatName FROM ${TBL_NEWS} nw JOIN ${TBL_TAGING} tg on nw.NewsID = tg.NewsID join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE tg.TagID = ${id} LIMIT ${limit} OFFSET ${offset}`);
@@ -72,9 +72,9 @@ module.exports = {
     return db.load(`SELECT nw.*, cat.CatName FROM ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE nw.StatusID = 2 and nw.CatID = ${catid} and nw.NewsID != ${newsid}  GROUP by nw.CatID ORDER BY RAND(), Views DESC LIMIT 5`);
   },
   single: async function (id) {
-    const rows = await db.load(`select nw.*, cat.CatName, cat.CatParent, cat.ParentID ,(select st.StaName from status st where nw.StatusID = st.StaID) as State from ${TBL_NEWS} nw join (SELECT d1.CatID,d2.CatName as CatParent,d1.ParentID,d1.CatName 
+    const rows = await db.load(`select nw.*, cat.CatName, cat.CatParent, cat.ParentID ,st.StaName, us.FullName, us.Pseudonym from ${TBL_NEWS} nw join (SELECT d1.CatID,d2.CatName as CatParent,d1.ParentID,d1.CatName 
                                                                       FROM ${TBL_CATEGORIES} d1 LEFT JOIN ${TBL_CATEGORIES} d2 ON d1.ParentID=d2.CatID 
-                                                                      ORDER BY CatName) cat on nw.CatID = cat.CatID 
+                                                                      ORDER BY CatName) cat on nw.CatID = cat.CatID join ${TBL_Status} st on nw.StatusID = st.StaID join ${TBL_User} us on us.UserID = nw.Writer
       where nw.NewsID = ${id}`);
     if (rows.length === 0)
       return null;

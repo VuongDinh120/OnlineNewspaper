@@ -155,7 +155,7 @@
                     <div class="col-6">
                         <label for="lbcat"><i class="fa fa-bars" aria-hidden="true"></i> Danh mục</label>
                         <select class="form-control" id="lbcat" name="CatID" size="auto"
-                            onclick="ClearError('err_Title',this)">
+                            onclick="ClearError('err_cat',this)">
                             <option value="" selected>-- Chọn danh mục</option>
                             {{#each cb_categories}}
                             <option value="{{CatID}}">{{CatName}}</option>
@@ -167,7 +167,7 @@
                         <label for="tag-typer" style="width: 100%;">
                             <div id="tags">
                                 <input list="suggestionList" id="tag-typer" placeholder="Thêm tag ..." type="text"
-                                    autocomplete="off" />
+                                    autocomplete="off"  onclick="ClearError('err_Tag',this)"/>
                                 <datalist id="suggestionList">
                                     {{#each tags}}
                                     <option data-value="{{TagID}}">{{TagName}}</option>

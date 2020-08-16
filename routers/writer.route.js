@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.get('/list-article',async function (req, res) {
+router.get('/list-article', async function (req, res) {
     const user = req.user;
     const ob = await getCat();
     const listNews = await newsModel.allWithWriter(1);
@@ -36,7 +36,7 @@ router.get('/list-article',async function (req, res) {
         extras: ob.listExtra,
     });
 })
-router.get('/view-article',async function (req, res) {
+router.get('/view-article', async function (req, res) {
     const user = req.user;
     const ob = await getCat();
     const id = req.query.id;
@@ -58,7 +58,7 @@ router.get('/view-article',async function (req, res) {
         extras: ob.listExtra,
     });
 })
-router.get('/new-article',async function (req, res) {
+router.get('/new-article', async function (req, res) {
     const user = req.user;
     const listCat = await categoryModel.allNameCat();
     const listTag = await tagModel.all();
@@ -88,7 +88,7 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
     };
     const newTags = req.body.newtags;
     const availableTags = req.body.tags;
-    
+
     const renewTags = [];
     if (newTags !== undefined) {
         for (let i = 0; i < newTags.length; i++) {
@@ -107,7 +107,7 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
         Tags = renewTags.concat(availableTags);
     }
     const rs = await newsModel.add(article);
-   
+
     for (let i = 0; i < Tags.length; i++) {
         await tagingModel.add(Tags[i], rs.insertId);
     }
@@ -137,14 +137,14 @@ router.get('/edit-article', async function (req, res) {
     });
 })
 router.post('/edit-article', upload.single('fuNews'), async function (req, res) {
-    
+
     const id = req.body.id;
     const article = {
         NewsID: req.body.id,
         Title: req.body.Title,
         TinyDes: req.body.TinyDes,
         FullDes: req.body.FullDes,
-        Writer: req.user.UserID,
+        Writer: req.user.UserID, 
         // Writer: 1,
         CatID: req.body.CatID,
         isPremium: parseInt(req.body.NewsType),
@@ -184,9 +184,9 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
     } else {
         Tags = renewTags.concat(availableTags);
     }
-    
+
     await newsModel.patch(article);
-   
+
     for (let i = 0; i < Tags.length; i++) {
         await tagingModel.add(Tags[i], req.body.id);
     }

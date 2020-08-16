@@ -1,0 +1,215 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css">
+{{!-- <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/jquery.tablesorter.pager.min.css"> --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/css/fileinput.min.css">
+
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+<style>
+    .tablesorter-pager .btn-group-sm .btn {
+        font-size: 1.2em;
+        /* make pager arrows more visible */
+    }
+</style>
+{{/section}}
+{{#section 'js'}}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js"></script>
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter-formatter-jui.min.js"></script> --}}
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/extras/jquery.tablesorter.pager.min.js"></script>
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.7/js/jquery.tablesorter.widgets.min.js" integrity="sha512-xuv/h1/NYvTPCcouiPL0DspncH1I5biOAlyhRPf0Pbn6DFpJTl6+pl8PxRjdFDC+3FccWlet/HC6v6diJ4crPA==" crossorigin="anonymous"></script> --}}
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/widgets/widget-filter.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.7/js/widgets/widget-resizable.min.js"></script> --}}
+<script>
+    $(function () {
+
+        $("table").tablesorter({
+            theme: "bootstrap",
+
+
+
+            // widget code contained in the jquery.tablesorter.widgets.js file
+            // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+            // the uitheme widget is NOT REQUIRED!
+            widgets: ["filter", "columns", "zebra", "resizable", "stickyHeaders"],
+
+            widgetOptions: {
+                resizable: true,
+                resizable_widths: ['1px', '30px', '10px', '15px', '20px', '15px', '15px', '10px'],
+                // using the default zebra striping class name, so it actually isn't included in the theme variable above
+                // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+                zebra: ["even", "odd"],
+
+                // class names added to columns when sorted
+                columns: ["primary", "secondary", "tertiary"],
+
+                // reset filters button
+                filter_reset: ".reset",
+
+                // extra css class name (string or array) added to the filter element (input or select)
+                filter_cssFilter: [
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control',
+
+                ],
+
+
+            }
+        })
+            .tablesorterPager({
+
+                // target the pager markup - see the HTML block below
+                container: $(".ts-pager"),
+
+                // target the pager page select dropdown - choose a page
+                cssGoto: ".pagenum",
+
+                // remove rows from the table to speed up the sort of large tables.
+                // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+                removeRows: false,
+
+                // output string - default is '{page}/{totalPages}';
+                // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+                output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+            });
+    });
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/themes/fa/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/locales/vi.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+    jQuery.datetimepicker.setLocale('vi');
+    $('#birthdate').datetimepicker({
+        format: 'd/m/Y',
+        timepicker: false,
+        validateOnBlur: false,
+
+    });
+</script>
+<script>
+    $('#userPhoto').fileinput({
+        browseClass: "btn btn-primary btn-block",
+        browseLabel: "Chọn hình",
+        showCaption: false,
+        showCancel: false,
+        showRemove: false,
+        showUpload: false,
+        showPreview: true,
+        fileActionSettings: {
+            showRemove: true,
+            showUpload: false,
+        },
+        theme: 'fa',
+        maxFileCount: 1,
+        allowedFileExtensions: ['png', 'jpg', 'gif'],
+        language: 'vi',
+
+    });
+</script>
+
+{{/section}}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark pl-0">
+            <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
+                <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed text-muted" href="#submenu1" data-toggle="collapse"
+                        data-target="#submenu1">Quản
+                        lý tài khoản</a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-3 nav">
+                            <li class="nav-item"><a class="nav-link py-1 text-muted" href="">Tất cả*</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link " href="#">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <div class="card contain-siz">
+                <div class="card-header d-flex justify-content-between">
+                    <h4>Cập nhật tài khoản</h4>
+                </div>
+                <div class="card-body" style="padding: 0 300px;">
+                    <form id="catForm" action="/admin/category/edit" method="post">
+                        <div class="form-group">
+                            <label for="lbcat">
+                                Loại tài khoản</label>
+                            <select class="form-control" id="role" name="role" size="auto">
+                                {{#each role}}
+                                <option value="{{RoleID}}" selected>{{RoleName}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Tên tài khoản</label>
+                            <input type="text" class="form-control" name="username" id="username"
+                                value="" onclick="ClearError('err_username',this)">
+                            <small id="err_username" class="form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Tên đầy đủ</label>
+                            <input type="text" class="form-control" name="fullname" id="fullname"
+                                value="" onclick="ClearError('err_fullname',this)">
+                            <small id="err_fullname" class="form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" 
+                                onclick="ClearError('err_email',this)">
+                            <small id="err_email" class="form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="releaseDate">Ngày sinh</label>
+                            <input class="form-control" type="text" name="birthdate" id="birthdate"
+                                placeholder="DD/MM/YYYY" onclick="ClearError('err_birthdate',this)"
+                                autocomplete="off">
+                            <small id="err_birthdate" class="form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="userPhoto" style="width: 100%;">
+                                Ảnh đại diện</label>
+                            <small id="err_avatar" class="form-text text-danger"></small>
+                            <div class="file-loading">
+                                <input id="userPhoto" name="userPhoto" type="file"
+                                    onclick="ClearError('err_avatar', this)">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-5">
+                        <button type="button" class="btn btn-danger float-right mx-2" onclick="history.back()">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            Hủy
+                        </button>
+                        <button type="button" class="btn btn-info float-right" onclick="Validate_edit_category()">Cập
+                            nhật</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

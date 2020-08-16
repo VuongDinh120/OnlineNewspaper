@@ -1,14 +1,38 @@
 const express = require('express');
 const moment = require('moment');
+const multer = require('multer');
+const fs = require('fs');
 const categoryModel = require('../models/category.model');
 const tagModel = require('../models/tag.model');
 const tagingModel = require('../models/taging.model');
 const newsModel = require('../models/news.model');
 const accountModel = require('../models/account.model');
 const assignModel = require('../models/assign.model');
+
 const { ensureAuthenticated, forwardAuthenticated, ensureAuthenticatedAdmin, ensureAuthenticatedWriter, ensureAuthenticatedEditor } = require('../config/auth');
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+    filename(req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix);
+    },
+    destination(req, file, cb) {
+        cb(null, './public/img/articles');
+    }
+});
+var upload = multer({ storage: storage });
+
+const storage2 = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './public/img/user');
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.fieldname + '-' + Date.now());
+    }
+});
+var upload2 = multer({ storage: storage2 });
 
 
 router.get('/tags/list', async function (req, res) {
@@ -129,5 +153,253 @@ router.post('/category/del', async function (req, res) {
     res.redirect(`./list`);
 })
 
+router.get('/news/list', async function (req, res) {
+    const user = req.user;
+    const listNews = await newsModel.all();
+    res.render('vwAdmin/news/list', {
+        News: listNews,
+        user
+    });
+})
+router.get('/news/view/:id', async function (req, res) {
+    const user = req.user;
+    const id = +req.params.id || -1;
+    const Taging = await tagingModel.allByIDNews(id);
+    const News = await newsModel.single(id);
+
+    res.render('vwAdmin/news/view', {
+
+        news: News,
+        taging: Taging,
+        user,
+    });
+})
+router.get('/news/add', async function (req, res) {
+    const user = req.user;
+    const listCat = await categoryModel.allNameCat();
+    const listTag = await tagModel.all();
+    res.render('vwAdmin/news/add', {
+        cb_categories: listCat,
+        tags: listTag,
+        user,
+    });
+})
+router.post('/news/add', upload.single('fuNews'), async function (req, res) {
+    const da = req.body.releaseDate;
+    const myDate = moment(da.format('DD/MM/YYYY HH:mm')).format("YYYY-MM-DD HH:mm");
+    const article = {
+        Title: req.body.Title,
+        TinyDes: req.body.TinyDes,
+        FullDes: req.body.FullDes,
+        // Writer: req.user.UserID,
+        Writer: 1,
+        CatID: req.body.CatID,
+        IMG: req.file.filename,
+        isPremium: parseInt(req.body.NewsType),
+        StatusID: 4,
+        LastEdit: new Date(),
+        ReleaseDate: myDate
+    };
+    const newTags = req.body.newtags;
+    const availableTags = req.body.tags;
+
+    const renewTags = [];
+    if (newTags !== undefined) {
+        for (let i = 0; i < newTags.length; i++) {
+            const rstag = await tagModel.add(newTags[i]);
+            renewTags.push(rstag.insertId);
+        }
+    }
+
+    let Tags;
+    if (renewTags === undefined) {
+        Tags = availableTags;
+    }
+    else if (availableTags === undefined) {
+        Tags = renewTags;
+    } else {
+        Tags = renewTags.concat(availableTags);
+    }
+    const rs = await newsModel.add(article);
+
+    for (let i = 0; i < Tags.length; i++) {
+        await tagingModel.add(Tags[i], rs.insertId);
+    }
+
+    res.redirect(`./view/${rs.insertId}`);
+})
+router.get('/news/edit', async function (req, res) {
+    const user = req.user;
+    const id = req.query.id;
+    const listCat = await categoryModel.allNameCat();
+    const listTag = await tagModel.all();
+    const Taging = await tagingModel.allByIDNews(id);
+    const News = await newsModel.single(id);
+    res.render('vwAdmin/news/edit', {
+        cb_categories: listCat,
+        tags: listTag,
+        news: News,
+        taging: Taging,
+        user,
+    });
+})
+router.post('/news/edit', upload.single('fuNews'), async function (req, res) {
+    const id = req.body.id;
+    const article = {
+        NewsID: req.body.id,
+        Title: req.body.Title,
+        TinyDes: req.body.TinyDes,
+        FullDes: req.body.FullDes,
+        // Writer: req.user.UserID,
+        Writer: 1,
+        CatID: req.body.CatID,
+        isPremium: parseInt(req.body.NewsType),
+        StatusID: 4,
+        LastEdit: new Date(),
+    };
+    const oldIMG = req.body.oldIMG;
+    if (req.file !== undefined) {
+        article.IMG = req.file.filename;
+        const filepa = req.file.destination + "/" + oldIMG;
+        const a = fs.unlink(filepa, function (err) {
+            if (err)
+                console.log("Error while delete file " + err);
+            else
+                console.log("Delete succeed");
+        });
+    }
+
+    await tagingModel.delByNewsID(article.NewsID);
+
+    const newTags = req.body.newtags;
+    const availableTags = req.body.tags;
+
+    const renewTags = [];
+    if (newTags !== undefined) {
+        for (let i = 0; i < newTags.length; i++) {
+            const rstag = await tagModel.add(newTags[i]);
+            renewTags.push(rstag.insertId);
+        }
+    }
+    let Tags;
+    if (renewTags === undefined) {
+        Tags = availableTags;
+    }
+    else if (availableTags === undefined) {
+        Tags = renewTags;
+    } else {
+        Tags = renewTags.concat(availableTags);
+    }
+
+    await newsModel.patch(article);
+
+    for (let i = 0; i < Tags.length; i++) {
+        await tagingModel.add(Tags[i], req.body.id);
+    }
+
+    res.redirect(`./view/${req.body.id}`);
+})
+router.post('/news/del', async function (req, res) {
+    await newsModel.remove(req.body.id);
+    res.redirect(`./list`);
+})
+router.post('/news/status', async function (req, res) {
+    const article = {
+        NewsID: req.body.id,
+        StatusID: 2,
+        ReleaseDate: new Date()
+    };
+    await newsModel.patch(article);
+    res.redirect(`./view/${req.body.id}`);
+})
+
+router.get('/account/list', async function (req, res) {
+    const user = req.user;
+    const listAcc = await accountModel.all();
+    res.render('vwAdmin/account/list', {
+        account: listAcc,
+        user
+    });
+})
+router.get('/account/view/:id', async function (req, res) {
+    const user = req.user;
+    const id = +req.params.id || -1;
+    const acc = await accountModel.singleByID(id);
+
+    res.render('vwAdmin/account/view', {
+        account: acc,
+        user,
+    });
+})
+router.get('/account/add', async function (req, res) {
+    const user = req.user;
+    const role = await accountModel.allRole();
+    res.render('vwAdmin/account/add', {
+        role,
+        user,
+    });
+})
+router.get('/account/edit/:id', async function (req, res) {
+    const user = req.user;
+    const id = req.params.id;
+    const acc = await accountModel.singleByID(id);
+    const role = await accountModel.allRole();
+    res.render('vwAdmin/account/edit', {
+        role,
+        account: acc,
+        user,
+    });
+})
+router.post('/account/add', upload2.single('userPhoto'), async function (req, res) {
+    const da = moment(req.body.birthdate);
+    const myDate = moment(da.format('DD/MM/YYYY')).format("YYYY-MM-DD");
+    const wname = req.body.pseudonym || null;
+
+    const account = {
+        UserName: req.body.username,
+        FullName: req.body.fullname,
+        RoleID: req.body.role,
+        Email: req.user.email,
+        Pseudonym: wname,
+        BirthDay: myDate,
+        Avatar: req.file.filename || null
+    };
+    const rs = await accountModel.add(account);
+
+    res.redirect(`./view/${rs.insertId}`);
+})
+router.post('/account/edit', upload2.single('userPhoto'), async function (req, res) {
+    const da = moment(req.body.birthdate);
+    const myDate = moment(da.format('DD/MM/YYYY')).format("YYYY-MM-DD");
+    const wname = req.body.pseudonym || null;
+
+    const account = {
+        UserID: req.body.id,
+        UserName: req.body.username,
+        FullName: req.body.fullname,
+        RoleID: req.body.role,
+        Email: req.user.email,
+        Pseudonym: wname,
+        BirthDay: myDate
+    };
+    const oldIMG = req.body.oldIMG;
+    if (req.file !== undefined) {
+        account.Avatar = req.file.filename;
+        const filepa = req.file.destination + "/" + oldIMG;
+        const a = fs.unlink(filepa, function (err) {
+            if (err)
+                console.log("Error while delete file " + err);
+            else
+                console.log("Delete succeed");
+        });
+    }
+    await accountModel.patch(account);
+
+    res.redirect(`./view/${req.body.id}`);
+})
+router.post('/account/del', async function (req, res) {
+    await accountModel.remove(req.body.id);
+    res.redirect(`./list`);
+})
 
 module.exports = router;

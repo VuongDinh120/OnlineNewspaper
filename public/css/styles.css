@@ -1555,3 +1555,7 @@ ul#ListCat li:hover a {
 #menu-admin .nav-link[data-toggle]:not(.collapsed):after {
   content: " ▴" !important;
 }
+
+.card img{
+  max-width: 1100px;
+}

@@ -1,0 +1,350 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark">
+            <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
+                <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                        lý tài khoản</a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-3 nav">
+                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
+                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <div class="contain-siz">
+                <form id="frmEditNews" method="post" novalidate enctype="multipart/form-data">
+                    <div class="card">
+                        <div class="card-header">
+                            <h1>Tạo bài báo mới</h1>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="id" value="{{news.NewsID}}">
+                            <div class="form-group">
+                                <label for="txtTitle"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tiêu
+                                    đề</label>
+                                <input class="form-control form-control-lg" type="text" id="txtTitle" name="Title"
+                                    value="{{news.Title}}" onclick="ClearError('err_Title',this)"
+                                    placeholder="Tiêu đề bài báo" autocomplete="off">
+                                <small id="err_Title" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group form-row">
+                                <div class="col-6">
+                                    <label for="lbcat"><i class="fa fa-bars" aria-hidden="true"></i> Danh mục</label>
+                                    <select class="form-control" id="lbcat" name="CatID" size="auto"
+                                        style="width:auto;">
+                                        {{#each cb_categories}}
+                                        {{#ifEquals ../news.CatID this.CatID}}
+                                        <option value="{{CatID}}" selected>
+                                            {{#if CatParent}}
+                                            {{CatParent}} - {{CatName}}
+                                            {{else}}
+                                            {{CatName}}
+                                            {{/if}}</option>
+                                        {{else}}
+                                        <option value="{{this.CatID}}">
+                                            {{#if CatParent}}
+                                            {{CatParent}} - {{CatName}}
+                                            {{else}}
+                                            {{CatName}}
+                                            {{/if}}
+                                        </option>
+                                        {{/ifEquals}}
+                                        {{/each}}
+                                    </select>
+                                    <label for="tags" style="margin-top: 20px;"><i class="fa fa-tags"
+                                            aria-hidden="true"></i> Thẻ
+                                        tag</label>
+                                    <label for="tag-typer" style="width: 100%;">
+                                        <div id="tags">
+                                            {{#each taging}}
+                                            <span class="tag">
+                                                <span class="close-tag">&times;</span>{{TagName}}
+                                                <input type="hidden" name="tags[]" value="{{TagID}}">
+                                            </span>
+                                            {{/each}}
+                                            <input list="suggestionList" id="tag-typer" placeholder="Thêm tag ..."
+                                                type="text" autocomplete="off" />
+                                            <datalist id="suggestionList">
+                                                {{#each tags}}
+                                                <option data-value="{{TagID}}">{{TagName}}</option>
+                                                {{/each}}
+                                            </datalist>
+                                            <input type="hidden" name="answer" id="tag-typer-hidden">
+                                        </div>
+                                    </label>
+                                    <small id="err_Tag" class="form-text text-danger"></small>
+                                    <label for="tags" style="margin-top: 20px;"><i class="fa fa-suitcase"
+                                            aria-hidden="true"></i>
+                                        Loại bài viết</label>
+                                    <div class="d-flex justify-content-around">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="NewsType" id="NewsType1"
+                                                value="0" {{#ifEquals news.isPremium 0}}checked{{/ifEquals}}>
+                                            <p class="form-check-label">
+                                                Bản thường
+                                            </p>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="NewsType" id="NewsType2"
+                                                value="1" {{#ifEquals news.isPremium 1}}checked{{/ifEquals}}>
+                                            <p class="form-check-label">
+                                                Bản premium
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-5">
+                                    <label for="fuNews" style="width: 100%;"><i class="fa fa-file-image-o"
+                                            aria-hidden="true"></i>
+                                        Hình bìa</label>
+                                    <small id="err_IMG" class="form-text text-danger"></small>
+                                    <div class="file-loading">
+                                        <input id="fuNews" name="fuNews" type="file"
+                                            onclick="ClearError('err_IMG', this)">
+                                    </div>
+                                    <input type="hidden" name="oldIMG" value="{{news.IMG}}">
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="txtTinyDes"><i class="fa fa-info-circle" aria-hidden="true"></i> Nội dung
+                                    tóm
+                                    tắt</label>
+                                <textarea class="form-control" rows="2" id="txtTinyDes" name="TinyDes"
+                                    onclick="ClearError('err_TinyDes',this)">{{news.TinyDes}}</textarea>
+                                <small id="err_TinyDes" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for=""><i class="fa fa-pencil" aria-hidden="true"></i> Nội dung</label>
+                                <small id="err_FullDes" class="form-text text-danger"></small>
+                                <textarea name="FullDes" id="txtFullDes" class="form-control" cols="30"
+                                    onclick="ClearError('err_FullDes',this)" rows="10">{{{news.FullDes}}}</textarea>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-success btn-block"
+                                onclick="Validate_Submit_EditNews()"> <i class="fa fa-check" aria-hidden="true"></i>
+                                Cập nhật</button>
+                            <button type="button" class="btn btn-lg btn-danger btn-block" onclick="history.back()">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Hủy
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/css/fileinput.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+{{#section 'js'}}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.tiny.cloud/1/csk6cm5kzeqyfld4uz7wliexpudlzj01asa9t7prwni3sl2s/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#txtFullDes',
+        height: 700,
+        plugins: [
+            'code link autolink lists table media charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks fullscreen',
+            'insertdatetime nonbreaking save contextmenu directionality tabfocus',
+            'emoticons template paste textcolor colorpicker textpattern imagetools image'
+        ],
+        menubar: false, contextmenu: 'configurepermanentpen',
+        toolbar1: 'insertfile undo redo searchreplace | styleselect | bold italic underline strikethrough | numlist bullist outdent indent | alignleft aligncenter alignright alignjustify | table link image media | ltr rtl',
+        toolbar2: 'print preview fullscreen | forecolor backcolor emoticons | code',
+        tabfocus_elements: "somebutton",
+        image_title: true,
+        automatic_uploads: true,
+        file_picker_types: 'image',
+        file_picker_callback: function (cb, value, meta) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+
+            input.onchange = function () {
+                var file = this.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function () {
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                    var base64 = reader.result.split(',')[1];
+                    var blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+
+                    // call the callback and populate the Title field with the file name
+                    cb(blobInfo.blobUri(), { title: file.name });
+                };
+                reader.readAsDataURL(file);
+            };
+
+            input.click();
+        }
+    });
+</script>
+{{!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
+{{!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/themes/fa/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/locales/vi.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+
+    /*var date = moment(d, "dd-mm-yyyy hh:mm a")
+       .add(5*60, 'minutes')
+       .format('LLL');*/
+    var checkPastTime = function (inputDateTime) {
+        if (typeof (inputDateTime) != "undefined" && inputDateTime !== null) {
+            var current = new Date();
+
+            //check past year and month
+            if (inputDateTime.getFullYear() < current.getFullYear()) {
+                $('#releaseDate').datetimepicker('reset');
+                alert("Sorry! Past date time not allow.");
+            } else if ((inputDateTime.getFullYear() == current.getFullYear()) && (inputDateTime.getMonth() < current.getMonth())) {
+                $('#releaseDate').datetimepicker('reset');
+                alert("Sorry! Past date time not allow.");
+            }
+
+            // 'this' is jquery object datetimepicker
+            // check input date equal to todate date
+            if (inputDateTime.getDate() == current.getDate()) {
+                if (inputDateTime.getHours() < current.getHours()) {
+                    $('#releaseDate').datetimepicker('reset');
+                }
+                this.setOptions({
+                    minTime: current.getHours() + ':00' //here pass current time hour
+                });
+            } else {
+                this.setOptions({
+                    minTime: false
+                });
+            }
+        }
+    };
+    let day = new Date();
+    jQuery.datetimepicker.setLocale('vi');
+    $('#releaseDate').datetimepicker({
+        format: 'd/m/Y h:i a',
+        timepicker: true,
+        minDateTime: day,
+        validateOnBlur: false,
+        //yearStart: d.getFullYear(), // Start value for current Year selector
+        onChangeDateTime: checkPastTime,
+        onShow: checkPastTime
+
+    });
+</script>
+ <script>
+        $(document).ready(function () {
+            var url1 = '/img/articles/{{news.IMG}}'
+            $("#fuNews").fileinput({
+                fileActionSettings: {
+                    showRemove: false,
+                    showUpload: false
+                },
+                initialPreview: url1,
+                initialPreviewAsData: true,
+                initialPreviewConfig: [
+                    { caption: "{{news.IMG}}", downloadUrl: url1, size: 930321, width: "500px" }
+                ],
+                overwriteInitial: true,
+                maxFileSize: 1000,
+                browseClass: "btn btn-primary btn-block",
+                browseLabel: "Chọn hình",
+                showCaption: false,
+                showCancel: false,
+                showRemove: false,
+                showUpload: false,
+                showPreview: true,
+                maxFileCount: 1,
+                theme: 'fa',
+                maxFileCount: 1,
+                allowedFileExtensions: ['png', 'jpg', 'gif'],
+                language: 'vi',
+            });
+        });
+    </script>
+<script>
+    $(document).ready(function () {
+        $("#tag-typer").keypress(async function (event) {
+            var key = event.which;
+            var data = $("#tag-typer-hidden").val();
+            if (key == 13 || key == 44) {
+                event.preventDefault();
+                var tag = $.trim($(this).val().replace(/\s\s+/g, ' '));
+
+                await $.getJSON(`/istag-available?tag=${tag}`, function (ob) {
+                    if (ob) {
+                        data = ob;
+                    }
+                })
+
+                const isBlank = $.trim(tag);
+                if (tag.length > 0 && isBlank != '') {
+                    if (isNaN(data)) {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag.toLowerCase() + " <input type='hidden' name='newtags[]' value='" + tag.toLowerCase() + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    } else {
+                        $("<span class='tag''><span class='close-tag'>&times;</span>" +
+                            tag.toLowerCase() + " <input type='hidden' name='tags[]' value='" + data + "'>" +
+                            " </span>").insertBefore(this);
+                        $(this).val("");
+                    }
+
+                } else
+                    $(this).val("");
+            }
+        });
+
+        $("#tags").on("click", ".close-tag", function () {
+            $(this).parent("span").remove();
+        });
+    });
+</script>
+<script>
+    document.querySelector('input[list]').addEventListener('input', function (e) {
+        var input = e.target,
+            list = input.getAttribute('list'),
+            options = document.querySelectorAll('#' + list + ' option'),
+            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden'),
+            mytrim = input.value.replace(/\s\s+/g, ' '),
+            inputValue = mytrim.trim();
+
+        hiddenInput.value = inputValue;
+
+        for (var i = 0; i < options.length; i++) {
+            var option = options[i];
+
+
+            if (option.innerText === inputValue) {
+                hiddenInput.value = option.getAttribute('data-value');
+                break;
+            }
+        }
+    });
+</script>
+<script src="/javascript/validate.js"></script>
+{{/section}}

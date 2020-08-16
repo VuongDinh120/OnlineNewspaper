@@ -6,7 +6,10 @@ const TBL_NEWS = 'news';
 
 module.exports = {
   all: function () {
-    return db.load(`SELECT us.UserID, us.UserName, us.FullName, us.PassWord, us.Pseudonym, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID`);
+    return db.load(`SELECT us.UserID, us.UserName, us.FullName, us.BirthDay,us.Pseudonym, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID`);
+  },
+  allRole: function () {
+    return db.load(`SELECT * from ${TBL_ROLE}`);
   },
   singleByName: async function (UserName) {
     const rows = await db.load(`SELECT us.UserID, us.UserName, us.FullName, us.PassWord, us.Pseudonym, us.Email, us.Avatar, rol.ID ,rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID where us.UserName = '${UserName}'`);

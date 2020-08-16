@@ -90,13 +90,13 @@
                 if (key == 13 || key == 44) {
                     event.preventDefault();
                     var tag = $.trim($(this).val().replace(/\s\s+/g, ' '));
-                  console.log(data);
+                  //console.log(data);
                     await $.getJSON(`/istag-available?tag=${tag}`, function (ob) {
                         if (ob) {
                             data = ob;
                         }
                     })
-                     console.log(data);
+                     //console.log(data);
                     const isBlank = $.trim(tag);
                     if (tag.length > 0 && isBlank != '') {
                         if (isNaN(data)) {

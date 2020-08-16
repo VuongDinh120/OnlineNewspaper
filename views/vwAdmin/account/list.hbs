@@ -41,7 +41,7 @@
 
             widgetOptions: {
                 resizable: true,
-                resizable_widths: ['1px', '30px', '10px', '15px', '20px', '15px', '15px','10px'],
+                resizable_widths: ['1px', '30px', '10px', '15px', '20px', '15px', '15px', '10px'],
                 // using the default zebra striping class name, so it actually isn't included in the theme variable above
                 // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
                 zebra: ["even", "odd"],
@@ -61,7 +61,7 @@
                     'form-control',
                     'form-control',
                     'form-control',
-                    'form-control'
+                   
                 ],
 
 
@@ -92,11 +92,12 @@
             <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
                 <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                    <a class="nav-link collapsed text-muted" href="#submenu1" data-toggle="collapse"
+                        data-target="#submenu1">Quản
                         lý tài khoản</a>
                     <div class="collapse" id="submenu1" aria-expanded="false">
                         <ul class="flex-column pl-3 nav">
-                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 text-muted" href="">Tất cả*</a></li>
                             <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
                             <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
                             <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
@@ -104,7 +105,7 @@
                     </div>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
-                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link " href="#">Quản lý nhãn tag</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
             </ul>
         </div>
@@ -114,7 +115,7 @@
                     <h4>Danh sách bài viết</h4>
                     <a class="btn btn-outline-success" href="/admin/news/add" role="button">
                         <i class="fa fa-plus" aria-hidden="true"></i>
-                        Thêm bài viết
+                        Thêm tài khoản
                     </a>
                 </div>
                 <div class="card-body">
@@ -125,29 +126,26 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Tiêu đề</th>
-                                <th>Danh mục</th>
+                                <th>Tên tài khoản</th>
+                                <th>Tên đầy đủ</th>
+                                <th>Ngày sinh</th>
+                                <th>Email</th>
                                 <th class="filter-select filter-exact" data-placeholder="Chọn loại">Loại</th>
-                                <th>Tác giả</th>
-                                <th>Thời điểm XB</th>
-                                <th class="filter-select filter-exact" data-placeholder="Chọn trạng thái">Trạng thái
-                                </th>
                                 <th class="sorter-false filter-false">Xem</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Tiêu đề</th>
-                                <th>Danh mục</th>
-                                <th>Loại bài viết</th>
-                                <th>Tác giả</th>
-                                <th>Thời điểm XB</th>
-                                <th>Trạng thái</th>
+                                <th>Tên tài khoản</th>
+                                <th>Tên đầy đủ</th>
+                                <th>Ngày sinh</th>
+                                <th>Email</th>
+                                <th>Loại</th>
                                 <th>Xem</th>
                             </tr>
                             <tr>
-                                <th colspan="8" class="ts-pager">
+                                <th colspan="7" class="ts-pager">
                                     <div class="form-inline">
                                         <div class="ml-5">Số dòng:</div>
                                         <select class="form-control-sm custom-select px-1 pagesize"
@@ -177,52 +175,18 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            {{#each News}}
+                            {{#each account}}
                             <tr>
-                                <td>{{NewsID}}</td>
-                                <td>{{Title}}</td>
-                                <td> {{#if ParentName}}
-                                    {{ParentName}} - {{CatName}}
-                                    {{else}}
-                                    {{CatName}}
-                                    {{/if}}</td>
-                                <td>{{#if isPremium}}
-                                    <div style="color: #ffc107 ;">Premium</div>
-                                    {{else}}
-                                    Thường
-                                    {{/if}}</td>
-                                <td>
-                                    {{#if Pseudonym}}
-                                    {{Pseudonym}}
-                                    {{else}}
-                                    {{FullName}}
-                                    {{/if}}
+                                <td>{{UserID}}</td>
+                                <td>{{UserName}}</td>
+                                <td>{{FullName}}</td>
+                                 <td>
+                                    {{formatDate BirthDay "DD/MM/YYYY"}}
                                 </td>
-                                <td>
-                                    {{#if ReleaseDate}}
-                                    {{formatDateVN ReleaseDate "long2"}}
-                                    {{else}}
-                                    Chưa ấn định
-                                    {{/if}}
-                                </td>
-                                <td> {{#ifEquals StatusID 3}}
-                                    <div class="text-danger">{{StaName}}</div>
-                                    {{/ifEquals}}
-
-                                    {{#ifEquals StatusID 4}}
-                                    <div>{{StaName}}</div>
-                                    {{/ifEquals}}
-
-                                    {{#ifEquals StatusID 2}}
-                                    <div class="text-success">{{StaName}}</div>
-                                    {{/ifEquals}}
-
-                                    {{#ifEquals StatusID 1}}
-                                    <div class="text-primary">{{StaName}}</div>
-                                    {{/ifEquals}}</td>
-
-                                <td><a class="btn btn-success btn-sm" href="/admin/news/view/{{NewsID}}" role="button"
-                                        title="See News">
+                                <td>{{Email}}</td>
+                                <td>{{RoleName}}</td>
+                                <td><a class="btn btn-success btn-sm" href="/admin/account/view/{{UserID}}"
+                                        role="button" title="Xem chi tiết">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a></td>
                             </tr>
