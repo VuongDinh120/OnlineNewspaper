@@ -29,20 +29,22 @@
         $("table").tablesorter({
             theme: "bootstrap",
 
-            widthFixed: true,
+            //widthFixed: true,
 
             // widget code contained in the jquery.tablesorter.widgets.js file
             // use the zebra stripe widget if you plan on hiding any rows (filter widget)
             // the uitheme widget is NOT REQUIRED!
-            widgets: ["filter", "columns", "zebra"],
+            widgets: ["filter", "columns",  "resizable","zebra"],
 
             widgetOptions: {
+                resizable: true,
+                resizable_widths: ['30px', '30px', '10px', '15px', '20px', '55px', '30px','15px'],
                 // using the default zebra striping class name, so it actually isn't included in the theme variable above
                 // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
                 zebra: ["even", "odd"],
 
                 // class names added to columns when sorted
-                columns: ["primary", "secondary", "tertiary"],
+                columns: ["primary", "secondary","tertiary"],
 
                 // reset filters button
                 filter_reset: ".reset",
@@ -84,6 +86,7 @@
 </script>
 {{/section}}
 <div class="container-fluid contain-siz">
+     <h1 class="center mb-5">Bài viết của tôi</h1>
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <h4>Danh sách bài viết</h4>

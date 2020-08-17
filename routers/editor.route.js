@@ -28,8 +28,8 @@ router.get('/edit', ensureAuthenticatedEditor, async function (req, res) {
     const Taging = await tagingModel.allByIDNews(id);
     const News = await newsModel.single(id);
     const Writer = await accountModel.singleByNews(id);
-    if (Taging.length === 0 || News.length === 0)
-        return res.send('Invalid parameter.');
+    // if (Taging.length === 0 || News.length === 0)
+    //     return res.send('Invalid parameter.');
 
     // console.log(News);
     res.render('vwEditor/edit', {
@@ -43,14 +43,19 @@ router.get('/edit', ensureAuthenticatedEditor, async function (req, res) {
 })
 router.post('/accept', async function (req, res) {
     // var today = new Date(); 
-    const da = moment(req.body.releaseDate);
-    const myDate = moment(da.format('DD/MM/YYYY HH:mm')).format("YYYY-MM-DD HH:mm");
-
+    console.log(req.body.releaseDate);
+    // const da = moment(req.body.releaseDate).format('DD/MM/YYYY HH:mm');
+    // const da = moment(req.body.releaseDate).format('DD-MM-YYYY HH:mm');
+    // const myDate = moment(da).format("YYYY-MM-DD HH:mm");
+    // console.log(da);
+    // const myDate = moment(da).format("YYYY-MM-DD HH:mm");
+    // console.log(myDate);
     const id = req.body.id;
     const article = {
         NewsID: req.body.id,
         CatID: req.body.CatID,
-        ReleaseDate: myDate,
+        ReleaseDate: req.body.releaseDate,
+        AcceptedBy: req.user.UserID,
         StatusID: 1,
     };
     const newTags = req.body.newtags || null;
@@ -95,6 +100,7 @@ router.post('/deny', async function (req, res) {
     const article = {
         NewsID: req.body.id,
         Issue: req.body.issue,
+        AcceptedBy: req.user.UserID,
         StatusID: 3,
     };
     await newsModel.patch(article);

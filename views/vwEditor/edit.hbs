@@ -46,7 +46,7 @@
     let day = new Date();
     jQuery.datetimepicker.setLocale('vi');
     $('#releaseDate').datetimepicker({
-        format: 'd/m/Y h:i a',
+        format: 'Y-m-d H:i',
         timepicker: true,
         minDateTime: day,
         validateOnBlur: false,
@@ -274,7 +274,7 @@
                                     <label class="text-muted" for="releaseDate"><i class="fa fa-clock-o"
                                             aria-hidden="true"></i> Thời gian xuất bản</label>
                                     <input class="form-control" type="text" name="releaseDate" id="releaseDate"
-                                        placeholder="Chọn ngày" onclick="ClearError('err_ReleaseDate',this)" readonly>
+                                        placeholder="Chọn ngày" onclick="ClearError('err_ReleaseDate',this)" autocomplete="off" readonly>
                                     <small id="err_ReleaseDate" class="form-text text-danger"></small>
                                 </div>
                             </div>

@@ -61,10 +61,9 @@
                     'form-control',
                     'form-control',
                     'form-control',
-                   
+                    'form-control',
+
                 ],
-
-
             }
         })
             .tablesorterPager({
@@ -96,10 +95,10 @@
                         data-target="#submenu1">Quản
                         lý tài khoản</a>
                     <div class="collapse" id="submenu1" aria-expanded="false">
-                       <ul class="flex-column pl-3 nav">
-                            <li class="nav-item"><a class="nav-link py-1 text-muted" href="/admin/account/list">Danh
+                         <ul class="flex-column pl-3 nav">
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list">Danh
                                     Sách tài khoản</a></li>
-                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-premier">Gia hạn người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 text-muted" href="/admin/account/list-premier">Gia hạn người dùng</a></li>
                             <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-assign">Phân công bài viết</a></li>
                         </ul>
                     </div>
@@ -111,13 +110,13 @@
         </div>
         <div class="col-10">
             <div class="card contain-siz">
-                  <h1 class="center mb-5">Quản lý tài khoản</h1>
+                <h1 class="center mb-5">Gia hạn người dùng</h1>
                 <div class="card-header d-flex justify-content-between">
-                    <h4>Danh sách bài viết</h4>
-                    <a class="btn btn-outline-success" href="/admin/account/add" role="button">
+                    <h4>Danh sách đăng kí Premier</h4>
+                    {{!-- <a class="btn btn-outline-success" href="/admin/account/add" role="button">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         Thêm tài khoản
-                    </a>
+                    </a> --}}
                 </div>
                 <div class="card-body">
                     <button type="button" class="reset btn btn-primary mb-2" data-column="0" data-filter=""><i
@@ -129,10 +128,10 @@
                                 <th>ID</th>
                                 <th>Tên tài khoản</th>
                                 <th>Tên đầy đủ</th>
-                                <th>Ngày sinh</th>
                                 <th>Email</th>
-                                <th class="filter-select filter-exact" data-placeholder="Chọn loại">Loại</th>
-                                <th class="sorter-false filter-false">Xem</th>
+                                <th>Thời gian hết hạn</th>
+                                <th class="filter-select filter-exact" data-placeholder="Chọn loại">Trạng thái</th>
+                                <th class="sorter-false filter-false">Thao tác</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -140,10 +139,10 @@
                                 <th>ID</th>
                                 <th>Tên tài khoản</th>
                                 <th>Tên đầy đủ</th>
-                                <th>Ngày sinh</th>
                                 <th>Email</th>
-                                <th>Loại</th>
-                                <th>Xem</th>
+                                <th>Thời gian hết hạn</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
                             </tr>
                             <tr>
                                 <th colspan="7" class="ts-pager">
@@ -181,15 +180,23 @@
                                 <td>{{UserID}}</td>
                                 <td>{{UserName}}</td>
                                 <td>{{FullName}}</td>
-                                 <td>
-                                    {{formatDate BirthDay "DD/MM/YYYY"}}
-                                </td>
                                 <td>{{Email}}</td>
-                                <td>{{RoleName}}</td>
-                                <td><a class="btn btn-success btn-sm" href="/admin/account/view/{{UserID}}"
-                                        role="button" title="Xem chi tiết">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </a></td>
+                                <td>
+                                    {{#if PremiumExpireTime}}
+                                    {{formatDate PremiumExpireTime "HH:mm DD/MM/YYYY"}}
+                                    {{else}}
+                                    Chưa cấp
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{State}}
+                                </td>
+                                <td>
+                                    <form action="/admin/account/accept-premier" method="post">
+                                        <input type="hidden" name="id" value="{{UserID}}">
+                                        <button type="submit" class="btn btn-success btn-sm"> Cấp premier</i></button>
+                                    </form>
+                                </td>
                             </tr>
                             {{/each}}
                         </tbody>

@@ -19,7 +19,7 @@ function Validate_Submit_EditNews() {
     const title = document.getElementById('txtTitle'),
         tinyDes = document.getElementById('txtTinyDes'),
         fullDes = tinymce.get("txtFullDes").getContent(),
-        img = document.getElementsByTagName('img'),
+        img = document.getElementById('fuNews'),
         tag = document.getElementsByClassName('tag'),
         cat = document.getElementById('lbcat'),
         releasedate = document.getElementById('releaseDate') || null;
@@ -59,7 +59,7 @@ function Validate_Submit_EditNews() {
         isValid = false;
     }
 
-    if (img.length == 1) {
+    if (img.value == '') {
         // title.classList.add("border-danger");
         document.getElementById('err_IMG').innerHTML = 'Thiếu ảnh bìa bài báo';
         document.getElementById('err_IMG').scrollIntoView();
@@ -446,6 +446,158 @@ async function Validate_edit_category() {
         document.getElementById("catForm").submit();
 }
 
+async function Validate_Edit_UserManager() {
+    var isValid = true;
+    const username = document.getElementById('username');
+    const username_true = document.getElementById('username_true');
+    const fullname = document.getElementById('fullname');
+    const email = document.getElementById('email');
+    const email_true = document.getElementById('email_true');
+    const birthday = document.getElementById('birthdate');
+
+
+    if (username.value == '') {
+        username.classList.add("border-danger");
+        document.getElementById('err_username').innerHTML = 'Tên tài khoản không được trống';
+        isValid = false;
+    } else {
+        if (username_true.value != username.value) {
+            await $.getJSON(`/account/is-available?user=${username.value}`, function (data) {
+                if (data === false) {
+                    username.classList.add("border-danger");
+                    document.getElementById('err_username').innerHTML = 'Tên tài khoản đã tồn tại';
+                    isValid = false;
+                }
+            })
+        }
+    }
+
+    if (birthday.value == '') {
+        birthday.classList.add("border-danger");
+        document.getElementById('err_birthday').innerHTML = 'không được để trống';
+        isValid = false;
+    }
+
+    if (fullname.value == '') {
+        fullname.classList.add("border-danger");
+        document.getElementById('err_fullname').innerHTML = 'Họ tên không được trống';
+        isValid = false;
+    }
+
+    if (email.value == '') {
+        email.classList.add("border-danger");
+        document.getElementById('err_email').innerHTML = 'Email không được trống';
+        isValid = false;
+    } else {
+        if (email.value != email_true.value) {
+            await $.getJSON(`/account/isEmail-available?email=${email.value}`, function (data) {
+                if (data === false) {
+                    email.classList.add("border-danger");
+                    document.getElementById('err_email').innerHTML = 'Email đã được sử dụng';
+                    isValid = false;
+                }
+            })
+        }
+    }
+
+    if (isValid == true)
+        document.getElementById("usermanagerForm").submit();
+}
+
+async function Validate_Add_Assign() {
+    let isValid = true;
+    const us = document.getElementById('userid');
+    var e = document.getElementById("lbcat");
+    var id = e.options[e.selectedIndex].value;
+
+    const val = us.value
+    await $.getJSON(`/isassign-available?us=${val}&id=${id}`, function (data) {
+        if (data === false) {
+            document.getElementById('err_cat').innerHTML = 'Đã phân công danh mục này';
+            isValid = false;
+        }
+    })
+
+    if (isValid == true)
+        document.getElementById("addCatForm").submit();
+}
+
+async function Validate_Add_UserManager() {
+    var isValid = true;
+    const username = document.getElementById('username');
+
+    const fullname = document.getElementById('fullname');
+    const email = document.getElementById('email');
+
+    const birthday = document.getElementById('birthdate');
+    const password = document.getElementById('password');
+    const password2 = document.getElementById('password2');
+
+    if (username.value == '') {
+        username.classList.add("border-danger");
+        document.getElementById('err_username').innerHTML = 'Tên tài khoản không được trống';
+        isValid = false;
+    } else {
+
+        await $.getJSON(`/account/is-available?user=${username.value}`, function (data) {
+            if (data === false) {
+                username.classList.add("border-danger");
+                document.getElementById('err_username').innerHTML = 'Tên tài khoản đã tồn tại';
+                isValid = false;
+            }
+        })
+
+    }
+
+    if (birthday.value == '') {
+        birthday.classList.add("border-danger");
+        document.getElementById('err_birthday').innerHTML = 'không được để trống';
+        isValid = false;
+    }
+
+    if (fullname.value == '') {
+        fullname.classList.add("border-danger");
+        document.getElementById('err_fullname').innerHTML = 'Họ tên không được trống';
+        isValid = false;
+    }
+
+    if (email.value == '') {
+        email.classList.add("border-danger");
+        document.getElementById('err_email').innerHTML = 'Email không được trống';
+        isValid = false;
+    } else {
+
+        await $.getJSON(`/account/isEmail-available?email=${email.value}`, function (data) {
+            if (data === false) {
+                email.classList.add("border-danger");
+                document.getElementById('err_email').innerHTML = 'Email đã được sử dụng';
+                isValid = false;
+            }
+        })
+
+    }
+    if (password.value == '') {
+        password.classList.add("border-danger");
+        document.getElementById('err_password').innerHTML = 'Mật khẩu không được trống';
+        isValid = false;
+    } else if (password.value.length < 8) {
+        password.classList.add("border-danger");
+        document.getElementById('err_password').innerHTML = 'Mật khẩu phải có ít nhất 8 kí tự';
+        isValid = false;
+    }
+
+    if (password2.value == '') {
+        password2.classList.add("border-danger");
+        document.getElementById('err_password2').innerHTML = 'Xác nhận mật khẩu không được trống';
+        isValid = false;
+    } else if (password2.value != password.value) {
+        password2.classList.add("border-danger");
+        document.getElementById('err_password2').innerHTML = 'Mật khẩu không khớp';
+        isValid = false;
+    }
+    if (isValid == true)
+        document.getElementById("usermanagerForm").submit();
+}
 
 
 

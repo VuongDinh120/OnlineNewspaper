@@ -80,21 +80,22 @@
         <div class="col-2 bg-dark pl-0">
             <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
                 <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                 <li class="nav-item">
+                    <a class="nav-link collapsed " href="#submenu1" data-toggle="collapse"
+                        data-target="#submenu1">Quản
                         lý tài khoản</a>
                     <div class="collapse" id="submenu1" aria-expanded="false">
                         <ul class="flex-column pl-3 nav">
-                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list">Danh
+                                    Sách tài khoản</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-premier">Gia hạn người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-assign">Phân công bài viết</a></li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý danh mục</a></li>
-                <li class="nav-item"><a class="nav-link " href="#">Quản lý nhãn tag</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="/admin/category/list">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link " href="/admin/tags/list">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/news/list">Quản lý bài viết</a></li>
             </ul>
         </div>
         <div class="col-10">
@@ -117,7 +118,7 @@
                             <thead class="thead-dark">
 
                                 <tr>
-                                    <th>STT</th>
+                                    <th>ID</th>
                                     <th>Tên danh mục</th>
                                     <th>Số bài viết</th>
                                     <th class="sorter-false filter-false">Thao tác</th>
@@ -125,7 +126,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>STT</th>
+                                    <th>ID</th>
                                     <th>Tên danh mục</th>
                                     <th>Số bài viết</th>
                                     <th>Thao tác</th>
@@ -166,7 +167,7 @@
                             <tbody>
                                 {{#each cat1}}
                                 <tr>
-                                    <td>{{@index}}</td>
+                                    <td>{{CatID}}</td>
                                     <td>{{CatName}}</td>
                                     <td>{{countNews}}</td>
                                     <td class="d-flex justify-content-center">
@@ -203,7 +204,7 @@
                         <table id="table2" class="table table-bordered table-striped">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>STT</th>
+                                    <th>ID</th>
                                     <th>Tên danh mục</th>
                                     <th>Danh mục cha</th>
                                     <th>Số bài viết</th>
@@ -212,7 +213,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>STT</th>
+                                    <th>ID</th>
                                     <th>Tên danh mục</th>
                                     <th>Danh mục cha</th>
                                     <th>Số bài viết</th>
@@ -254,7 +255,7 @@
                             <tbody>
                                 {{#each cat2}}
                                 <tr>
-                                    <td>{{@index}}</td>
+                                    <td>{{CatID}}</td>
                                     <td>{{CatName}}</td>
                                     <td>{{ParentName}}</td>
                                     <td>{{countNews}}</td>

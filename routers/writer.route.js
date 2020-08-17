@@ -21,10 +21,10 @@ const storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.get('/list-article', async function (req, res) {
+router.get('/list-article', ensureAuthenticatedWriter, async function (req, res) {
     const user = req.user;
     const ob = await getCat();
-    const listNews = await newsModel.allWithWriter(1);
+    const listNews = await newsModel.allWithWriter(user.UserID);
     // for (let index = 0; index < listNews.length; index++) {
     //     listNews[index].stt = index + 1;
     // }
@@ -36,7 +36,7 @@ router.get('/list-article', async function (req, res) {
         extras: ob.listExtra,
     });
 })
-router.get('/view-article', async function (req, res) {
+router.get('/view-article', ensureAuthenticatedWriter, async function (req, res) {
     const user = req.user;
     const ob = await getCat();
     const id = req.query.id;
@@ -58,7 +58,7 @@ router.get('/view-article', async function (req, res) {
         extras: ob.listExtra,
     });
 })
-router.get('/new-article', async function (req, res) {
+router.get('/new-article', ensureAuthenticatedWriter, async function (req, res) {
     const user = req.user;
     const listCat = await categoryModel.allNameCat();
     const listTag = await tagModel.all();
@@ -114,7 +114,7 @@ router.post('/new-article', upload.single('fuNews'), async function (req, res) {
 
     res.redirect('./list-article');
 })
-router.get('/edit-article', async function (req, res) {
+router.get('/edit-article', ensureAuthenticatedWriter, async function (req, res) {
     const user = req.user;
     const id = req.query.id;
     const ob = await getCat();
@@ -122,19 +122,21 @@ router.get('/edit-article', async function (req, res) {
     const listTag = await tagModel.all();
     const Taging = await tagingModel.allByIDNews(id);
     const News = await newsModel.single(id);
-    // if (Taging.length === 0 || News.length === 0) {
-    //     return res.send('Invalid parameter.');
-    // }
-    res.render('vwWriter/edit', {
-        cb_categories: listCat,
-        tags: listTag,
-        news: News,
-        taging: Taging,
-        user,
-        categories: ob.listMenu,
-        isFull: ob.isfull,
-        extras: ob.listExtra,
-    });
+
+    if (News.StatusID == 1 || News.StatusID == 2) {
+        res.redirect(`./list-article`);
+    } else {
+        res.render('vwWriter/edit', {
+            cb_categories: listCat,
+            tags: listTag,
+            news: News,
+            taging: Taging,
+            user,
+            categories: ob.listMenu,
+            isFull: ob.isfull,
+            extras: ob.listExtra,
+        });
+    }
 })
 router.post('/edit-article', upload.single('fuNews'), async function (req, res) {
 
@@ -144,7 +146,7 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
         Title: req.body.Title,
         TinyDes: req.body.TinyDes,
         FullDes: req.body.FullDes,
-        Writer: req.user.UserID, 
+        Writer: req.user.UserID,
         // Writer: 1,
         CatID: req.body.CatID,
         isPremium: parseInt(req.body.NewsType),
@@ -194,7 +196,7 @@ router.post('/edit-article', upload.single('fuNews'), async function (req, res) 
     res.redirect(`./view-article?id=${id}`);
 })
 router.post('/delete-article', async function (req, res) {
-    await newsModel.remove(req.body.id);
+    await newsModel.del(req.body.id);
     res.redirect(`./list-article`);
 })
 

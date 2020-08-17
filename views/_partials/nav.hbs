@@ -27,7 +27,7 @@
                     {{user.UserName}}
                 </div>
             </div>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu" >
                 <div class="user-img d-flex align-items-center flex-column pt-3 pb-3">
                     {{#if user.Avatar}}
                     <img src="/img/user/{{user.Avatar}}" class="avatar">
@@ -41,16 +41,23 @@
                 <a href="/account/profile?id={{user.UserID}}" class="dropdown-item"><i class="fa fa-user"
                         aria-hidden="true"></i> Thông tin cá
                     nhân</a>
-                <a class="dropdown-item" href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Biên tập
+                {{#ifEquals user.RoleID 2}}
+                <a class="dropdown-item" href="/editor/list"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Biên tập
                     bài báo</a>
-                <a class="dropdown-item" href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tạo bài
-                    báo mới</a>
-                <a class="dropdown-item" href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Bài báo
-                    của tôi</a>
-                <a class="dropdown-item" href="#"><i class="fa fa-star" aria-hidden="true"></i> Đăng ký Premium
-                    pass</a>
-                <a class="dropdown-item" href="#"><i class="fa fa-briefcase" aria-hidden="true"></i> Tới trang
+                {{/ifEquals}}
+                {{#ifEquals user.RoleID 1}}
+                <a class="dropdown-item" href="/admin"><i class="fa fa-briefcase" aria-hidden="true"></i> Tới trang
                     admin</a>
+                {{/ifEquals}}
+                {{#ifEquals user.RoleID 3}}
+                <a class="dropdown-item" href="/writer/new-article"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tạo bài
+                    báo mới</a>
+                <a class="dropdown-item" href="/writer/list-article"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Bài báo
+                    của tôi</a>
+                {{/ifEquals}}
+                <a class="dropdown-item" href="/account/buy-premier"><i class="fa fa-star" aria-hidden="true"></i> Đăng ký Premium
+                    pass</a>
+
                 <div class="logout">
                     <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</a>
                 </div>

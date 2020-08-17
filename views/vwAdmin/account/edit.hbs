@@ -104,7 +104,7 @@
 
     });
 </script>
-{{#if condition}}
+{{#if account.Avatar}}
 <script>
     $(document).ready(function () {
         var url1 = '/img/user/{{account.Avatar}}'
@@ -157,7 +157,7 @@
     });
 </script>
 {{/if}}
-
+<script src="/javascript/validate.js"></script>
 {{/section}}
 <div class="container-fluid">
     <div class="row">
@@ -170,36 +170,38 @@
                         lý tài khoản</a>
                     <div class="collapse" id="submenu1" aria-expanded="false">
                         <ul class="flex-column pl-3 nav">
-                            <li class="nav-item"><a class="nav-link py-1 text-muted" href="">Tất cả*</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 text-muted" href="/admin/account/list">Danh
+                                    Sách tài khoản</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-premier">Gia hạn người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-assign">Phân công bài viết</a></li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
-                <li class="nav-item"><a class="nav-link " href="#">Quản lý nhãn tag</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/category/list">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link " href="/admin/tags/list">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/news/list">Quản lý bài viết</a></li>
             </ul>
         </div>
         <div class="col-10">
             <div class="card contain-siz">
+                  <h1 class="center mb-5">Quản lý tài khoản</h1>
+
                 <div class="card-header d-flex justify-content-between">
                     <h4>Cập nhật tài khoản</h4>
                 </div>
                 <div class="card-body" style="padding: 0 300px;">
-                    <form id="catForm" action="/admin/category/edit" method="post">
+                    <form id="usermanagerForm" action="/admin/account/edit" method="post">
                         <div class="form-group">
                             <label for="userid">ID</label>
                             <input type="text" class="form-control" name="id" id="userid" value="{{account.UserID}}"
                                 readonly>
                         </div>
                         <div class="form-group">
-                            <label for="lbcat">
+                            <label for="role">
                                 Loại tài khoản</label>
                             <select class="form-control" id="role" name="role" size="auto">
                                 {{#each role}}
-                                <option value="{{RoleID}}" selected>{{RoleName}}</option>
+                                <option value="{{ID}}" selected>{{RoleName}}</option>
                                 {{/each}}
                             </select>
                         </div>
@@ -209,6 +211,8 @@
                                 value="{{account.UserName}}" onclick="ClearError('err_username',this)">
                             <small id="err_username" class="form-text text-danger"></small>
                         </div>
+                        <input type="hidden" id="username_true" value="{{account.UserName}}">
+                         <input type="hidden" id="email_true" value="{{account.Email}}">
                         <div class="form-group">
                             <label for="fullname">Tên đầy đủ</label>
                             <input type="text" class="form-control" name="fullname" id="fullname"
@@ -216,7 +220,7 @@
                             <small id="err_fullname" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="fullname">Email</label>
+                            <label for="email">Email</label>
                             <input type="email" class="form-control" name="email" id="email" value="{{account.Email}}"
                                 onclick="ClearError('err_email',this)">
                             <small id="err_email" class="form-text text-danger"></small>
@@ -225,8 +229,8 @@
                             <label for="releaseDate">Ngày sinh</label>
                             <input class="form-control" type="text" name="birthdate" id="birthdate"
                                 placeholder="DD/MM/YYYY" onclick="ClearError('err_birthdate',this)"
-                                value=" {{formatDate account.BirthDay "DD/MM/YYYY"}}" autocomplete="off">
-                            <small id="err_birthdate" class="form-text text-danger"></small>
+                                value="{{formatDate account.BirthDay "DD/MM/YYYY"}}" autocomplete="off">
+                            <small id="err_birthday" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label for="userPhoto" style="width: 100%;">
@@ -244,7 +248,7 @@
                             <i class="fa fa-times" aria-hidden="true"></i>
                             Hủy
                         </button>
-                        <button type="button" class="btn btn-info float-right" onclick="Validate_edit_category()">Cập
+                        <button type="button" class="btn btn-info float-right" onclick="Validate_Edit_UserManager()">Cập
                             nhật</button>
                     </div>
                 </div>

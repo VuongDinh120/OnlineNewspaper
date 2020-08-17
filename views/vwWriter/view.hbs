@@ -22,16 +22,25 @@
                             {{/ifEquals}}
                         </p>
                         <p>
-                            <span>Lần chỉnh sửa cuối: </span> {{formatDate LastEdit "long"}}
+                            <span>Lần chỉnh sửa cuối: </span> {{formatDate news.LastEdit "HH:mm DD/MM/YYYY"}}
                         </p>
                         <p>
-                            <span>Thời gian xuất bản: </span>
+                            <span>Thời gian xuất bản:
+                            </span> {{#if news.ReleaseDate}}
+                            {{formatDate news.ReleaseDate "HH:mm DD/MM/YYYY"}}
+                            {{else}}
+                            Chưa duyệt
+                            {{/if}}
                         </p>
                         <p>
-                            <span>Trạng thái: </span>
+                            <span>Trạng thái: </span>{{news.StaName}}
                         </p>
                         <p>
-                            <span>Lý do: </span>
+                            <span>Lý do: {{#if news.Issue}}
+                                {{news.Issue}}
+                                {{else}}
+                                Chưa duyệt
+                                {{/if}}</span>
                         </p>
                         <p>
                             <span>Nội dung tóm tát: </span> {{news.TinyDes}}
@@ -81,17 +90,7 @@
                 </button>
             </form>
             {{else}}
-            <a class="btn btn-outline-success" href="/writer/edit-article?id={{news.NewsID}}" role="button">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                Chỉnh sửa
-            </a>
-            <form action="/writer/delete-article" method="POST">
-                <input type="hidden" name="id" value="{{news.NewsID}}">
-                <button class="btn btn-outline-danger ml-2" type="submit">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    Xóa
-                </button>
-            </form>
+           
             {{/ifEquals}}
             {{/ifEquals}}
 
@@ -127,7 +126,7 @@
                     <img src="/img/articles/{{news.IMG}}" style="width: 100%; object-fit: cover; ">
                 </div>
 
-                <div style="border-top: 1px solid #EBEBEB;padding-top:20px">
+                <div class="sizeimg" style="border-top: 1px solid #EBEBEB;padding-top:20px">
                     {{{news.FullDes}}}
                 </div>
                 <div style="font-weight: bold; font-size:1rem; text-align:right">

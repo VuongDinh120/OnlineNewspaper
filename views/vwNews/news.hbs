@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="sticky-top">
+            <div class="sticky-top" style="z-index: 0;">
                 <div class="flex-column mt-5">
                     <h5 class="tittleHeading">Cùng chuyên mục</h5>
                     {{#each newsRand}}
@@ -96,7 +96,12 @@
             <div class="create_new_comment">
                 <!-- current #{user} avatar -->
                 <div class="user_avatar">
+                    {{#if user.Avatar}}
                     <img src="/img/user/{{user.Avatar}}">
+                    {{else}}
+                    <img src="/img/user.png">
+                    {{/if}}
+
                 </div><!-- the input field -->
                 <div class="input_comment">
                     <form id="commentform" action="/news/comment" method="post">
@@ -117,7 +122,11 @@
                 <ul class="user_comment d-flex justify-content-between" style="display: inline-block;">
                     <!-- current #{user} avatar -->
                     <div class="user_avatar">
+                        {{#if Avatar}}
                         <img src="/img/user/{{Avatar}}">
+                        {{else}}
+                        <img src="/img/user.png">
+                        {{/if}}
                     </div><!-- the comment body -->
                     <div class="comment_body">
                         <p>{{Content}}</p>

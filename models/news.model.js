@@ -14,28 +14,28 @@ module.exports = {
     return db.load(`select nw.*, cat.CatName, st.StaName, us.FullName from ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID join ${TBL_Status} st on nw.StatusID = st.StaID join ${TBL_User} us on nw.Writer = us.UserID ORDER BY nw.ReleaseDate DESC`);
   },
   allbytag: function (id, limit, offset) {
-    return db.load(`SELECT nw.*,cat.CatID,cat.CatName FROM ${TBL_NEWS} nw JOIN ${TBL_TAGING} tg on nw.NewsID = tg.NewsID join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE tg.TagID = ${id} LIMIT ${limit} OFFSET ${offset}`);
+    return db.load(`SELECT nw.*,cat.CatID,cat.CatName FROM ${TBL_NEWS} nw JOIN ${TBL_TAGING} tg on nw.NewsID = tg.NewsID join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE tg.TagID = ${id} ORDER BY nw.isPremium DESC LIMIT ${limit} OFFSET ${offset}`);
   },
   countbytag: async function (id) {
     const rows = await db.load(`SELECT count(*) as total FROM ${TBL_NEWS} nw JOIN ${TBL_TAGING} tg on nw.NewsID = tg.NewsID WHERE tg.TagID = ${id}`);
     return rows[0].total;
   },
   SearchNews: function (text, limit, offset) {
-    return db.load(`SELECT news.*, catgroup.CatName FROM ${TBL_NEWS} JOIN ${VW_CatGroup} ON news.CatID = catgroup.CatID WHERE MATCH (news.Title,news.TinyDes,news.FullDes) AGAINST ('${text}' IN NATURAL LANGUAGE MODE) LIMIT ${limit} OFFSET ${offset}`);
+    return db.load(`select * from (SELECT news.*, catgroup.CatName FROM ${TBL_NEWS} JOIN ${VW_CatGroup} ON news.CatID = catgroup.CatID ORDER BY news.isPremium DESC) as tb WHERE MATCH (tb.Title,tb.TinyDes,tb.FullDes) AGAINST ('${text}' IN NATURAL LANGUAGE MODE) LIMIT ${limit} OFFSET ${offset}`);
   },
   CountSearch: async function (text) {
     const rows = await db.load(`SELECT count(*) as total FROM ${TBL_NEWS} JOIN ${VW_CatGroup} ON news.CatID = catgroup.CatID WHERE MATCH (news.Title,news.TinyDes,news.FullDes) AGAINST ('${text}' IN NATURAL LANGUAGE MODE)`);
     return rows[0].total;
   },
   allbyCat: function (id,limit, offset) {
-    return db.load(`select nw.*,cn.CatName,cn.SonName from ${TBL_NEWS} nw join ${VW_CatFamily} cn on nw.CatID = cn.SonID Where nw.CatID in (SELECT cat.SonID FROM ${VW_CatFamily} cat where cat.CatID = ${id}) or nw.CatID = ${id} and nw.StatusID = 2 LIMIT ${limit} OFFSET ${offset}`);
+    return db.load(`select nw.*,cn.CatName,cn.SonName from ${TBL_NEWS} nw join ${VW_CatFamily} cn on nw.CatID = cn.SonID Where nw.CatID in (SELECT cat.SonID FROM ${VW_CatFamily} cat where cat.CatID = ${id}) or nw.CatID = ${id} and nw.StatusID = 2 ORDER BY nw.isPremium DESC LIMIT ${limit} OFFSET ${offset}`);
   },
   countbyCat: async function (id) {
     const rows = await db.load(`select count(*) as total from ${TBL_NEWS} nw join ${VW_CatFamily} cn on nw.CatID = cn.SonID Where nw.CatID in (SELECT cat.SonID FROM ${VW_CatFamily} cat where cat.CatID = ${id}) or nw.CatID = ${id} and nw.StatusID = 2`);
     return rows[0].total;
   },
   MostInterested: function () {
-    return db.load(`SELECT nw.*, cat.CatName FROM ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE DATEDIFF(NOW(),nw.ReleaseDate)<7 AND nw.StatusID = 2 ORDER BY nw.Views DESC LIMIT 4`);//them comment sau
+    return db.load(`SELECT nw.*, cat.CatName FROM ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE nw.StatusID = 2 ORDER BY nw.ReleaseDate DESC, nw.Views DESC LIMIT 4`);//them comment sau
   },
   MostView: function () {
     return db.load(`SELECT nw.*, cat.CatName FROM ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE nw.StatusID = 2 ORDER BY nw.Views DESC LIMIT 10`);
@@ -44,7 +44,7 @@ module.exports = {
     return db.load(`SELECT nw.*, cat.CatName FROM ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE nw.StatusID = 2 ORDER BY nw.ReleaseDate DESC LIMIT 10`);
   },
   MostInterested_in_Category: function () {
-    return db.load(`SELECT nw.*, cat.CatName FROM ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE DATEDIFF(NOW(),nw.ReleaseDate)<7 AND nw.StatusID = 2 GROUP by nw.CatID ORDER BY Views DESC LIMIT 10`);//them comment sau
+    return db.load(`SELECT nw.*, cat.CatName FROM ${TBL_NEWS} nw join ${VW_CatGroup} cat on nw.CatID = cat.CatID WHERE nw.StatusID = 2 GROUP by nw.CatID ORDER BY nw.ReleaseDate DESC, nw.Views DESC LIMIT 10`);//them comment sau
   },
   WriterName: function (id) {
     const rows = db.load(`select us.FullName,us.Pseudonym from ${TBL_NEWS} nw join ${TBL_User} us on nw.Writer = us.UserID WHERE nw.NewsID = ${id}`);

@@ -81,7 +81,8 @@
 </script>
 {{/section}}
 <div class="container-fluid contain-siz">
-   
+    <h1 class="center mb-5">Biên tập bài viết</h1>
+
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <h4>Danh sách bài viết</h4>
@@ -171,10 +172,10 @@
                             {{FullName}}
                             {{/if}}
                         </td>
-                        <td>{{formatDateVN LastEdit "long2"}}</td>
+                        <td>{{formatDate LastEdit "HH:mm DD/MM/YYYY"}}</td>
                         <td>
                             {{#if ReleaseDate}}
-                            {{formatDateVN ReleaseDate "long2"}}
+                            {{formatDate ReleaseDate "HH:mm DD/MM/YYYY"}}
                             {{else}}
                             Chưa ấn định
                             {{/if}}
@@ -209,16 +210,16 @@
             Footer
         </div> --}}
     </div>
-     <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center mt-3">
         <div class="card mb-3" style="max-width: 18rem;">
             <div class="card-header" style="font-weight: 700;font-size: 20px;">Danh sách chuyên mục được phân công</div>
             <div class="card-body">
-                <ul >
+                <ul>
                     {{#each Assign}}
                     {{#if ParentName}}
                     <li>{{ParentName}} - {{CatName}}</li>
                     {{else}}
-
+                    {{CatName}}
                     {{/if}}
                     {{/each}}
                 </ul>

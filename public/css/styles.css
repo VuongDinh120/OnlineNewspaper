@@ -1559,3 +1559,7 @@ ul#ListCat li:hover a {
 .card img{
   max-width: 1100px;
 }
+
+.sizeimg img{
+  max-width: 900px;
+}

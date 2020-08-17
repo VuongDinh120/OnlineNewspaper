@@ -8,6 +8,11 @@
             {{#each news}}
             <div class="item d-flex align-items-start">
                 <div class="item-thumbnail">
+                    {{#if isPremium}}
+                    <span class="news-item-premium" style="left:235px">
+                        Premium
+                    </span>
+                    {{/if}}
                     <a href="">
                         <img src="/img/articles/{{IMG}}" alt="">
                     </a>

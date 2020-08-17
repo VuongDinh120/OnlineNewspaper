@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const moment = require('moment');
 const accountModel = require('../models/account.model');
+const premierModel = require('../models/premier.model');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const config = require('../config/default.json');
@@ -9,9 +10,14 @@ const getCat = require('../config/getCat');
 const { ensureAuthenticated, forwardAuthenticated, ensureAuthenticatedAdmin, ensureAuthenticatedWriter, ensureAuthenticatedEditor } = require('../config/auth');
 
 var date_diff_indays = function (date) {
-    dt1 = new Date(date);
-    dt2 = new Date();
-    return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
+    const now = new Date();
+    var a = moment();
+    var b = moment(date);
+    // var ms = moment(date, "DD/MM/YYYY HH:mm:ss").diff(moment(now, "DD/MM/YYYY HH:mm:ss"));
+    // var d = moment.duration(ms);
+    // var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+    // return s;
+    return b.diff(a);
 }
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -25,11 +31,14 @@ var upload = multer({ storage: storage }).single('userPhoto');
 
 router.get('/profile', ensureAuthenticated, async function (req, res) {
     const user = req.user;
+    console.log(user)
     const ob = await getCat();
     const acc = await accountModel.singleByID(req.query.id);
     var messages = req.flash('error');
     var success = req.flash('success_msg');
     acc.isExpire = -1;
+    console.log(acc)
+    console.log(date_diff_indays(acc.PremiumExpireTime));
     if (acc.PremiumExpireTime != null) {
         if (date_diff_indays(acc.PremiumExpireTime) > 0)
             acc.isExpire = 0;
@@ -73,7 +82,7 @@ router.post('/profile/uppw', async function (req, res) {
     const acc = await accountModel.singleByID(req.user.UserID);
     // console.log(acc);
     const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
-    console.log(password_hash);
+    // console.log(password_hash);
     const match = await bcrypt.compare(password_hash, acc.PassWord);
 
     if (match) {
@@ -102,10 +111,13 @@ router.post('/api/photo', function (req, res) {
 });
 
 router.get('/buy-premier', ensureAuthenticated, async function (req, res) {
+    const isRegPass = req.session.passpremier || null;
     const user = req.user;
     const ob = await getCat();
+    console.log(isRegPass);
     res.render('vwUser/buyPremier', {
         user,
+        isRegPass,
         categories: ob.listMenu,
         isFull: ob.isfull,
         extras: ob.listExtra,
@@ -113,15 +125,17 @@ router.get('/buy-premier', ensureAuthenticated, async function (req, res) {
 })
 
 router.post('/buy-premier', ensureAuthenticated, async function (req, res) {
-   // const date = new Date(req.body.birthday);
-   var timeExpire = moment(new Date()).add(1, 'minutes').format('YYYY-MM-DD hh:mm:ss');
-   const user = {
-       UserID: req.user.UserID,
-       PremiumExpireTime: timeExpire
-   }
-   await accountModel.patch(user);
-   req.flash('success_msg', 'Đăng kí gói premier thành công');
-   res.redirect(`/`);
+    // const date = new Date(req.body.birthday);
+
+    const entity = {
+        ApplyingTime: new Date(),
+        UserID: req.user.UserID,
+        State: 0
+    }
+    await premierModel.add(entity);
+    req.session.passpremier = true;
+    req.flash('success_msg', 'Đăng kí gói premier thành công, Chờ để được admin phê duyệt');
+    res.redirect(`/`);
 })
 
 router.get('/is-available', async function (req, res) {

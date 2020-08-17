@@ -11,6 +11,7 @@ const accountModel = require('../models/account.model');
 const { ensureAuthenticated, forwardAuthenticated, ensureAuthenticatedAdmin, ensureAuthenticatedWriter, ensureAuthenticatedEditor } = require('../config/auth');
 const getCat = require('../config/getCat');
 const categoryModel = require('../models/category.model');
+const assignModel = require('../models/assign.model');
 
 const router = express.Router();
 
@@ -23,13 +24,17 @@ router.get('/', async function (req, res) {
     MostInterested_in_Category: await newsModel.MostInterested_in_Category(),
     Newest: await newsModel.Newest(),
   };
-
+  var messages = req.flash('error');
+  var success = req.flash('success_msg');
+  // console.log(news.MostInterested_in_Category);
   res.render('home', {
     categories: ob.listMenu,
     isFull: ob.isfull,
     extras: ob.listExtra,
     news,
-    user
+    user,
+    error: messages,
+    success_msg: success,
   });
 })
 
@@ -41,7 +46,6 @@ router.get('/auth/:id', forwardAuthenticated, async function (req, res) {
   if (id === 'login' || id === 'register') {
     const result = (id === 'login') ? true : false;
     res.render('vwUser/auth', {
-
       error: messages,
       isLog: result,
       success_msg: success,
@@ -110,9 +114,14 @@ router.post('/auth/forgot', async function (req, res) {
     to: req.body.email,
     from: config.admin.email,
     subject: 'Lấy lại mật khẩu ',
-    text: 'Lấy lại tài khoản của bạn:.\n\n' +
-      'Click vào link bên dưới để lấy lại tài khoản của bạn:\n\n' +
-      'http://' + req.headers.host + '/auth/reset/' + token_hash + '\n\n'
+    text: `Chào bạn \n\n` +
+      `Bạn đã lựa chọn email ${req.body.email} để bảo mật tài khoản của bạn\n\n` +
+      'http://' + req.headers.host + '/auth/reset/' + token_hash + '\n\n'+
+      `Truy cập vao đường dẫn trên để tiến hành reset mật khẩu tài khoản.\n\n
+      Link truy cập này sẽ hết hạn sau 1 giờ.\n\n
+      Tại sao bạn lại thấy email này.\n
+      NewsHope chúng mình nhận được yêu cầu reset lại mật khẩu qua email này.\n
+      Nếu không phải bạn yêu cầu của bạn thì hãy bỏ qua email này.`
   };
   transporter.sendMail(mailOptions, function (err) {
     if (err) {
@@ -134,7 +143,7 @@ router.get('/auth/reset/:token', forwardAuthenticated, async function (req, res)
   const row = await accountModel.singleByToken(token);
   const currentdate = new Date();
   if (row) {
-    if (row.ResetPasswordExpireTime > currentdate) {
+    if (row.ResetPasswordExpireTime < currentdate) {
 
       req.flash('error', 'Link reset của bạn đã hết hạn');
       res.redirect('/auth/login');
@@ -157,7 +166,7 @@ router.get('/auth/reset/:token', forwardAuthenticated, async function (req, res)
 
 router.post('/auth/reset', async function (req, res) {
   const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
-  console.log(req.body.id);
+  // console.log(req.body.id);
   const entity = {
     UserID: req.body.id,
     PassWord: password_hash,
@@ -188,6 +197,16 @@ router.get('/iscat-available', async function (req, res) {
   const cat = await categoryModel.catByName(req.query.cat, id);
   // console.log(tag);
   if (cat) {
+    return res.json(false);
+  }
+  res.json(true);
+})
+
+router.get('/isassign-available', async function (req, res) {
+  let id = req.query.id;
+  if (req.query.id == -1) id = null;
+  const assg = await assignModel.single(req.query.us, id);
+  if (assg) {
     return res.json(false);
   }
   res.json(true);

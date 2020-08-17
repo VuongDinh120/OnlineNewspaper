@@ -10,6 +10,11 @@
                     <a href="">
                         <img src="/img/articles/{{IMG}}" alt="">
                     </a>
+                    {{#if isPremium}}
+                    <span class="news-item-premium" style="left:235px">
+                        Premium
+                    </span>
+                    {{/if}}
                 </div>
                 <div class="item-meta">
                     <a href="/news/list-by-Cat/{{CatID}}"><span class="categorylabel">{{CatName}}</span></a>

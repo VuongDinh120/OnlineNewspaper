@@ -6,7 +6,7 @@ const TBL_NEWS = 'news';
 
 module.exports = {
   all: function () {
-    return db.load(`SELECT us.UserID, us.UserName, us.FullName, us.BirthDay,us.Pseudonym, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID`);
+    return db.load(`SELECT us.UserID, us.UserName, us.FullName, us.BirthDay,us.Pseudonym, us.Email, us.Avatar, rol.RoleName FROM ${TBL_USER} us join ${TBL_ROLE} rol on us.RoleID = rol.ID ORDER BY FIELD(us.RoleID,1,2,3,4)`);
   },
   allRole: function () {
     return db.load(`SELECT * from ${TBL_ROLE}`);
@@ -65,4 +65,10 @@ module.exports = {
     delete entity.Email;
     return db.patch(TBL_USER, entity, condition);
   },
+  del: function (id) {
+    const condition = {
+      UserID: id
+    }
+    return db.del(TBL_USER, condition);
+  }
 };

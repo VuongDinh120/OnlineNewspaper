@@ -1,13 +1,16 @@
 const express = require('express');
 const moment = require('moment');
 const multer = require('multer');
+const bcrypt = require('bcrypt');
 const fs = require('fs');
 const categoryModel = require('../models/category.model');
 const tagModel = require('../models/tag.model');
 const tagingModel = require('../models/taging.model');
 const newsModel = require('../models/news.model');
 const accountModel = require('../models/account.model');
+const premierModel = require('../models/premier.model');
 const assignModel = require('../models/assign.model');
+const config = require('../config/default.json');
 
 const { ensureAuthenticated, forwardAuthenticated, ensureAuthenticatedAdmin, ensureAuthenticatedWriter, ensureAuthenticatedEditor } = require('../config/auth');
 
@@ -354,16 +357,21 @@ router.post('/account/add', upload2.single('userPhoto'), async function (req, re
     const da = moment(req.body.birthdate);
     const myDate = moment(da.format('DD/MM/YYYY')).format("YYYY-MM-DD");
     const wname = req.body.pseudonym || null;
+    const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
 
     const account = {
         UserName: req.body.username,
         FullName: req.body.fullname,
+        PassWord: password_hash,
         RoleID: req.body.role,
-        Email: req.user.email,
+        Email: req.body.email,
         Pseudonym: wname,
         BirthDay: myDate,
-        Avatar: req.file.filename || null
+        // Avatar: req.file.filename || null
     };
+    if (req.file !== undefined) {
+        account.Avatar = req.file.filename;
+    }
     const rs = await accountModel.add(account);
 
     res.redirect(`./view/${rs.insertId}`);
@@ -378,7 +386,7 @@ router.post('/account/edit', upload2.single('userPhoto'), async function (req, r
         UserName: req.body.username,
         FullName: req.body.fullname,
         RoleID: req.body.role,
-        Email: req.user.email,
+        Email: req.body.email,
         Pseudonym: wname,
         BirthDay: myDate
     };
@@ -398,8 +406,66 @@ router.post('/account/edit', upload2.single('userPhoto'), async function (req, r
     res.redirect(`./view/${req.body.id}`);
 })
 router.post('/account/del', async function (req, res) {
-    await accountModel.remove(req.body.id);
+    await accountModel.del(req.body.id);
     res.redirect(`./list`);
 })
 
+router.get('/account/list-premier', async function (req, res) {
+    const user = req.user;
+    const listAcc = await premierModel.all();
+    res.render('vwAdmin/account/premier/list', {
+        account: listAcc,
+        user
+    });
+})
+router.post('/account/accept-premier', async function (req, res) {
+    var timeExpire = moment(new Date()).add(3, 'minutes').format('YYYY-MM-DD hh:mm:ss');
+    const account = {
+       UserID : req.body.id,
+       PremiumExpireTime: timeExpire
+    };
+    // const entity = {
+    //     UserID : req.body.id,
+    //     PremiumExpireTime: timeExpire
+    //  };
+    await accountModel.patch(account);
+    await premierModel.del(req.body.id);
+
+    res.redirect(`./list-premier`);
+})
+
+
+router.get('/account/list-assign', async function (req, res) {
+    const user = req.user;
+    const listAcc = await assignModel.allEditor();
+    res.render('vwAdmin/account/assign/list', {
+        account: listAcc,
+        user
+    });
+})
+router.get('/account/view-assign', async function (req, res) {
+    const user = req.user;
+    const listassg = await assignModel.allAssign(req.query.id);
+    const listCat = await categoryModel.allNameCat();
+    res.render('vwAdmin/account/assign/view', {
+        cate: listassg,
+        cb_categories: listCat,
+        editor: req.query.id,
+        user
+    });
+})
+router.post('/account/add-assign', async function (req, res) {
+    const entity = {
+        UserID: req.body.id,
+        CatID: req.body.CatID
+    }
+    // console.log(entity);
+    await assignModel.add(entity);
+    res.redirect(`./view-assign?id=${req.body.id}`);
+})
+router.post('/account/del-assign', async function (req, res) {
+  
+    await assignModel.del(req.body.id);
+    res.redirect(`./view-assign?id=${req.body.usid}`);
+})
 module.exports = router;

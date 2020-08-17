@@ -1,5 +1,7 @@
 const express = require('express');
+const moment = require('moment');
 const categoryModel = require('../models/category.model');
+const accountModel = require('../models/account.model');
 const newsModel = require('../models/news.model');
 const tagModel = require('../models/tag.model');
 const tagingModel = require('../models/taging.model');
@@ -9,24 +11,62 @@ const config = require('../config/default.json');
 const getCat = require('../config/getCat');
 const router = express.Router();
 
-router.get('/', async function (req, res) {
-    const user = req.user;
+var date_diff_indays = function (date) {
+    const now = new Date();
+    var a = moment();
+    var b = moment(date);
+    // var ms = moment(date, "DD/MM/YYYY HH:mm:ss").diff(moment(now, "DD/MM/YYYY HH:mm:ss"));
+    // var d = moment.duration(ms);
+    // var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+    // return s;
+    return b.diff(a);
+}
 
+router.get('/', async function (req, res) {
+    const user = req.user || null;
+    const date = new Date();
     const ob = await getCat();
     const row = await newsModel.single(req.query.id);
     const writer = await newsModel.WriterName(req.query.id);
     const taging = await tagingModel.allByIDNews(req.query.id);
     const newsRand = await newsModel.allWithSameCat(row.CatID, req.query.id);
     const comment = await commentModel.allByNews(req.query.id);
-
     const entity = { NewsID: row.NewsID, Views: row.Views + 1 }
-    await newsModel.patch(entity);
-    console.log(row);
-    res.render('vwNews/news', {
-        categories: ob.listMenu, isFull: ob.isfull, extras: ob.listExtra,
-        news: row,
-        newsRand, taging, writer, comment, user
-    });
+    if (user) {
+        const acc = await accountModel.singleByID(req.user.UserID);
+       
+        if (row.isPremium == true) {
+            if (date_diff_indays(acc.PremiumExpireTime) > 0) {
+                await newsModel.patch(entity);
+                res.render('vwNews/news', {
+                    categories: ob.listMenu, isFull: ob.isfull, extras: ob.listExtra,
+                    news: row,
+                    newsRand, taging, writer, comment, user
+                });
+            }
+            else {
+                req.flash('error', 'Nâng cấp tài khoản thành premier để xem bài viết này');
+                res.redirect(`/`);
+            }
+        } else {
+            await newsModel.patch(entity);
+            res.render('vwNews/news', {
+                categories: ob.listMenu, isFull: ob.isfull, extras: ob.listExtra,
+                news: row,
+                newsRand, taging, writer, comment, user
+            });
+        }
+    } else if (row.isPremium == true) {
+        req.flash('error', 'Đăng nhập tài khoản premium để xem bài viết này');
+        res.redirect(`/`);
+    } else {
+        await newsModel.patch(entity);
+        res.render('vwNews/news', {
+            categories: ob.listMenu, isFull: ob.isfull, extras: ob.listExtra,
+            news: row,
+            newsRand, taging, writer, comment, user
+        });
+    }
 })
 
 router.get('/list-by-Cat/:id', async function (req, res) {

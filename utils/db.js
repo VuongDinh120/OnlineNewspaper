@@ -51,5 +51,17 @@ module.exports = {
                 resolve(results);
             });
         });
+    },
+    del2: function (table, condition1,condition2) {
+        return new Promise(function (resolve, reject) {
+            const sql = `delete from ${table} where ? and ?`;
+            pool.query(sql, [condition1,condition2], function (error, results) {
+                if (error) {
+                    return reject(error);
+                }
+
+                resolve(results);
+            });
+        });
     }
 };

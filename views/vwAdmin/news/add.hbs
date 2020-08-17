@@ -4,24 +4,26 @@
             <ul class="nav nav-pills flex-column sticky-top pt-5 pb-5" id="menu-admin">
                 <li class="nav-item"><a class="nav-link" href="#">Dash broad</a></li>
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Quản
+                    <a class="nav-link collapsed " href="#submenu1" data-toggle="collapse"
+                        data-target="#submenu1">Quản
                         lý tài khoản</a>
                     <div class="collapse" id="submenu1" aria-expanded="false">
                         <ul class="flex-column pl-3 nav">
-                            <li class="nav-item"><a class="nav-link py-1 " href="">Tất cả*</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Người dùng</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Biên tập viên</a></li>
-                            <li class="nav-item"><a class="nav-link py-1" href="">Nhà báo</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list">Danh
+                                    Sách tài khoản</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-premier">Gia hạn người dùng</a></li>
+                            <li class="nav-item"><a class="nav-link py-1 " href="/admin/account/list-assign">Phân công bài viết</a></li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Quản lý danh mục</a></li>
-                <li class="nav-item"><a class="nav-link text-muted" href="#">Quản lý nhãn tag</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Quản lý bài viết</a></li>
+                <li class="nav-item"><a class="nav-link " href="/admin/category/list">Quản lý danh mục</a></li>
+                <li class="nav-item"><a class="nav-link " href="/admin/tags/list">Quản lý nhãn tag</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="/admin/news/list">Quản lý bài viết</a></li>
             </ul>
         </div>
         <div class="col-10">
             <div class="contain-siz">
+                  <h1 class="center mb-5">Quản lý Bài viết</h1>
                 <form id="frmEditNews" method="post" novalidate enctype="multipart/form-data">
                     <div class="card">
                         <div class="card-header">
