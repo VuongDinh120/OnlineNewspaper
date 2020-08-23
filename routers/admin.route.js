@@ -37,8 +37,14 @@ const storage2 = multer.diskStorage({
 });
 var upload2 = multer({ storage: storage2 });
 
+router.get('/', ensureAuthenticatedAdmin, async function (req, res) {
+    const user = req.user;
 
-router.get('/tags/list', async function (req, res) {
+    res.render('vwAdmin/index', {
+        user
+    });
+})
+router.get('/tags/list', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const list = await tagModel.all();
     res.render('vwAdmin/tag/list', {
@@ -46,7 +52,7 @@ router.get('/tags/list', async function (req, res) {
         user
     });
 })
-router.get('/tags/add', async function (req, res) {
+router.get('/tags/add', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     res.render('vwAdmin/tag/add', {
         user
@@ -59,7 +65,7 @@ router.post('/tags/add', async function (req, res) {
 
     res.redirect(`./list`);
 })
-router.get('/tags/edit/:id', async function (req, res) {
+router.get('/tags/edit/:id', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const id = +req.params.id || -1
     const row = await tagModel.single(id);
@@ -85,7 +91,7 @@ router.post('/tags/del', async function (req, res) {
 })
 
 
-router.get('/category/list', async function (req, res) {
+router.get('/category/list', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listFather = await categoryModel.allWithOnlyFirstNode();
     const list1 = await categoryModel.allfisrt();
@@ -97,7 +103,7 @@ router.get('/category/list', async function (req, res) {
         user
     });
 })
-router.get('/category/add', async function (req, res) {
+router.get('/category/add', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listFather = await categoryModel.allWithOnlyFirstNode();
     res.render('vwAdmin/category/add', {
@@ -120,7 +126,7 @@ router.post('/category/add', async function (req, res) {
     }
     res.redirect(`./list`);
 })
-router.get('/category/edit/:id', async function (req, res) {
+router.get('/category/edit/:id', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const id = +req.params.id || -1
     const row = await categoryModel.single(id);
@@ -156,7 +162,7 @@ router.post('/category/del', async function (req, res) {
     res.redirect(`./list`);
 })
 
-router.get('/news/list', async function (req, res) {
+router.get('/news/list', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listNews = await newsModel.all();
     res.render('vwAdmin/news/list', {
@@ -164,7 +170,7 @@ router.get('/news/list', async function (req, res) {
         user
     });
 })
-router.get('/news/view/:id', async function (req, res) {
+router.get('/news/view/:id', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const id = +req.params.id || -1;
     const Taging = await tagingModel.allByIDNews(id);
@@ -177,7 +183,7 @@ router.get('/news/view/:id', async function (req, res) {
         user,
     });
 })
-router.get('/news/add', async function (req, res) {
+router.get('/news/add', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listCat = await categoryModel.allNameCat();
     const listTag = await tagModel.all();
@@ -231,7 +237,7 @@ router.post('/news/add', upload.single('fuNews'), async function (req, res) {
 
     res.redirect(`./view/${rs.insertId}`);
 })
-router.get('/news/edit', async function (req, res) {
+router.get('/news/edit', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const id = req.query.id;
     const listCat = await categoryModel.allNameCat();
@@ -316,7 +322,7 @@ router.post('/news/status', async function (req, res) {
     res.redirect(`./view/${req.body.id}`);
 })
 
-router.get('/account/list', async function (req, res) {
+router.get('/account/list', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listAcc = await accountModel.all();
     res.render('vwAdmin/account/list', {
@@ -324,7 +330,7 @@ router.get('/account/list', async function (req, res) {
         user
     });
 })
-router.get('/account/view/:id', async function (req, res) {
+router.get('/account/view/:id', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const id = +req.params.id || -1;
     const acc = await accountModel.singleByID(id);
@@ -334,7 +340,7 @@ router.get('/account/view/:id', async function (req, res) {
         user,
     });
 })
-router.get('/account/add', async function (req, res) {
+router.get('/account/add', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const role = await accountModel.allRole();
     res.render('vwAdmin/account/add', {
@@ -342,7 +348,7 @@ router.get('/account/add', async function (req, res) {
         user,
     });
 })
-router.get('/account/edit/:id', async function (req, res) {
+router.get('/account/edit/:id', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const id = req.params.id;
     const acc = await accountModel.singleByID(id);
@@ -410,7 +416,7 @@ router.post('/account/del', async function (req, res) {
     res.redirect(`./list`);
 })
 
-router.get('/account/list-premier', async function (req, res) {
+router.get('/account/list-premier', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listAcc = await premierModel.all();
     res.render('vwAdmin/account/premier/list', {
@@ -421,8 +427,8 @@ router.get('/account/list-premier', async function (req, res) {
 router.post('/account/accept-premier', async function (req, res) {
     var timeExpire = moment(new Date()).add(3, 'minutes').format('YYYY-MM-DD hh:mm:ss');
     const account = {
-       UserID : req.body.id,
-       PremiumExpireTime: timeExpire
+        UserID: req.body.id,
+        PremiumExpireTime: timeExpire
     };
     // const entity = {
     //     UserID : req.body.id,
@@ -435,7 +441,7 @@ router.post('/account/accept-premier', async function (req, res) {
 })
 
 
-router.get('/account/list-assign', async function (req, res) {
+router.get('/account/list-assign', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listAcc = await assignModel.allEditor();
     res.render('vwAdmin/account/assign/list', {
@@ -443,7 +449,7 @@ router.get('/account/list-assign', async function (req, res) {
         user
     });
 })
-router.get('/account/view-assign', async function (req, res) {
+router.get('/account/view-assign', ensureAuthenticatedAdmin, async function (req, res) {
     const user = req.user;
     const listassg = await assignModel.allAssign(req.query.id);
     const listCat = await categoryModel.allNameCat();
@@ -464,7 +470,7 @@ router.post('/account/add-assign', async function (req, res) {
     res.redirect(`./view-assign?id=${req.body.id}`);
 })
 router.post('/account/del-assign', async function (req, res) {
-  
+
     await assignModel.del(req.body.id);
     res.redirect(`./view-assign?id=${req.body.usid}`);
 })

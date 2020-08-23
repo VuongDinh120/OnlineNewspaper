@@ -81,10 +81,10 @@ router.post('/profile/upe', async function (req, res) {
 router.post('/profile/uppw', async function (req, res) {
     const acc = await accountModel.singleByID(req.user.UserID);
     // console.log(acc);
-    const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
+    // const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
     // console.log(password_hash);
-    const match = await bcrypt.compare(password_hash, acc.PassWord);
-
+    const match = await bcrypt.compare(req.body.password, acc.PassWord);
+    console.log(match);
     if (match) {
         const newpassword_hash = bcrypt.hashSync(req.body.newPassword, config.authentication.saltRounds);
         const entity = {

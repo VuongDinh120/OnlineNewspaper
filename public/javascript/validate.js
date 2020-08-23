@@ -19,7 +19,7 @@ function Validate_Submit_EditNews() {
     const title = document.getElementById('txtTitle'),
         tinyDes = document.getElementById('txtTinyDes'),
         fullDes = tinymce.get("txtFullDes").getContent(),
-        img = document.getElementById('fuNews'),
+        img = document.getElementsByTagName('img'),
         tag = document.getElementsByClassName('tag'),
         cat = document.getElementById('lbcat'),
         releasedate = document.getElementById('releaseDate') || null;
@@ -59,7 +59,7 @@ function Validate_Submit_EditNews() {
         isValid = false;
     }
 
-    if (img.value == '') {
+    if (img.length < 2) {
         // title.classList.add("border-danger");
         document.getElementById('err_IMG').innerHTML = 'Thiếu ảnh bìa bài báo';
         document.getElementById('err_IMG').scrollIntoView();
